@@ -1,0 +1,36 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:dialogTheme">@style/CustomDialogThemeForPorgressbar</item>
+    </style>
+    <style name="CustomTextInputLayoutStyle.ErrorTextStyle" parent="TextAppearance.Design.Error">
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="MyActionBar" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:titleTextStyle">@style/Theme.Viadeo.Styled.YourTheme.TitleTextStyle</item>
+    </style>
+
+    <style name="Theme.Viadeo.Styled.YourTheme.TitleTextStyle" parent="@android:style/Widget.TextView">
+    <item name="android:textSize">12sp</item>
+    </style>
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CustomDialogThemeForPorgressbar" parent="@android:style/Theme.Dialog">
+        <!--<item name="android:windowBackground">@color/wh</item>-->
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+</resources>

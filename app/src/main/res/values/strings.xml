@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">NovatronicIntegration</string>
+    <string name="hello_world">Ingresar el código USSD </string>
+    <string name="ingrese_dni">Ingresar D.N.I.</string>
+    <string name="hello_world2">Ingresar el tamaño de bloques de envio</string>
+    <string name="action_config1">Configuración 1</string>
+    <string name="action_config2">Configuración 2</string>
+    <string name="action_config3">Configuración 3</string>
+    <string name="accessibility_service_description">Se requiere permisos para manejo del protocolo USSD, el Equipo de Novatronic</string>
+    <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_cp1">Login (Dial up)</string>
+    <string name="title_activity_cp2">Data Numérica (&lt;= 160)</string>
+    <string name="title_activity_cp3">Data Numérica (> 160)</string>
+    <string name="title_activity_cp41">Login con Data Numérica (&lt;= 160)</string>
+    <string name="title_activity_cp42">Login con Data Numérica (> 160)</string>
+    <string name="title_activity_cp5">Data Alfa-Numérica (&lt;= 160)</string>
+    <string name="title_activity_cp6">Data Alfa-Numérica (> 160)</string>
+    <string name="title_activity_cp7">Login con Data Alfa-Numérica  (&lt;=160)</string>
+    <string name="title_activity_cp8">Login con Data Alfa-Numérica  (> 160)</string>
+    <string name="title_activity_cp9">Data Alfa-Numérica Simbolos (&lt;= 160)</string>
+    <string name="title_activity_cp10">Data Alfa-Numérica Simbolos (> 160)</string>
+    <string name="title_activity_cp11">Login con Data Alfa-Numérica Simbolos (&lt;= 160)</string>
+    <string name="title_activity_cp12">Login con Data Alfa-Numérica Simbolos (> 160)</string>
+    <string name="title_activity_cp13">Minucias entregadas</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="title_activity_main_menu">MainMenuActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_menu1">Casos de Prueba USSD</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_menu2">Menu2</string>
+    <string name="title_activity_menu3">Menu3</string>
+    <string name="title_activity_menu4">Menu4</string>
+    <string name="title_menor">1. &lt;= 160</string>
+    <string name="title_mayor">2. > 160</string>
+    <string name="title_activity_menu_minucia">MenuMinucia</string>
+    <string name="title_activity_biometric">Lector Biométrico</string>
+    <string name="title_activity_biometric_demo">DEMO</string>
+    <string name="title_activity_response">Respuesta de RENIEC</string>
+
+</resources>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item android:title="Configuración USSD">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/op1"
+                    android:icon="@drawable/ic_menu_manage"
+                    android:title="@string/title_activity_cp1" />
+
+
+            </group>
+        </menu>
+    </item>
+
+</menu>
