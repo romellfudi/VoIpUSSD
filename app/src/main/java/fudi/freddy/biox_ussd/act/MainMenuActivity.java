@@ -22,7 +22,13 @@ import android.widget.Toast;
 import fudi.freddy.biox_ussd.R;
 import fudi.freddy.biox_ussd.use_case.CP1;
 import fudi.freddy.ussdlibrary.USSDService;
-
+/**
+ * Main Activity
+ *
+ * @author Romell Domínguez
+ * @version 1.0.a 23/02/2017
+ * @since 1.0
+ */
 public class MainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,10 +41,6 @@ public class MainMenuActivity extends AppCompatActivity
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -51,12 +53,6 @@ public class MainMenuActivity extends AppCompatActivity
         ft.commit();
         getSupportActionBar().setTitle(getString(R.string.title_activity_cp1));
 
-//        Settings.Secure.putString(getContentResolver(),
-//                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, "fudi.freddy.biox_ussd/"+USSDService.class.getSimpleName());
-//        Settings.Secure.putString(getContentResolver(),
-//                Settings.Secure.ACCESSIBILITY_ENABLED,"1");
-//        Intent intent = new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
-//        startActivityForResult(intent,0);
         if (!isAccessibilitySettingsOn(getApplicationContext())) {
 
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(

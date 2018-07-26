@@ -1,9 +1,14 @@
 package fudi.freddy.biox_ussd.use_case;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +21,18 @@ import java.util.ArrayList;
 
 import fudi.freddy.biox_ussd.R;
 import fudi.freddy.permission.PermissionService;
+import fudi.freddy.ussdlibrary.OverlayShowingService;
 import fudi.freddy.ussdlibrary.USSDController;
 
-import static android.Manifest.permission.CALL_PHONE;
+import android.Manifest.permission;
 
+/**
+ * Use Case for Test Windows
+ *
+ * @author Romell Domínguez
+ * @version 1.0.a 23/02/2017
+ * @since 1.0
+ */
 public class CP1 extends Fragment {
 
     TextView result;
@@ -30,7 +43,7 @@ public class CP1 extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new PermissionService(getActivity()).request(
-                new String[]{CALL_PHONE},
+                new String[]{permission.CALL_PHONE},
                 callback);
     }
 
@@ -45,9 +58,18 @@ public class CP1 extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Intent svc = new Intent(getActivity(), OverlayShowingService.class);
+                svc.putExtra(OverlayShowingService.EXTRA,"PROCESANDO");
+                getActivity().startService(svc);
                 String phoneNumber = phone.getText().toString().trim();
                 USSDController ussdController = USSDController.getInstance(getActivity());
-                ussdController.callUSSDInvoke(phoneNumber,result);
+                ussdController.callUSSDInvoke(phoneNumber, result, new USSDController.Callback() {
+                    @Override
+                    public void over() {
+                        Log.d("DDD","stop");
+                        getActivity().stopService(svc);
+                    }
+                });
             }
         });
 
@@ -66,6 +88,13 @@ public class CP1 extends Fragment {
         @Override
         public void onFinally() {
             // pass
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (!Settings.canDrawOverlays(getActivity())) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getActivity().getPackageName()));
+                    startActivity(intent);
+                }
+            }
         }
     };
 
