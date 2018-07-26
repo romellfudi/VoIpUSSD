@@ -1,7 +1,6 @@
 package fudi.freddy.ussdlibrary;
 
 import android.accessibilityservice.AccessibilityService;
-import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -23,16 +22,13 @@ public class USSDService extends AccessibilityService {
 
     private static final String LABEL_SEND = "send";
 
-    private static final String LABEL_CANCELAR = "Cancel";
+    private static final String LABEL_CANCELAR = "cancel";
 
     private static final String LABEL_OK = "ok";
 
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-
-//        if (!USSDController.service)
-//            return;
 
         Log.d(TAG, "onAccessibilityEvent");
 
@@ -43,8 +39,8 @@ public class USSDService extends AccessibilityService {
 
 
         if (errorInicio(event) || vistaLogeo(event)) {
-            Log.d(TAG,"d");
             clickOnButton(event, LABEL_SEND);
+            USSDController.instance.callback.over();
         } else if (ambienteTrabajo(event)) {
             String response = event.getText().get(0).toString();
             if (response.contains("\n")) {
@@ -52,16 +48,15 @@ public class USSDService extends AccessibilityService {
             }
             USSDController.instance.inject(response);
             if (notInputText(event)) {
-                Log.d(TAG, "a");
                 clickOnButton(event, LABEL_OK);
-            }else {
-                Log.d(TAG,"c");
+                USSDController.instance.callback.over();
+            } else {
                 setTextIntoField(event, "1");
                 clickOnButton(event, LABEL_SEND);
             }
-        } else if (vistaUSSD(event)) {
-            Log.d(TAG,"b");
-            clickOnButton(event, LABEL_CANCELAR);
+        } else if (vistaLogeo(event) && notInputText(event)) {
+            clickOnButton(event, LABEL_OK);
+            USSDController.instance.callback.over();
         }
 
     }
@@ -73,7 +68,7 @@ public class USSDService extends AccessibilityService {
                 AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
         for (int i = 0; i < event.getSource().getChildCount(); i++) {
             AccessibilityNodeInfo node = event.getSource().getChild(i);
-            Log.d(TAG,i+":"+node.getClassName());
+            Log.d(TAG, i + ":" + node.getClassName());
             if (node != null && node.getClassName().equals("android.widget.EditText")
                     && !node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
                 ((ClipboardManager) ussdController.context
@@ -88,8 +83,8 @@ public class USSDService extends AccessibilityService {
         boolean flag = true;
         for (int i = 0; i < event.getSource().getChildCount(); i++) {
             AccessibilityNodeInfo node = event.getSource().getChild(i);
-             if(node.getClassName().equals("android.widget.EditText"))
-                 flag = false;
+            if (node != null && node.getClassName().equals("android.widget.EditText"))
+                flag = false;
         }
         return flag;
     }
@@ -115,7 +110,6 @@ public class USSDService extends AccessibilityService {
                 && (event.getText().get(0).toString().toLowerCase().contains("problema")
                 || event.getText().get(0).toString().toLowerCase().contains("desconocido"));
     }
-
 
 
     private static void clickOnButton(AccessibilityEvent event, String label) {

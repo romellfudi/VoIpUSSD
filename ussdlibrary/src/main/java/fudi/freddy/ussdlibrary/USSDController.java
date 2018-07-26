@@ -15,7 +15,10 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.TextView;
 
 /**
- * Created by Fudi on 11/06/2016.
+ *
+ * @author Romell Domínguez
+ * @version 1.0.a 23/02/2017
+ * @since 1.0
  */
 public class USSDController {
 
@@ -25,9 +28,9 @@ public class USSDController {
 
     protected static TextView result;
 
-//    public static boolean service = false;
+    protected Callback callback;
 
-    public static USSDController getInstance(Activity activity){
+    public static USSDController getInstance(Activity activity) {
         if (instance == null)
             instance = new USSDController(activity);
         return instance;
@@ -38,9 +41,15 @@ public class USSDController {
     }
 
     @SuppressLint("MissingPermission")
-    public void callUSSDInvoke(String ussdPhoneNumber, TextView resultCallback) {
+    public void callUSSDInvoke(String ussdPhoneNumber, TextView resultCallback, Callback callback) {
         result = resultCallback;
+        this.callback = callback;
         result.setText("");
+
+        if (ussdPhoneNumber.isEmpty()) {
+            callback.over();
+            return;
+        }
         if (verificarServicioAccesibilidad(context)) {
             String uri = Uri.encode("#");
             if (uri != null)
@@ -64,7 +73,7 @@ public class USSDController {
         alertDialogBuilder.setTitle("Permisos de accesibilidad");
         ApplicationInfo applicationInfo = context.getApplicationInfo();
         int stringId = applicationInfo.labelRes;
-        String name = applicationInfo.labelRes== 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
+        String name = applicationInfo.labelRes == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
         alertDialogBuilder
                 .setMessage("Debe habilitar los permisos de accesibilidad para la app '" + name + "'");
         alertDialogBuilder.setCancelable(false);
@@ -78,7 +87,6 @@ public class USSDController {
             alertDialog.show();
         }
     }
-
 
 
     protected static boolean isAccessiblityServicesEnable(Context context) {
@@ -108,7 +116,8 @@ public class USSDController {
                     context.getApplicationContext().getContentResolver(),
                     Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
             if (settingValue != null) {
-                TextUtils.SimpleStringSplitter splitter = new TextUtils.SimpleStringSplitter(':');;
+                TextUtils.SimpleStringSplitter splitter = new TextUtils.SimpleStringSplitter(':');
+                ;
                 splitter.setString(settingValue);
                 while (splitter.hasNext()) {
                     String accessabilityService = splitter.next();
@@ -122,6 +131,10 @@ public class USSDController {
     }
 
     protected void inject(String response) {
-        result.append("\n-\n"+response);
+        result.append("\n-\n" + response);
+    }
+
+    public interface Callback {
+        void over();
     }
 }

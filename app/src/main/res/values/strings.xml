@@ -7,5 +7,6 @@
     <string name="action_config1">Test Config</string>
     <string name="refuse_permissions">Please allow call permission</string>
     <string name="usss_input">Introduce # ussd</string>
+    <string name="copyright">RomellFudi</string>
 
 </resources>
