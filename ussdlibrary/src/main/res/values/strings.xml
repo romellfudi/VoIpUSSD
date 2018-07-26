@@ -3,4 +3,6 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="accessibility_service_description">Se requiere permisos para manejo del protocolo USSD, por Romell</string>
+
 </resources>

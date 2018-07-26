@@ -35,10 +35,10 @@ public class MainMenuActivity extends AppCompatActivity
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.setDrawerListener(toggle);
+//        toggle.syncState();
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -49,7 +49,7 @@ public class MainMenuActivity extends AppCompatActivity
         ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         ft.addToBackStack(null);
         ft.commit();
-        getSupportActionBar().setTitle(getString(R.string.title_activity_cp13));
+        getSupportActionBar().setTitle(getString(R.string.title_activity_cp1));
 
 //        Settings.Secure.putString(getContentResolver(),
 //                Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES, "fudi.freddy.biox_ussd/"+USSDService.class.getSimpleName());
