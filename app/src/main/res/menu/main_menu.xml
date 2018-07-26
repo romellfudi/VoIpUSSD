@@ -8,15 +8,5 @@
         android:id="@+id/action_config_1"
         android:orderInCategory="100"
         android:title="@string/action_config1" />
-    <item
-        android:checkable="true"
-        android:id="@+id/action_config_2"
-        android:orderInCategory="100"
-        android:title="@string/action_config2" />
-    <item
-        android:checkable="true"
-        android:id="@+id/action_config_3"
-        android:orderInCategory="100"
-        android:title="@string/action_config3" />
     </group>
 </menu>

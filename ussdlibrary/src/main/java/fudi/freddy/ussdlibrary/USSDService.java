@@ -11,7 +11,11 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 /**
- * Created by romelldominguez on 6/2/16.
+ * AccessibilityService for ussd windows on Android mobile Telcom
+ *
+ * @author Romell Domínguez
+ * @version 1.0.a 23/02/2017
+ * @since 1.0
  */
 public class USSDService extends AccessibilityService {
 
@@ -39,21 +43,24 @@ public class USSDService extends AccessibilityService {
 
 
         if (errorInicio(event) || vistaLogeo(event)) {
+            Log.d(TAG,"d");
             clickOnButton(event, LABEL_SEND);
         } else if (ambienteTrabajo(event)) {
             String response = event.getText().get(0).toString();
             if (response.contains("\n")) {
                 response = response.substring(response.indexOf('\n') + 1);
             }
-            USSDController ussdController = USSDController.instance;
-            ussdController.result.append(response);
-            if (notInputText(event))
-                clickOnButton(event,LABEL_OK);
-            else {
+            USSDController.instance.inject(response);
+            if (notInputText(event)) {
+                Log.d(TAG, "a");
+                clickOnButton(event, LABEL_OK);
+            }else {
+                Log.d(TAG,"c");
                 setTextIntoField(event, "1");
                 clickOnButton(event, LABEL_SEND);
             }
         } else if (vistaUSSD(event)) {
+            Log.d(TAG,"b");
             clickOnButton(event, LABEL_CANCELAR);
         }
 
@@ -66,6 +73,7 @@ public class USSDService extends AccessibilityService {
                 AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
         for (int i = 0; i < event.getSource().getChildCount(); i++) {
             AccessibilityNodeInfo node = event.getSource().getChild(i);
+            Log.d(TAG,i+":"+node.getClassName());
             if (node != null && node.getClassName().equals("android.widget.EditText")
                     && !node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
                 ((ClipboardManager) ussdController.context
@@ -94,7 +102,7 @@ public class USSDService extends AccessibilityService {
 
     private boolean ambienteTrabajo(AccessibilityEvent event) {
         return vistaUSSD(event)
-                && (event.getText().get(0).toString().startsWith("NA"));
+                && (event.getText().get(0).toString().contains(":"));
     }
 
     private boolean vistaLogeo(AccessibilityEvent event) {
@@ -105,8 +113,7 @@ public class USSDService extends AccessibilityService {
     protected boolean errorInicio(AccessibilityEvent event) {
         return vistaUSSD(event)
                 && (event.getText().get(0).toString().toLowerCase().contains("problema")
-                || event.getText().get(0).toString().toLowerCase().contains("desconocido")
-                || event.getText().get(0).toString().toLowerCase().contains("servicio"));
+                || event.getText().get(0).toString().toLowerCase().contains("desconocido"));
     }
 
 
@@ -129,12 +136,5 @@ public class USSDService extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         Log.d(TAG, "onServiceConnected");
-        AccessibilityServiceInfo info = new AccessibilityServiceInfo();
-        info.flags = AccessibilityServiceInfo.DEFAULT;
-        info.packageNames = new String[]{"com.android.phone"};
-        info.eventTypes = AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED;
-        info.feedbackType = AccessibilityServiceInfo.FEEDBACK_GENERIC;
-        info.notificationTimeout = 0;
-        setServiceInfo(info);
     }
 }

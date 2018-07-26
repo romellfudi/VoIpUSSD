@@ -121,4 +121,7 @@ public class USSDController {
         return false;
     }
 
+    protected void inject(String response) {
+        result.append("\n-\n"+response);
+    }
 }
