@@ -4,7 +4,16 @@
 [![](snapshot/icono.png)](https://www.romellfudi.com/)
 
 ## Objetivo:
-![](snapshot/device_recored.gif)
+
+<style>
+img[src*='#center'] { 
+    width:500px;
+    display: block;
+    margin: auto;
+}
+</style>
+
+![](snapshot/device_recored.gif#center)
 
 
 Para manejar la comunicación ussd, hay que tener presente que la interfaz depende del SO y del fabricante.
@@ -13,13 +22,13 @@ Para manejar la comunicación ussd, hay que tener presente que la interfaz depen
 
 Construir una clase que extienda de los servicios de accesibilidad:
 
-![image](snapshot/G.png)
+![image](snapshot/G.png#center)
 
 En ella capturara la información de la pantalla USSD con el SO la visualice, para ello existen 2 maneras:
 
 * via código:
 
-![image](snapshot/H.png)
+![image](snapshot/H.png#center)
 
 * via xml, el cual deberas vincular en el manifest de tu aplicación:
 
@@ -60,9 +69,9 @@ dependencies {
 
 Teniendo importada las dependencias, en el manifest de la aplicación se debe escribir el servicio con los permisos necesarios
 
-![image](snapshot/J.png)
+![image](snapshot/J.png#center)
 
-![image](snapshot/F.png)
+![image](snapshot/F.png#center)
 
 ### Uso de la línea voip
 
@@ -76,4 +85,4 @@ context.startActivity(new Intent(Intent.ACTION_CALL, uriPhone));
 
 Una vez inicializado la llamada el servidor telcom comenzará a enviar las *famosas pantallas **ussd***
 
-![image](snapshot/telcom.png)
+![image](snapshot/telcom.png#center)
