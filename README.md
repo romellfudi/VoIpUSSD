@@ -11,9 +11,14 @@ img[src*='#center'] {
     display: block;
     margin: auto;
 }
+img[src*='#gif'] { 
+    width:200px;
+    display: block;
+    margin: auto;
+}
 </style>
 
-![](snapshot/device_recored.gif#center)
+![](snapshot/device_recored.gif#gif)
 
 
 Para manejar la comunicación ussd, hay que tener presente que la interfaz depende del SO y del fabricante.
