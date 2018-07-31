@@ -1,9 +1,9 @@
-# Handler USSD windows Project
+# Proyecto MANEJO USSD
 
 ### by Romell Dominguez
 [![](snapshot/icono.png)](https://www.romellfudi.com/)
 
-## Target Development:
+## Objetivo:
 
 <style>
 img[src*='#center'] { 
@@ -21,21 +21,21 @@ img[src*='#gif'] {
 ![](snapshot/device_recored.gif#gif)
 
 
-To comunicate with ussd display, It is necessary to have present that the interface depends on the SO and on the manufacturer of Android device.
+Para manejar la comunicación ussd, hay que tener presente que la interfaz depende del SO y del fabricante.
 
 ## USSD LIBRARY
 
-Build a accessibility service class:
+Construir una clase que extienda de los servicios de accesibilidad:
 
 ![image](snapshot/G.png#center)
 
-Capture information from USSD displaying windows, excist two ways:
+En ella capturara la información de la pantalla USSD con el SO la visualice, para ello existen 2 maneras:
 
-* Writting code:
+* via código:
 
 ![image](snapshot/H.png#center)
 
-* Writting xml, this link manifest to SO:
+* via xml, el cual deberas vincular en el manifest de tu aplicación:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
@@ -51,34 +51,36 @@ Capture information from USSD displaying windows, excist two ways:
 ```
 
 
-### Application
+### Aplicación
 
-Configure build.gradle file, add exteension for run aar libraries(witch we build and export)
+Configuramos en el archivo build.gradle, la extensión para leer librerias *.aar (la cuál crearemos y exportaremos)
 
 ```gradle
 allprojects { repositories { ...
         flatDir { dirs 'libs' } } }
 ```
 
-Configure ussd library dependencies on app module {debugCompile: attach library module, releaseCompile: import *.aar library}
+Configuramos la dependencia de la libraria ussdlibrary mediante los prefijs {debugCompile: llamar a módulo de la libreria, releaseCompile: llamar al empaquetado *.aar}
 
 ```gradle
 dependencies {
     ...
+
     debugCompile project(':ussdlibrary')
     releaseCompile(name: 'ussdlibrary-1.0.a', ext: 'aar')
 }
 ```
 
-Puts dependencies on manifest, into manifest put CALL_PHONE, READ_PHONE_STATE and SYSTEM_ALERT_WINDOW:
+
+Teniendo importada las dependencias, en el manifest de la aplicación se debe escribir el servicio con los permisos necesarios
 
 ![image](snapshot/J.png#center)
 
 ![image](snapshot/F.png#center)
 
-### Use Voip line
+### Uso de la línea voip
 
-In this secction leave the lines to call to Telcom (ussd hadh number) for connected it:
+En esta sección dejo las líneas claves para realizar la conexión VOIP-USSD
 
 ```java
 ussdPhoneNumber = ussdPhoneNumber.replace("#", uri);
@@ -86,6 +88,6 @@ Uri uriPhone = Uri.parse("tel:" + ussdPhoneNumber);
 context.startActivity(new Intent(Intent.ACTION_CALL, uriPhone));
 ```
 
-Once initialized the call will begin to receive and send the **famous USSD windows**
+Una vez inicializado la llamada el servidor telcom comenzará a enviar las *famosas pantallas **ussd***
 
 ![image](snapshot/telcom.png#center)
