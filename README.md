@@ -1,25 +1,11 @@
-# Handler USSD windows API [![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17) [![platform](https://img.shields.io/badge/platform-android-brightgreen.svg)](https://developer.android.com/index.html)  [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/whataa/pandora-no-op/blob/master/LICENSE) 
+# Handler USSD windows API [![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17) [![platform](https://img.shields.io/badge/platform-android-brightgreen.svg)](https://developer.android.com/index.html)  [![](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/whataa/pandora-no-op/blob/master/LICENSE) 
 
 ### by Romell Dominguez
 [![](snapshot/icono.png)](https://www.romellfudi.com/)
 
 ## Target Development:
 
-<style>
-img[src*='#center'] { 
-    width:500px;
-    display: block;
-    margin: auto;
-}
-img[src*='#gif'] { 
-    width:200px;
-    display: block;
-    margin: auto;
-}
-</style>
-
 ![](snapshot/device_recored.gif#gif)
-
 
 To comunicate with ussd display, It is necessary to have present that the interface depends on the SO and on the manufacturer of Android device.
 
@@ -89,3 +75,16 @@ context.startActivity(new Intent(Intent.ACTION_CALL, uriPhone));
 Once initialized the call will begin to receive and send the **famous USSD windows**
 
 ![image](snapshot/telcom.png#center)
+
+<style>
+img[src*='#center'] { 
+    width:500px;
+    display: block;
+    margin: auto;
+}
+img[src*='#gif'] { 
+    width:200px;
+    display: block;
+    margin: auto;
+}
+</style>
