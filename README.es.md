@@ -5,21 +5,7 @@
 
 ## Objetivo:
 
-<style>
-img[src*='#center'] { 
-    width:500px;
-    display: block;
-    margin: auto;
-}
-img[src*='#gif'] { 
-    width:200px;
-    display: block;
-    margin: auto;
-}
-</style>
-
 ![](snapshot/device_recored.gif#gif)
-
 
 Para manejar la comunicación ussd, hay que tener presente que la interfaz depende del SO y del fabricante.
 
@@ -91,3 +77,16 @@ context.startActivity(new Intent(Intent.ACTION_CALL, uriPhone));
 Una vez inicializado la llamada el servidor telcom comenzará a enviar las *famosas pantallas **ussd***
 
 ![image](snapshot/telcom.png#center)
+
+<style>
+img[src*='#center'] { 
+    width:500px;
+    display: block;
+    margin: auto;
+}
+img[src*='#gif'] { 
+    width:200px;
+    display: block;
+    margin: auto;
+}
+</style>
