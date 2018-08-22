@@ -55,7 +55,7 @@ public class OverlayShowingService extends Service {
         WindowManager.LayoutParams params =
                 new WindowManager.LayoutParams
                         (WindowManager.LayoutParams.MATCH_PARENT,
-                                WindowManager.LayoutParams.MATCH_PARENT,
+                                size.y-200,
                                 LAYOUT_FLAG
                                 , WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
                                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
