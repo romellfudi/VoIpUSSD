@@ -3,6 +3,8 @@ package fudi.freddy.biox_ussd.act;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.NavigationView;
@@ -74,8 +76,7 @@ public class MainMenuActivity extends AppCompatActivity
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode==1){
-            if (!isAccessibilitySettingsOn(getApplicationContext())) {
+        if (requestCode==1 && !isAccessibilitySettingsOn(getApplicationContext())) {
                 Toast.makeText(MainMenuActivity.this,"Debe habilitar los permisos de accesibilidad para la app "+getString(R.string.app_name),Toast.LENGTH_SHORT).show();
 
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
@@ -91,9 +92,12 @@ public class MainMenuActivity extends AppCompatActivity
                         });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
-            } else
-                Toast.makeText(MainMenuActivity.this,"Conforme",Toast.LENGTH_SHORT).show();
-        }
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                        && !Settings.canDrawOverlays(MainMenuActivity.this)) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + MainMenuActivity.this.getPackageName()));
+                    startActivity(intent);
+                }
     }
 
     private String TAG = MainMenuActivity.class.getSimpleName();
