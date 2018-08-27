@@ -1,4 +1,4 @@
-package fudi.freddy.ussdlibrary;
+package com.romellfudi.ussdlibrary;
 
 import android.app.Service;
 import android.content.Context;

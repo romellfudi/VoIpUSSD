@@ -1,4 +1,4 @@
-package fudi.freddy.ussdlibrary;
+package com.romellfudi.ussdlibrary;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.annotation.SuppressLint;
