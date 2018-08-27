@@ -32,5 +32,5 @@ dependencies {
     compile(name: 'fudipermission-1.0.a', ext: 'aar')
 
     debugCompile project(':ussdlibrary')
-    releaseCompile(name: 'ussdlibrary-1.0.a', ext: 'aar')
+    releaseCompile(name: 'ussdlibrary-1.0.b', ext: 'aar')
 }
