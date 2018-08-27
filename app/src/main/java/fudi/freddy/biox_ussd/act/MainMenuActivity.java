@@ -23,7 +23,7 @@ import android.widget.Toast;
 
 import fudi.freddy.biox_ussd.R;
 import fudi.freddy.biox_ussd.use_case.CP1;
-import fudi.freddy.ussdlibrary.USSDService;
+import com.romellfudi.ussdlibrary.USSDService;
 /**
  * Main Activity
  *

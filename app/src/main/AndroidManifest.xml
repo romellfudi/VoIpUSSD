@@ -13,7 +13,7 @@
 
         <!--  -->
         <service
-            android:name="fudi.freddy.ussdlibrary.USSDService"
+            android:name="com.romellfudi.ussdlibrary.USSDService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />

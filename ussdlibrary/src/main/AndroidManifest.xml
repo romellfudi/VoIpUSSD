@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
-    package="fudi.freddy.ussdlibrary">
+    package="com.romellfudi.ussdlibrary">
 
     <application
         android:allowBackup="true"

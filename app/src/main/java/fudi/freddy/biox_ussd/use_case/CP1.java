@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 import fudi.freddy.biox_ussd.R;
 import fudi.freddy.permission.PermissionService;
-import fudi.freddy.ussdlibrary.OverlayShowingService;
-import fudi.freddy.ussdlibrary.USSDController;
+import com.romellfudi.ussdlibrary.OverlayShowingService;
+import com.romellfudi.ussdlibrary.USSDController;
 
 import android.Manifest.permission;
 

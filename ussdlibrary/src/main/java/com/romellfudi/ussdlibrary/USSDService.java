@@ -1,4 +1,4 @@
-package fudi.freddy.ussdlibrary;
+package com.romellfudi.ussdlibrary;
 
 import android.accessibilityservice.AccessibilityService;
 import android.content.ClipData;
