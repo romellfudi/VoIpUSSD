@@ -11,6 +11,21 @@ Para manejar la comunicación ussd, hay que tener presente que la interfaz depen
 
 ## USSD LIBRARY
 
+`latestVersion` is 1.0.b
+
+Agregar en tu archivo `build.gradle` del proyecto Android:
+
+```groovy
+repositories {
+    maven {
+        url 'https://dl.bintray.com/romllz489/maven/'
+    }
+}
+dependencies {
+    compile 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+}
+```
+
 Construir una clase que extienda de los servicios de accesibilidad:
 
 ![image](snapshot/G.png#center)
