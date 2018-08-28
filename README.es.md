@@ -66,9 +66,9 @@ Configuramos la dependencia de la libraria ussdlibrary mediante los prefijs {deb
 ```gradle
 dependencies {
     ...
-
-    debugCompile project(':ussdlibrary')
-    releaseCompile(name: 'ussdlibrary-1.0.a', ext: 'aar')
+    //debugCompile project(':ussdlibrary')
+    //releaseCompile(name: 'ussdlibrary-{latestVersion}', ext: 'aar')
+    implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
 }
 ```
 
