@@ -11,6 +11,21 @@ To comunicate with ussd display, It is necessary to have present that the interf
 
 ## USSD LIBRARY
 
+`latestVersion` is 1.0.b
+
+Add the following in your app's `build.gradle` file:
+
+```groovy
+repositories {
+    maven {
+        url 'https://dl.bintray.com/romllz489/maven/'
+    }
+}
+dependencies {
+    compile 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+}
+```
+
 Build a accessibility service class:
 
 ![image](snapshot/G.png#center)
