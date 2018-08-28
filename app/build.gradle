@@ -10,6 +10,7 @@ android {
         }
     }
     compileSdkVersion 26
+    buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "fudi.freddy.biox_ussd"
         minSdkVersion 17
@@ -26,11 +27,22 @@ android {
     }
 }
 
+repositories {
+    maven {
+        url 'https://dl.bintray.com/romllz489/maven/'
+    }
+}
+
 dependencies {
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
-    compile(name: 'fudipermission-1.0.a', ext: 'aar')
 
-    debugCompile project(':ussdlibrary')
-    releaseCompile(name: 'ussdlibrary-1.0.b', ext: 'aar')
+//    compile(name: 'fudipermission-1.0.a', ext: 'aar')
+
+//    debugCompile project(':ussd-library')
+//    releaseCompile(name: 'ussdlibrary-1.0.b', ext: 'aar')
+
+    implementation 'com.romellfudi.permission:fudi-permission:1.0.a'
+    implementation 'com.romellfudi.ussdlibrary:ussd-library:1.0.b'
+
 }
