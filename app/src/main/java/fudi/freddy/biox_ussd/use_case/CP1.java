@@ -20,7 +20,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fudi.freddy.biox_ussd.R;
-import fudi.freddy.permission.PermissionService;
+import com.romellfudi.permission.PermissionService;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.USSDController;
 
