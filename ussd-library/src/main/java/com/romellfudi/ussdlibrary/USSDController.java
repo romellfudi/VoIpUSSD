@@ -16,7 +16,7 @@ import android.widget.TextView;
 
 /**
  *
- * @author Romell Domínguez
+ * @author Romell Dominguez
  * @version 1.0.a 23/02/2017
  * @since 1.0
  */
