@@ -1,1 +1,1 @@
-include ':app', ':ussdlibrary'
+include ':app', ':ussd-library'
