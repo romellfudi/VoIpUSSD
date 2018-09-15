@@ -98,7 +98,7 @@ Once initialized the call will begin to receive and send the **famous USSD windo
 
 <style>
 img[src*='#center'] { 
-    width:500px;
+    width:400px;
     display: block;
     margin: auto;
 }
