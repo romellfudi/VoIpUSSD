@@ -1,11 +1,30 @@
 # Changelog
 
+## Release upload on Maven Central (15/09/2018)
+Upload on Maven Central
+
+repositories {
+    jcenter()
+}
+dependencies {
+    compile 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+}
+---
+
 ## Release USSD Android Library 1.0.b (27/08/2018)
 Upgrade con.romellfudi for Android Library.
 
 - Import ussdlibrary-1.0.b.aar
 - put ussd_service.xml into res/xml folder
 
+or import into project:
+
+maven {
+        url 'https://dl.bintray.com/romllz489/maven/'
+}
+dependencies {
+    compile 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+}
 ---
 
 ## Release USSD Android Library 1.0.a (31/07/2018)
