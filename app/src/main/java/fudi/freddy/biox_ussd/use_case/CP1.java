@@ -43,16 +43,15 @@ public class CP1 extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         new PermissionService(getActivity()).request(
-                new String[]{permission.CALL_PHONE},
-                callback);
+                new String[]{permission.CALL_PHONE},callback);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.content_op1, container, false);
-        result = (TextView) view.findViewById(R.id.result);
-        phone = (EditText) view.findViewById(R.id.phone);
-        btn = (Button) view.findViewById(R.id.btn);
+        result = view.findViewById(R.id.result);
+        phone = view.findViewById(R.id.phone);
+        btn = view.findViewById(R.id.btn);
         setHasOptionsMenu(false);
 
         btn.setOnClickListener(new View.OnClickListener() {
