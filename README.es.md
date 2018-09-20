@@ -99,7 +99,7 @@ Una vez inicializado la llamada el servidor telcom comenzará a enviar las *famo
 
 <style>
 img[src*='#center'] { 
-    width:400px;
+    width:390px;
     display: block;
     margin: auto;
 }
