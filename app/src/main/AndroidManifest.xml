@@ -37,7 +37,7 @@
         </activity>
 
         <service
-            android:name="fudi.freddy.ussdlibrary.OverlayShowingService"
+            android:name="com.romellfudi.ussdlibrary.OverlayShowingService"
             android:exported="false" />
     </application>
 
