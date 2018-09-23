@@ -38,23 +38,28 @@ public class USSDService extends AccessibilityService {
                 event.getEventTime(), event.getText()));
 
 
-        if (errorInicio(event) || vistaLogeo(event)) {
+        if (hasProblem(event) || LogView(event)) {
+            // deal down
             clickOnButton(event, LABEL_SEND);
             USSDController.instance.callback.over();
-        } else if (ambienteTrabajo(event)) {
+        } else if (isUSSDNeed(event)) {
+            // ready for work
             String response = event.getText().get(0).toString();
             if (response.contains("\n")) {
                 response = response.substring(response.indexOf('\n') + 1);
             }
             USSDController.instance.inject(response);
             if (notInputText(event)) {
+                // sent 'OK' button
                 clickOnButton(event, LABEL_OK);
                 USSDController.instance.callback.over();
             } else {
+                // sent option 1
                 setTextIntoField(event, "1");
                 clickOnButton(event, LABEL_SEND);
             }
-        } else if (vistaLogeo(event) && notInputText(event)) {
+        } else if (LogView(event) && notInputText(event)) {
+            // first view or logView, do nothing, pass
             clickOnButton(event, LABEL_OK);
             USSDController.instance.callback.over();
         }
@@ -89,24 +94,24 @@ public class USSDService extends AccessibilityService {
         return flag;
     }
 
-    private boolean vistaUSSD(AccessibilityEvent event) {
+    private boolean isUSSDWidget(AccessibilityEvent event) {
         return (event.getClassName().equals("amigo.app.AmigoAlertDialog")
                 || event.getClassName().equals("android.app.AlertDialog"));
     }
 
 
-    private boolean ambienteTrabajo(AccessibilityEvent event) {
-        return vistaUSSD(event)
+    private boolean isUSSDNeed(AccessibilityEvent event) {
+        return isUSSDWidget(event)
                 && (event.getText().get(0).toString().contains(":"));
     }
 
-    private boolean vistaLogeo(AccessibilityEvent event) {
-        return vistaUSSD(event)
+    private boolean LogView(AccessibilityEvent event) {
+        return isUSSDWidget(event)
                 && (event.getText().get(0).toString().toLowerCase().contains("espere"));
     }
 
-    protected boolean errorInicio(AccessibilityEvent event) {
-        return vistaUSSD(event)
+    protected boolean hasProblem(AccessibilityEvent event) {
+        return isUSSDWidget(event)
                 && (event.getText().get(0).toString().toLowerCase().contains("problema")
                 || event.getText().get(0).toString().toLowerCase().contains("desconocido"));
     }
