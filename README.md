@@ -10,7 +10,7 @@
 ### by Romell Dominguez
 [![](snapshot/icono.png)](https://www.romellfudi.com/)
 
-## Target Development:
+## Target Development [High Quality](https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif):
 
 ![](snapshot/device_recored.gif#gif)
 
