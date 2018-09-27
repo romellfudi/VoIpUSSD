@@ -18,7 +18,7 @@ To comunicate with ussd display, It is necessary to have present that the interf
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.0.b
+`latestVersion` is 1.1.b
 
 Add the following in your app's `build.gradle` file:
 
@@ -27,63 +27,126 @@ repositories {
     jcenter()
 }
 dependencies {
-    compile 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
-}
-```
-
-Build a accessibility service class:
-
-![image](snapshot/G.png#center)
-
-Capture information from USSD displaying windows, excist two ways:
-
-* Writting code:
-
-![image](snapshot/H.png#center)
-
-* Writting xml, this link manifest to SO:
-
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accessibilityEventTypes
-        ="typeWindowStateChanged"
-    android:packageNames="com.android.phone"
-    android:accessibilityFeedbackType="feedbackGeneric"
-    android:accessibilityFlags="flagDefault"
-    android:canRetrieveWindowContent="true"
-    android:description="@string/accessibility_service_description"
-    android:notificationTimeout="0"/>
-```
-
-
-### Application
-
-Configure build.gradle file, add exteension for run aar libraries(witch we build and export)
-
-```gradle
-allprojects { repositories { ...
-        flatDir { dirs 'libs' } } }
-```
-
-Configure ussd library dependencies on app module {debugCompile: attach library module, releaseCompile: import *.aar library}
-
-```gradle
-dependencies {
-    ...
-    //debugCompile project(':ussdlibrary')
-    //releaseCompile(name: 'ussdlibrary-{latestVersion}', ext: 'aar')
     implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
 }
 ```
 
+* Writing xml config file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
+    .../>
+```
+
+### Application
+
 Puts dependencies on manifest, into manifest put CALL_PHONE, READ_PHONE_STATE and SYSTEM_ALERT_WINDOW:
 
-![image](snapshot/J.png#center)
+```xml
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+```
 
-![image](snapshot/F.png#center)
+Add service:
 
-### Use Voip line
+```xml
+    <service
+        android:name="com.romellfudi.ussdlibrary.USSDService"
+        android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+        <intent-filter>
+            <action android:name="android.accessibilityservice.AccessibilityService" />
+        </intent-filter>
+        <meta-data
+            android:name="android.accessibilityservice"
+            android:resource="@xml/ussd_service" />
+    </service>
+```
+
+# How use:
+
+Instance an object ussController with activity
+
+```java
+ussdController = USSDController.getInstance(activity);
+ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+    @Override
+    public void responseInvoke(String message) {
+        dataToSend <- send "data" into USSD's input text
+        ussdController.send(dataToSend,new USSDController.CallbackMessage(){
+            @Override
+            public void responseMessage(String message) {
+                // message has the response string data from USSD
+            }
+        });
+    }
+
+    @Override
+    public void over(String message) {
+        // message has the response string data from USSD
+        // response no have input text, NOT SEND ANY DATA
+    }
+});
+
+```
+
+if you need work with your custom messages, use this structure:
+
+```java
+ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+    @Override
+    public void responseInvoke(String message) {
+        // first option list - select option 1
+        ussdController.send("1",new USSDController.CallbackMessage(){
+            @Override
+            public void responseMessage(String message) {
+                // second option list - select option 1
+                ussdController.send("1",new USSDController.CallbackMessage(){
+                    @Override
+                    public void responseMessage(String message) {
+                        ...
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void over(String message) {
+        // message has the response string data from USSD
+        // response no have input text, NOT SEND ANY DATA
+    }
+    ...
+});
+```
+
+## OverlayShowingService Widget (not required)
+
+A problem huge working with ussd is you cant invisible, disenable, resize or put on back in progressDialog
+But now on Android O, Google allow build a nw kind permission from overlay widget, my solution was a widget call OverlayShowingService:
+For use need add permissions at AndroidManifest:
+
+```xml
+<uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+```
+
+Add Broadcast Service:
+
+```xml
+<service android:name="com.romellfudi.ussdlibrary.OverlayShowingService"
+         android:exported="false" />
+```
+
+Invoke like a normal services, need a tittle set extra vallue `EXTRA`:
+
+```java
+Intent svc = new Intent(activity, OverlayShowingService.class);
+svc.putExtra(OverlayShowingService.EXTRA,"PROCESANDO");
+getActivity().startService(svc);
+```
+
+### EXTRA: Use Voip line
 
 In this secction leave the lines to call to Telcom (ussd hadh number) for connected it:
 

@@ -1,4 +1,4 @@
-package fudi.freddy.biox_ussd.act;
+package com.romellfudi.ussd_sample.act;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,14 +21,14 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import fudi.freddy.biox_ussd.R;
-import fudi.freddy.biox_ussd.use_case.CP1;
+import com.romellfudi.ussd_sample.R;
+import com.romellfudi.ussd_sample.use_case.CP1;
 import com.romellfudi.ussdlibrary.USSDService;
 /**
  * Main Activity
  *
  * @author Romell Domínguez
- * @version 1.0.a 23/02/2017
+ * @version 1.0.b 23/02/2017
  * @since 1.0
  */
 public class MainMenuActivity extends AppCompatActivity

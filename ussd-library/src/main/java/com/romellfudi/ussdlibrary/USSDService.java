@@ -13,8 +13,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * AccessibilityService for ussd windows on Android mobile Telcom
  *
  * @author Romell Dominguez
- * @version 1.0.a 23/02/2017
- * @since 1.0
+ * @version 1.1.b 27/09/2018
+ * @since 1.0.a
  */
 public class USSDService extends AccessibilityService {
 
@@ -26,9 +26,11 @@ public class USSDService extends AccessibilityService {
 
     private static final String LABEL_OK = "ok";
 
+    private static AccessibilityEvent event;
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
+        this.event=event;
 
         Log.d(TAG, "onAccessibilityEvent");
 
@@ -41,29 +43,38 @@ public class USSDService extends AccessibilityService {
         if (hasProblem(event) || LogView(event)) {
             // deal down
             clickOnButton(event, LABEL_SEND);
-            USSDController.instance.callback.over();
+            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
         } else if (isUSSDNeed(event)) {
             // ready for work
             String response = event.getText().get(0).toString();
             if (response.contains("\n")) {
                 response = response.substring(response.indexOf('\n') + 1);
             }
-            USSDController.instance.inject(response);
             if (notInputText(event)) {
+                // not more input panels / LAST MESSAGE
                 // sent 'OK' button
                 clickOnButton(event, LABEL_OK);
-                USSDController.instance.callback.over();
+                USSDController.instance.callbackInvoke.over(response);
             } else {
                 // sent option 1
-                setTextIntoField(event, "1");
-                clickOnButton(event, LABEL_SEND);
+                if (USSDController.instance.callbackMessage == null)
+                    USSDController.instance.callbackInvoke.responseInvoke(response);
+                else {
+                    USSDController.instance.callbackMessage.responseMessage(response);
+                    USSDController.instance.callbackMessage = null;
+                }
             }
         } else if (LogView(event) && notInputText(event)) {
-            // first view or logView, do nothing, pass
+            // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, LABEL_OK);
-            USSDController.instance.callback.over();
+            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
         }
 
+    }
+
+    public static void send(String text) {
+        setTextIntoField(event, text);
+        clickOnButton(event, LABEL_SEND);
     }
 
     private static void setTextIntoField(AccessibilityEvent event, String data) {

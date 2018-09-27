@@ -18,7 +18,7 @@ Para manejar la comunicación ussd, hay que tener presente que la interfaz depen
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.0.b
+`latestVersion` is 1.1.b
 
 Agregar en tu archivo `build.gradle` del proyecto Android:
 
@@ -31,60 +31,122 @@ dependencies {
 }
 ```
 
-Construir una clase que extienda de los servicios de accesibilidad:
-
-![image](snapshot/G.png#center)
-
-En ella capturara la información de la pantalla USSD con el SO la visualice, para ello existen 2 maneras:
-
-* via código:
-
-![image](snapshot/H.png#center)
-
-* via xml, el cual deberas vincular en el manifest de tu aplicación:
+* Escribir el archivo xml [acá](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <accessibility-service xmlns:android="http://schemas.android.com/apk/res/android"
-    android:accessibilityEventTypes
-        ="typeWindowStateChanged"
-    android:packageNames="com.android.phone"
-    android:accessibilityFeedbackType="feedbackGeneric"
-    android:accessibilityFlags="flagDefault"
-    android:canRetrieveWindowContent="true"
-    android:description="@string/accessibility_service_description"
-    android:notificationTimeout="0"/>
+    .../>
 ```
 
+### Application
 
-### Aplicación
+Agregar las dependencias: CALL_PHONE, READ_PHONE_STATE and SYSTEM_ALERT_WINDOW:
 
-Configuramos en el archivo build.gradle, la extensión para leer librerias *.aar (la cuál crearemos y exportaremos)
-
-```gradle
-allprojects { repositories { ...
-        flatDir { dirs 'libs' } } }
+```xml
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 ```
 
-Configuramos la dependencia de la libraria ussdlibrary mediante los prefijs {debugCompile: llamar a módulo de la libreria, releaseCompile: llamar al empaquetado *.aar}
+Agregar el servicio:
 
-```gradle
-dependencies {
+```xml
+    <service
+        android:name="com.romellfudi.ussdlibrary.USSDService"
+        android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+        <intent-filter>
+            <action android:name="android.accessibilityservice.AccessibilityService" />
+        </intent-filter>
+        <meta-data
+            android:name="android.accessibilityservice"
+            android:resource="@xml/ussd_service" />
+    </service>
+```
+
+# Uso del API:
+
+Instancia un objeto ussController con su activity
+
+```java
+ussdController = USSDController.getInstance(activity);
+ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+    @Override
+    public void responseInvoke(String message) {
+        dataToSend <- send "data" into USSD's input text
+        ussdController.send(dataToSend,new USSDController.CallbackMessage(){
+            @Override
+            public void responseMessage(String message) {
+                // message has the response string data from USSD
+            }
+        });
+    }
+
+    @Override
+    public void over(String message) {
+        // message has the response string data from USSD
+        // response no have input text, NOT SEND ANY DATA
+    }
+});
+
+```
+
+Si requiere un flujo de trabajo, tienes que usar la siguiente estructura:
+
+```java
+ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+    @Override
+    public void responseInvoke(String message) {
+        // first option list - select option 1
+        ussdController.send("1",new USSDController.CallbackMessage(){
+            @Override
+            public void responseMessage(String message) {
+                // second option list - select option 1
+                ussdController.send("1",new USSDController.CallbackMessage(){
+                    @Override
+                    public void responseMessage(String message) {
+                        ...
+                    }
+                });
+            }
+        });
+    }
+
+    @Override
+    public void over(String message) {
+        // message has the response string data from USSD
+        // response no have input text, NOT SEND ANY DATA
+    }
     ...
-    //debugCompile project(':ussdlibrary')
-    //releaseCompile(name: 'ussdlibrary-{latestVersion}', ext: 'aar')
-    implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
-}
+});
 ```
 
+## OverlayShowingService Widget (no indispensable)
 
-Teniendo importada las dependencias, en el manifest de la aplicación se debe escribir el servicio con los permisos necesarios
+Un severo problema al manejar este tipo de widget, este no puede ocultarse, redimencionarse, no puede ser puesto en el fondo con un rogressDialog
+Pero recientemente a partir del Android O, Google permite la construcción build a nw kind permission dde widget sobrepuestos, mi solución implementada fue este widget llamdo `OverlayShowingService`:
+For use need add permissions at AndroidManifest:
 
-![image](snapshot/J.png#center)
+```xml
+<uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+```
 
-![image](snapshot/F.png#center)
+Agregar Broadcast Service:
 
-### Uso de la línea voip
+```xml
+<service android:name="com.romellfudi.ussdlibrary.OverlayShowingService"
+         android:exported="false" />
+```
+
+Invocar como cualquier servicio, necesita un titulo para ser mostrado mientras se ejecuta la llama `callUSSDInvoke` mediante una variable extra `EXTRA`:
+
+```java
+Intent svc = new Intent(activity, OverlayShowingService.class);
+svc.putExtra(OverlayShowingService.EXTRA,"PROCESANDO");
+getActivity().startService(svc);
+```
+
+### EXTRA: Uso de la línea voip
 
 En esta sección dejo las líneas claves para realizar la conexión VOIP-USSD
 
