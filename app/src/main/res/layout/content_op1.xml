@@ -27,7 +27,7 @@
         android:singleLine="true" />
 
     <Button
-        android:id="@+id/btn"
+        android:id="@+id/btn1"
         android:textSize="16sp"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
@@ -35,11 +35,29 @@
         android:layout_below="@+id/phone"
         android:text="CALL" />
 
+    <Button
+        android:id="@+id/btn2"
+        android:textSize="16sp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn1"
+        android:text="CALL/OVERLAY(M)" />
+
+    <Button
+        android:id="@+id/btn3"
+        android:textSize="16sp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn2"
+        android:text="ACCESSIBILITY IS ACTIVE?" />
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/btn">
+        android:layout_below="@+id/btn3">
 
         <TextView
             android:id="@+id/result"

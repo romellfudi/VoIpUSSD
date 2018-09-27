@@ -12,13 +12,12 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
-import android.widget.TextView;
 
 /**
  *
  * @author Romell Dominguez
- * @version 1.0.a 23/02/2017
- * @since 1.0
+ * @version 1.1.b 27/09/2018
+ * @since 1.0.a
  */
 public class USSDController {
 
@@ -26,9 +25,9 @@ public class USSDController {
 
     protected Activity context;
 
-    protected static TextView result;
+    protected CallbackInvoke callbackInvoke;
 
-    protected Callback callback;
+    protected CallbackMessage callbackMessage;
 
     public static USSDController getInstance(Activity activity) {
         if (instance == null)
@@ -41,16 +40,14 @@ public class USSDController {
     }
 
     @SuppressLint("MissingPermission")
-    public void callUSSDInvoke(String ussdPhoneNumber, TextView resultCallback, Callback callback) {
-        result = resultCallback;
-        this.callback = callback;
-        result.setText("");
+    public void callUSSDInvoke(String ussdPhoneNumber, CallbackInvoke callbackInvoke) {
+        this.callbackInvoke = callbackInvoke;
 
         if (ussdPhoneNumber.isEmpty()) {
-            callback.over();
+            callbackInvoke.over("Bad ussd number");
             return;
         }
-        if (verificarServicioAccesibilidad(context)) {
+        if (verifyAccesibilityAccess(context)) {
             String uri = Uri.encode("#");
             if (uri != null)
                 ussdPhoneNumber = ussdPhoneNumber.replace("#", uri);
@@ -60,7 +57,12 @@ public class USSDController {
         }
     }
 
-    private boolean verificarServicioAccesibilidad(Activity act) {
+    public void send(String text, CallbackMessage callbackMessage){
+        this.callbackMessage = callbackMessage;
+        USSDService.send(text);
+    }
+
+    public static boolean verifyAccesibilityAccess(Activity act) {
         boolean isEnabled = USSDController.isAccessiblityServicesEnable(act);
         if (!isEnabled) {
             openSettingsAccessibility(act);
@@ -68,12 +70,13 @@ public class USSDController {
         return isEnabled;
     }
 
-    private void openSettingsAccessibility(final Activity activity) {
+    private static void openSettingsAccessibility(final Activity activity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
         alertDialogBuilder.setTitle("Permisos de accesibilidad");
-        ApplicationInfo applicationInfo = context.getApplicationInfo();
+        ApplicationInfo applicationInfo = activity.getApplicationInfo();
         int stringId = applicationInfo.labelRes;
-        String name = applicationInfo.labelRes == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
+        String name = applicationInfo.labelRes == 0 ?
+                applicationInfo.nonLocalizedLabel.toString() : activity.getString(stringId);
         alertDialogBuilder
                 .setMessage("Debe habilitar los permisos de accesibilidad para la app '" + name + "'");
         alertDialogBuilder.setCancelable(false);
@@ -130,11 +133,12 @@ public class USSDController {
         return false;
     }
 
-    protected void inject(String response) {
-        result.append("\n-\n" + response);
+    public interface CallbackInvoke {
+        void responseInvoke(String message);
+        void over(String message);
     }
 
-    public interface Callback {
-        void over();
+    public interface CallbackMessage {
+        void responseMessage(String message);
     }
 }
