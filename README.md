@@ -73,7 +73,8 @@ ussdController = USSDController.getInstance(activity);
 ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
-        dataToSend <- send "data" into USSD's input text
+        // message has the response string data
+        dataToSend // send "data" into USSD's input text
         ussdController.send(dataToSend,new USSDController.CallbackMessage(){
             @Override
             public void responseMessage(String message) {
