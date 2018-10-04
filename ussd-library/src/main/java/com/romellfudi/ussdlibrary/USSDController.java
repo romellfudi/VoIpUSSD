@@ -13,6 +13,9 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
 
+import java.util.HashMap;
+import java.util.HashSet;
+
 /**
  *
  * @author Romell Dominguez
@@ -25,10 +28,21 @@ public class USSDController {
 
     protected Activity context;
 
+    protected HashMap<String,HashSet<String>> map;
+
     protected CallbackInvoke callbackInvoke;
 
     protected CallbackMessage callbackMessage;
 
+    protected static final String KEY_LOGIN = "KEY_LOGIN";
+
+    protected static final String KEY_ERROR = "KEY_ERROR";
+
+    /**
+     * The Sinfleton building method
+     * @param activity An activity that could call
+     * @return An instance of USSDController
+     */
     public static USSDController getInstance(Activity activity) {
         if (instance == null)
             instance = new USSDController(activity);
@@ -39,9 +53,21 @@ public class USSDController {
         context = activity;
     }
 
+    /**
+     * Invoke a dial-up calling a ussd number
+     * @param ussdPhoneNumber ussd number
+     * @param map Map of Login and problem messages
+     * @param callbackInvoke a callback object from return answer
+     */
     @SuppressLint("MissingPermission")
-    public void callUSSDInvoke(String ussdPhoneNumber, CallbackInvoke callbackInvoke) {
+    public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String,HashSet<String>> map, CallbackInvoke callbackInvoke) {
         this.callbackInvoke = callbackInvoke;
+        this.map = map;
+
+        if (map==null || (map!=null && (!map.containsKey(KEY_ERROR) || !map.containsKey(KEY_LOGIN)) )){
+            callbackInvoke.over("Bad Mapping structure");
+            return;
+        }
 
         if (ussdPhoneNumber.isEmpty()) {
             callbackInvoke.over("Bad ussd number");
