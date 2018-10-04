@@ -13,7 +13,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
  * AccessibilityService for ussd windows on Android mobile Telcom
  *
  * @author Romell Dominguez
- * @version 1.1.b 27/09/2018
+ * @version 1.1.c 27/09/2018
  * @since 1.0.a
  */
 public class USSDService extends AccessibilityService {
@@ -38,13 +38,13 @@ public class USSDService extends AccessibilityService {
                 event.getEventTime(), event.getText()));
 
 
-        if (problemView(event) || LoginView(event)) {
-            // deal down
-            clickOnButton(event, 1);
-            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
-        } else if (LoginView(event) && notInputText(event)) {
+        if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, 0);
+            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
+        }else if (problemView(event) || LoginView(event)) {
+            // deal down
+            clickOnButton(event, 1);
             USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
         }else if (isUSSDWidget(event)) {
             // ready for work
@@ -87,17 +87,19 @@ public class USSDService extends AccessibilityService {
     private static void setTextIntoField(AccessibilityEvent event, String data) {
         USSDController ussdController = USSDController.instance;
         Bundle arguments = new Bundle();
-        arguments.putCharSequence(
-                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
-        for (int i = 0; i < event.getSource().getChildCount(); i++) {
-            AccessibilityNodeInfo node = event.getSource().getChild(i);
-            Log.d(TAG, i + ":" + node.getClassName());
-            if (node != null && node.getClassName().equals("android.widget.EditText")
-                    && !node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
-                ((ClipboardManager) ussdController.context
-                        .getSystemService(Context.CLIPBOARD_SERVICE))
-                        .setPrimaryClip(ClipData.newPlainText("text", data));
-                node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
+        if (arguments!=null) {
+            arguments.putCharSequence(
+                    AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
+            for (int i = 0; i < event.getSource().getChildCount(); i++) {
+                AccessibilityNodeInfo node = event.getSource().getChild(i);
+                Log.d(TAG, i + ":" + node.getClassName());
+                if (node != null && node.getClassName().equals("android.widget.EditText")
+                        && !node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
+                    ((ClipboardManager) ussdController.context
+                            .getSystemService(Context.CLIPBOARD_SERVICE))
+                            .setPrimaryClip(ClipData.newPlainText("text", data));
+                    node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
+                }
             }
         }
     }
@@ -107,13 +109,15 @@ public class USSDService extends AccessibilityService {
      * @param event AccessibilityEvent
      * @return boolean has or not input text
      */
-    private static boolean notInputText(AccessibilityEvent event) {
+    protected static boolean notInputText(AccessibilityEvent event) {
         boolean flag = true;
-        for (int i = 0; i < event.getSource().getChildCount(); i++) {
-            AccessibilityNodeInfo node = event.getSource().getChild(i);
-            if (node != null && node.getClassName().equals("android.widget.EditText"))
-                flag = false;
-        }
+        AccessibilityNodeInfo nodeInfo = event.getSource();
+        if (nodeInfo!=null)
+            for (int i = 0; i < nodeInfo.getChildCount(); i++) {
+                AccessibilityNodeInfo node = event.getSource().getChild(i);
+                if (node != null && node.getClassName().equals("android.widget.EditText"))
+                    flag = false;
+            }
         return flag;
     }
 
@@ -154,7 +158,7 @@ public class USSDService extends AccessibilityService {
      * @param event AccessibilityEvent
      * @param index button's index
      */
-    private static void clickOnButton(AccessibilityEvent event,int index) {
+    protected static void clickOnButton(AccessibilityEvent event,int index) {
         if (event.getSource() != null) {
             int count = -1;
             for (int i = 0; i < event.getSource().getChildCount(); i++) {

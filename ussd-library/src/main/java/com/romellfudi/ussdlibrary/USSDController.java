@@ -19,10 +19,10 @@ import java.util.HashSet;
 /**
  *
  * @author Romell Dominguez
- * @version 1.1.b 27/09/2018
+ * @version 1.1.c 27/09/2018
  * @since 1.0.a
  */
-public class USSDController {
+public class USSDController implements USSDInterface{
 
     protected static USSDController instance;
 
@@ -38,6 +38,8 @@ public class USSDController {
 
     protected static final String KEY_ERROR = "KEY_ERROR";
 
+    private USSDInterface ussdInterface;
+
     /**
      * The Sinfleton building method
      * @param activity An activity that could call
@@ -50,6 +52,7 @@ public class USSDController {
     }
 
     private USSDController(Activity activity) {
+        ussdInterface = this;
         context = activity;
     }
 
@@ -83,9 +86,14 @@ public class USSDController {
         }
     }
 
+    @Override
+    public void sendData(String text) {
+        USSDService.send(text);
+    }
+
     public void send(String text, CallbackMessage callbackMessage){
         this.callbackMessage = callbackMessage;
-        USSDService.send(text);
+        ussdInterface.sendData(text);
     }
 
     public static boolean verifyAccesibilityAccess(Activity act) {
