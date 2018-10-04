@@ -1,7 +1,11 @@
 # Changelog
 
+## Release USSD Library 1.1.c Mapping Message (04/10/2018)
+- Release using mapping from detect login and error pages
+---
+
 ## Release USSD Android Library 1.1.b (27/09/2018)
-New Structure of Messaging, reading and sending each message
+New Structure of Messaging, reading and sending for each message
 
 latestVersion is 1.1.b
 
@@ -11,7 +15,6 @@ repositories {
 dependencies {
     implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
 }
-
 ---
 
 ## Release upload on Maven Central (15/09/2018)
@@ -23,7 +26,6 @@ repositories {
 dependencies {
     compile 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
 }
-
 ---
 
 ## Release USSD Android Library 1.0.b (27/08/2018)
@@ -40,7 +42,6 @@ maven {
 dependencies {
     compile 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
 }
-
 ---
 
 ## Release USSD Android Library 1.0.a (31/07/2018)
