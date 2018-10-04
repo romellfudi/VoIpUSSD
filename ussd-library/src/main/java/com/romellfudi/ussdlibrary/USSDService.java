@@ -18,16 +18,14 @@ import android.view.accessibility.AccessibilityNodeInfo;
  */
 public class USSDService extends AccessibilityService {
 
-    public static String TAG = USSDService.class.getSimpleName();
-
-    private static final String LABEL_SEND = "send";
-
-    private static final String LABEL_CANCELAR = "cancel";
-
-    private static final String LABEL_OK = "ok";
+    private static String TAG = USSDService.class.getSimpleName();
 
     private static AccessibilityEvent event;
 
+    /**
+     * Catch widget by Accessibility, when is showing at mobile display
+     * @param event AccessibilityEvent
+     */
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         this.event=event;
@@ -40,11 +38,15 @@ public class USSDService extends AccessibilityService {
                 event.getEventTime(), event.getText()));
 
 
-        if (hasProblem(event) || LogView(event)) {
+        if (problemView(event) || LoginView(event)) {
             // deal down
-            clickOnButton(event, LABEL_SEND);
+            clickOnButton(event, 1);
             USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
-        } else if (isUSSDNeed(event)) {
+        } else if (LoginView(event) && notInputText(event)) {
+            // first view or logView, do nothing, pass / FIRST MESSAGE
+            clickOnButton(event, 0);
+            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
+        }else if (isUSSDWidget(event)) {
             // ready for work
             String response = event.getText().get(0).toString();
             if (response.contains("\n")) {
@@ -53,7 +55,7 @@ public class USSDService extends AccessibilityService {
             if (notInputText(event)) {
                 // not more input panels / LAST MESSAGE
                 // sent 'OK' button
-                clickOnButton(event, LABEL_OK);
+                clickOnButton(event, 0);
                 USSDController.instance.callbackInvoke.over(response);
             } else {
                 // sent option 1
@@ -64,19 +66,24 @@ public class USSDService extends AccessibilityService {
                     USSDController.instance.callbackMessage = null;
                 }
             }
-        } else if (LogView(event) && notInputText(event)) {
-            // first view or logView, do nothing, pass / FIRST MESSAGE
-            clickOnButton(event, LABEL_OK);
-            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
         }
 
     }
 
+    /**
+     * Send whatever you want via USSD
+     * @param text any string
+     */
     public static void send(String text) {
         setTextIntoField(event, text);
-        clickOnButton(event, LABEL_SEND);
+        clickOnButton(event, 1);
     }
 
+    /**
+     * set text into input text at USSD widget
+     * @param event AccessibilityEvent
+     * @param data Any String
+     */
     private static void setTextIntoField(AccessibilityEvent event, String data) {
         USSDController ussdController = USSDController.instance;
         Bundle arguments = new Bundle();
@@ -95,6 +102,11 @@ public class USSDService extends AccessibilityService {
         }
     }
 
+    /**
+     * Method evaluate if USSD widget has input text
+     * @param event AccessibilityEvent
+     * @return boolean has or not input text
+     */
     private static boolean notInputText(AccessibilityEvent event) {
         boolean flag = true;
         for (int i = 0; i < event.getSource().getChildCount(); i++) {
@@ -105,43 +117,69 @@ public class USSDService extends AccessibilityService {
         return flag;
     }
 
+    /**
+     * The AccessibilityEvent is instance of USSD Widget class
+     * @param event AccessibilityEvent
+     * @return boolean AccessibilityEvent is USSD
+     */
     private boolean isUSSDWidget(AccessibilityEvent event) {
         return (event.getClassName().equals("amigo.app.AmigoAlertDialog")
                 || event.getClassName().equals("android.app.AlertDialog"));
     }
 
-
-    private boolean isUSSDNeed(AccessibilityEvent event) {
+    /**
+     * The View has a login message into USSD Widget
+     * @param event AccessibilityEvent
+     * @return boolean USSD Widget has login message
+     */
+    private boolean LoginView(AccessibilityEvent event) {
         return isUSSDWidget(event)
-                && (event.getText().get(0).toString().contains(":"));
+                && USSDController.instance.map.get(USSDController.KEY_LOGIN)
+                .contains(event.getText().get(0).toString());
     }
 
-    private boolean LogView(AccessibilityEvent event) {
+    /**
+     * The View has a problem message into USSD Widget
+     * @param event AccessibilityEvent
+     * @return boolean USSD Widget has problem message
+     */
+    protected boolean problemView(AccessibilityEvent event) {
         return isUSSDWidget(event)
-                && (event.getText().get(0).toString().toLowerCase().contains("espere"));
+                && USSDController.instance.map.get(USSDController.KEY_ERROR)
+                .contains(event.getText().get(0).toString());
     }
 
-    protected boolean hasProblem(AccessibilityEvent event) {
-        return isUSSDWidget(event)
-                && (event.getText().get(0).toString().toLowerCase().contains("problema")
-                || event.getText().get(0).toString().toLowerCase().contains("desconocido"));
-    }
-
-
-    private static void clickOnButton(AccessibilityEvent event, String label) {
+    /**
+     * click a button using the index
+     * @param event AccessibilityEvent
+     * @param index button's index
+     */
+    private static void clickOnButton(AccessibilityEvent event,int index) {
         if (event.getSource() != null) {
-            for (AccessibilityNodeInfo nodeButton
-                    : event.getSource().findAccessibilityNodeInfosByText(label)) {
-                nodeButton.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+            int count = -1;
+            for (int i = 0; i < event.getSource().getChildCount(); i++) {
+                AccessibilityNodeInfo nodeButton = event.getSource().getChild(i);
+                if (nodeButton.getClassName().toString().toLowerCase().contains("button")) {
+                    count++;
+                    if (count == index) {
+                        nodeButton.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                    }
+                }
             }
         }
     }
 
+    /**
+     * Active when SO interrupt the application
+     */
     @Override
     public void onInterrupt() {
         Log.d(TAG, "onInterrupt");
     }
 
+    /**
+     * Configure accessibility server from Android Operative System
+     */
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();

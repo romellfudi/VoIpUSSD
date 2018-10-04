@@ -1,5 +1,6 @@
 package com.romellfudi.ussd_sample.use_case;
 
+import android.Manifest.permission;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -17,14 +18,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-
-import com.romellfudi.ussd_sample.R;
 import com.romellfudi.permission.PermissionService;
+import com.romellfudi.ussd_sample.R;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.USSDController;
 
-import android.Manifest.permission;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Use Case for Test Windows
@@ -35,13 +38,17 @@ import android.Manifest.permission;
  */
 public class CP1 extends Fragment {
 
-    TextView result;
-    EditText phone;
-    Button btn1,btn2,btn3;
+    private TextView result;
+    private EditText phone;
+    private Button btn1, btn2, btn3;
+    private HashMap<String, HashSet<String>> map;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        map = new HashMap<>();
+        map.put("KEY_LOGIN",new HashSet<>(Arrays.asList("espere","waiting","loading","esperando")));
+        map.put("KEY_ERROR",new HashSet<>(Arrays.asList("problema","problem","error","null")));
         new PermissionService(getActivity()).request(
                 new String[]{permission.CALL_PHONE},
                 callback);
@@ -63,22 +70,22 @@ public class CP1 extends Fragment {
                 String phoneNumber = phone.getText().toString().trim();
                 final USSDController ussdController = USSDController.getInstance(getActivity());
                 result.setText("");
-                ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+                ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
-                        Log.d("APP",message);
+                        Log.d("APP", message);
                         result.append("\n-\n" + message);
                         // first option list - select option 1
-                        ussdController.send("1",new USSDController.CallbackMessage(){
+                        ussdController.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
-                                Log.d("APP",message);
+                                Log.d("APP", message);
                                 result.append("\n-\n" + message);
                                 // second option list - select option 1
-                                ussdController.send("1",new USSDController.CallbackMessage(){
+                                ussdController.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
-                                        Log.d("APP",message);
+                                        Log.d("APP", message);
                                         result.append("\n-\n" + message);
                                     }
                                 });
@@ -88,7 +95,7 @@ public class CP1 extends Fragment {
 
                     @Override
                     public void over(String message) {
-                        Log.d("APP",message);
+                        Log.d("APP", message);
                         result.append("\n-\n" + message);
                     }
                 });
@@ -99,32 +106,32 @@ public class CP1 extends Fragment {
             @Override
             public void onClick(View v) {
                 final Intent svc = new Intent(getActivity(), OverlayShowingService.class);
-                svc.putExtra(OverlayShowingService.EXTRA,"PROCESANDO");
+                svc.putExtra(OverlayShowingService.EXTRA, "PROCESANDO");
                 getActivity().startService(svc);
-                Log.d("APP","START OVERLAY DIALOG");
+                Log.d("APP", "START OVERLAY DIALOG");
                 String phoneNumber = phone.getText().toString().trim();
                 final USSDController ussdController = USSDController.getInstance(getActivity());
                 result.setText("");
-                ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+                ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
-                        Log.d("APP",message);
+                        Log.d("APP", message);
                         result.append("\n-\n" + message);
                         // first option list - select option 1
-                        ussdController.send("1",new USSDController.CallbackMessage(){
+                        ussdController.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
-                                Log.d("APP",message);
+                                Log.d("APP", message);
                                 result.append("\n-\n" + message);
                                 // second option list - select option 1
-                                ussdController.send("1",new USSDController.CallbackMessage(){
+                                ussdController.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
-                                        Log.d("APP",message);
+                                        Log.d("APP", message);
                                         result.append("\n-\n" + message);
                                         getActivity().stopService(svc);
-                                        Log.d("APP","STOP OVERLAY DIALOG");
-                                        Log.d("APP","successful");
+                                        Log.d("APP", "STOP OVERLAY DIALOG");
+                                        Log.d("APP", "successful");
                                     }
                                 });
                             }
@@ -133,10 +140,10 @@ public class CP1 extends Fragment {
 
                     @Override
                     public void over(String message) {
-                        Log.d("APP",message);
+                        Log.d("APP", message);
                         result.append("\n-\n" + message);
                         getActivity().stopService(svc);
-                        Log.d("APP","STOP OVERLAY DIALOG");
+                        Log.d("APP", "STOP OVERLAY DIALOG");
                     }
                 });
             }

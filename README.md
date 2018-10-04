@@ -18,7 +18,7 @@ To comunicate with ussd display, It is necessary to have present that the interf
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.1.b
+`latestVersion` is 1.1.c
 
 Add the following in your app's `build.gradle` file:
 
@@ -66,11 +66,24 @@ Add service:
 
 # How use:
 
+First you need an hashMap from detect witch USSD' response contains the login and error messages
+
+| KEY MESSAGE | String Messages |
+| ------ | ------ |
+| KEY_LOGIN | "espere","waiting","loading","esperando",... |
+| KEY_ERROR | "problema","problem","error","null",... |
+
+```java
+map = new HashMap<>();
+map.put("KEY_LOGIN",..."waiting"...);
+map.put("KEY_ERROR",..."problem"...);
+```
+
 Instance an object ussController with activity
 
 ```java
 ussdController = USSDController.getInstance(activity);
-ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
         // message has the response string data
@@ -95,7 +108,7 @@ ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
 if you need work with your custom messages, use this structure:
 
 ```java
-ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
         // first option list - select option 1
@@ -145,6 +158,8 @@ Invoke like a normal services, need a tittle set extra vallue `EXTRA`:
 Intent svc = new Intent(activity, OverlayShowingService.class);
 svc.putExtra(OverlayShowingService.EXTRA,"PROCESANDO");
 getActivity().startService(svc);
+// stop
+getActivity().stopService(svc);
 ```
 
 ### EXTRA: Use Voip line

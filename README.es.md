@@ -18,7 +18,7 @@ Para manejar la comunicación ussd, hay que tener presente que la interfaz depen
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.1.b
+`latestVersion` is 1.1.c
 
 Agregar en tu archivo `build.gradle` del proyecto Android:
 
@@ -66,11 +66,24 @@ Agregar el servicio:
 
 # Uso del API:
 
+Primero necesitamos mapear los mensajes de respuesta USSD, para idetificar los de logeo y de error
+
+| KEY MESSAGE | String Messages |
+| ------ | ------ |
+| KEY_LOGIN | "espere","waiting","loading","esperando",... |
+| KEY_ERROR | "problema","problem","error","null",... |
+
+```java
+map = new HashMap<>();
+map.put("KEY_LOGIN",..."waiting"...);
+map.put("KEY_ERROR",..."problem"...);
+```
+
 Instancia un objeto ussController con su activity
 
 ```java
 ussdController = USSDController.getInstance(activity);
-ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
         // message has the response string data
@@ -95,7 +108,7 @@ ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
 Si requiere un flujo de trabajo, tienes que usar la siguiente estructura:
 
 ```java
-ussdController.callUSSDInvoke(phoneNumber, new USSDController.CallbackInvoke() {
+ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
         // first option list - select option 1
@@ -145,6 +158,8 @@ Invocar como cualquier servicio, necesita un titulo para ser mostrado mientras s
 Intent svc = new Intent(activity, OverlayShowingService.class);
 svc.putExtra(OverlayShowingService.EXTRA,"PROCESANDO");
 getActivity().startService(svc);
+// stop
+getActivity().stopService(svc);
 ```
 
 ### EXTRA: Uso de la línea voip
