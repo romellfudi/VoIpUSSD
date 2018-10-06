@@ -6,6 +6,7 @@
 [![Bintray](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)](https://bintray.com/romllz489/maven/ussd-library)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Void%20USSD%20Library-green.svg?style=flat )]( https://android-arsenal.com/details/1/7151 )
 [![Jitpack](https://jitpack.io/v/romellfudi/VoIpUSSDSample.svg)](https://jitpack.io/#romellfudi/VoIpUSSDSample)
+[![CircleCi](https://img.shields.io/circleci/project/github/romellfudi/FudiPermission.svg)](https://circleci.com/gh/romellfudi/FudiPermission/tree/master)
 
 ### by Romell Dominguez
 [![](snapshot/icono.png)](https://www.romellfudi.com/)
