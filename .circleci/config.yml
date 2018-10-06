@@ -24,9 +24,9 @@ jobs:
           name: Run Tests
           command: ./gradlew assembleDebug lint testDebugUnitTest -p ussd-library
       - store_artifacts:
-          path: app/build/reports
+          path: ussd-library/build/reports
           destination: reports
       - store_test_results:
-          path: app/build/test-results
+          path: ussd-library/build/test-results
 
 #
