@@ -187,8 +187,6 @@ getActivity().startService(svc);
 getActivity().stopService(svc);
 ```
 
-![](snapshot/device_recored.gif#gif)
-
 ## EXTRA: Uso de la línea voip
 
 En esta sección dejo las líneas claves para realizar la conexión VOIP-USSD
