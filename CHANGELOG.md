@@ -1,5 +1,9 @@
 # Changelog
 
+## Release USSD Library 1.1.d Splash Overlay (27/10/2018)
+- Release adding second Overlay using full device screen, don't show any flashing window
+---
+
 ## Release USSD Library 1.1.c Mapping Message (04/10/2018)
 - Release using mapping from detect login and error pages
 ---

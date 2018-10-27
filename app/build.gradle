@@ -33,6 +33,6 @@ dependencies {
     implementation 'com.romellfudi.permission:fudi-permission:1.0.a'
 
     implementation project(':ussd-library')
-//    implementation 'com.romellfudi.ussdlibrary:ussd-library:1.1.c'
+//    implementation 'com.romellfudi.ussdlibrary:ussd-library:1.1.d'
 
 }

@@ -17,11 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 /**
- * OverlayShowingService for Android progressing dialog
+ * SplashLoadingService for Android splashing dialog
  *
  * @author Romell Dominguez
- * @version 1.0.a 23/02/2017
- * @since 1.0
+ * @version 1.1.d 23/02/2017
+ * @since 1.1.d
  */
 public class SplashLoadingService extends Service {
 
