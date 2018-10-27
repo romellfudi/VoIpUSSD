@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -50,12 +51,12 @@ public class OverlayShowingService extends Service {
         overlayedButton.setText(tittle);
         overlayedButton.setAlpha(0.7f);
         overlayedButton.setBackgroundColor(0xFFFFFFFF);
-        overlayedButton.setTextSize(TypedValue.COMPLEX_UNIT_SP,26);
+        overlayedButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 26);
 
         WindowManager.LayoutParams params =
                 new WindowManager.LayoutParams
                         (WindowManager.LayoutParams.MATCH_PARENT,
-                                size.y-200,
+                                size.y - 200,
                                 LAYOUT_FLAG
                                 , WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
                                 WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
@@ -75,10 +76,15 @@ public class OverlayShowingService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (overlayedButton != null) {
-            wm.removeView(overlayedButton);
-            overlayedButton = null;
-        }
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (overlayedButton != null) {
+                    wm.removeView(overlayedButton);
+                    overlayedButton = null;
+                }
+            }
+        }, 500);
     }
 
 }

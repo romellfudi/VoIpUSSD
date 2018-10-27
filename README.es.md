@@ -19,7 +19,7 @@ Para manejar la comunicación ussd, hay que tener presente que la interfaz depen
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.1.c
+`latestVersion` is 1.1.d
 
 Agregar en tu archivo `build.gradle` del proyecto Android:
 
@@ -76,8 +76,8 @@ Primero necesitamos mapear los mensajes de respuesta USSD, para idetificar los d
 
 ```java
 map = new HashMap<>();
-map.put("KEY_LOGIN",..."waiting"...);
-map.put("KEY_ERROR",..."problem"...);
+map.put("KEY_LOGIN",new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
+map.put("KEY_ERROR",new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
 ```
 
 Instancia un objeto ussController con su activity
@@ -88,7 +88,7 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
     @Override
     public void responseInvoke(String message) {
         // message has the response string data
-        dataToSend // send "data" into USSD's input text
+        String dataToSend = "data"// <- send "data" into USSD's input text
         ussdController.send(dataToSend,new USSDController.CallbackMessage(){
             @Override
             public void responseMessage(String message) {
@@ -136,7 +136,7 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
 });
 ```
 
-## OverlayShowingService Widget (no indispensable)
+## Overlay Services Widget (no indispensable)
 
 Un severo problema al manejar este tipo de widget, este no puede ocultarse, redimencionarse, no puede ser puesto en el fondo con un rogressDialog
 Pero recientemente a partir del Android O, Google permite la construcción build a nw kind permission dde widget sobrepuestos, mi solución implementada fue este widget llamdo `OverlayShowingService`:
@@ -145,6 +145,30 @@ For use need add permissions at AndroidManifest:
 ```xml
 <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
 ```
+
+La librería cuenta con dos componentes:
+
+### SplashLoadingService
+
+Agregar Broadcast Service:
+
+```xml
+<service android:name="com.romellfudi.ussdlibrary.SplashLoadingService"
+         android:exported="false" />
+```
+
+Invocar como cualquier servicio:
+
+```java
+Intent svc = new Intent(activity, SplashLoadingService.class);
+getActivity().startService(svc);
+// stop
+getActivity().stopService(svc);
+```
+
+![](snapshot/device_splash.gif#gif)
+
+### OverlayShowingService
 
 Agregar Broadcast Service:
 
@@ -157,13 +181,15 @@ Invocar como cualquier servicio, necesita un titulo para ser mostrado mientras s
 
 ```java
 Intent svc = new Intent(activity, OverlayShowingService.class);
-svc.putExtra(OverlayShowingService.EXTRA,"PROCESANDO");
+svc.putExtra(OverlayShowingService.EXTRA,"LOADING");
 getActivity().startService(svc);
 // stop
 getActivity().stopService(svc);
 ```
 
-### EXTRA: Uso de la línea voip
+![](snapshot/device_recored.gif#gif)
+
+## EXTRA: Uso de la línea voip
 
 En esta sección dejo las líneas claves para realizar la conexión VOIP-USSD
 

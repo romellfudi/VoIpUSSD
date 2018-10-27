@@ -19,7 +19,7 @@ To comunicate with ussd display, It is necessary to have present that the interf
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.1.c
+`latestVersion` is 1.1.d
 
 Add the following in your app's `build.gradle` file:
 
@@ -76,8 +76,8 @@ First you need an hashMap from detect witch USSD' response contains the login an
 
 ```java
 map = new HashMap<>();
-map.put("KEY_LOGIN",..."waiting"...);
-map.put("KEY_ERROR",..."problem"...);
+map.put("KEY_LOGIN",new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
+map.put("KEY_ERROR",new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
 ```
 
 Instance an object ussController with activity
@@ -88,7 +88,7 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
     @Override
     public void responseInvoke(String message) {
         // message has the response string data
-        dataToSend // send "data" into USSD's input text
+        String dataToSend = "data"// <- send "data" into USSD's input text
         ussdController.send(dataToSend,new USSDController.CallbackMessage(){
             @Override
             public void responseMessage(String message) {
@@ -136,7 +136,7 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
 });
 ```
 
-## OverlayShowingService Widget (not required)
+## Overlay Service Widget (not required)
 
 A problem huge working with ussd is you cant invisible, disenable, resize or put on back in progressDialog
 But now on Android O, Google allow build a nw kind permission from overlay widget, my solution was a widget call OverlayShowingService:
@@ -145,6 +145,30 @@ For use need add permissions at AndroidManifest:
 ```xml
 <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
 ```
+
+Using the library you could use two ways:
+
+### SplashLoadingService
+
+Add Broadcast Service:
+
+```xml
+<service android:name="com.romellfudi.ussdlibrary.SplashLoadingService"
+         android:exported="false" />
+```
+
+Invoke like a normal service:
+
+```java
+Intent svc = new Intent(activity, SplashLoadingService.class);
+getActivity().startService(svc);
+// stop
+getActivity().stopService(svc);
+```
+
+![](snapshot/device_splash.gif#gif)
+
+### OverlayShowingService
 
 Add Broadcast Service:
 
@@ -157,11 +181,13 @@ Invoke like a normal services, need a tittle set extra vallue `EXTRA`:
 
 ```java
 Intent svc = new Intent(activity, OverlayShowingService.class);
-svc.putExtra(OverlayShowingService.EXTRA,"PROCESANDO");
+svc.putExtra(OverlayShowingService.EXTRA,"LOADING");
 getActivity().startService(svc);
 // stop
 getActivity().stopService(svc);
 ```
+
+![](snapshot/device_recored.gif#gif)
 
 ### EXTRA: Use Voip line
 
