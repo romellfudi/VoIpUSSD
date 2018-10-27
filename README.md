@@ -187,8 +187,6 @@ getActivity().startService(svc);
 getActivity().stopService(svc);
 ```
 
-![](snapshot/device_recored.gif#gif)
-
 ### EXTRA: Use Voip line
 
 In this secction leave the lines to call to Telcom (ussd hadh number) for connected it:
