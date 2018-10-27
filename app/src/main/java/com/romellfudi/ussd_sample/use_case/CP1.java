@@ -21,13 +21,13 @@ import android.widget.Toast;
 import com.romellfudi.permission.PermissionService;
 import com.romellfudi.ussd_sample.R;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
+import com.romellfudi.ussdlibrary.SplashLoadingService;
 import com.romellfudi.ussdlibrary.USSDController;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Use Case for Test Windows
@@ -40,15 +40,15 @@ public class CP1 extends Fragment {
 
     private TextView result;
     private EditText phone;
-    private Button btn1, btn2, btn3;
+    private Button btn1, btn2, btn3, btn4;
     private HashMap<String, HashSet<String>> map;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         map = new HashMap<>();
-        map.put("KEY_LOGIN",new HashSet<>(Arrays.asList("espere","waiting","loading","esperando")));
-        map.put("KEY_ERROR",new HashSet<>(Arrays.asList("problema","problem","error","null")));
+        map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
+        map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
         new PermissionService(getActivity()).request(
                 new String[]{permission.CALL_PHONE},
                 callback);
@@ -62,6 +62,7 @@ public class CP1 extends Fragment {
         btn1 = (Button) view.findViewById(R.id.btn1);
         btn2 = (Button) view.findViewById(R.id.btn2);
         btn3 = (Button) view.findViewById(R.id.btn3);
+        btn4 = (Button) view.findViewById(R.id.btn4);
         setHasOptionsMenu(false);
 
         btn1.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +132,52 @@ public class CP1 extends Fragment {
                                         result.append("\n-\n" + message);
                                         getActivity().stopService(svc);
                                         Log.d("APP", "STOP OVERLAY DIALOG");
+                                        Log.d("APP", "successful");
+                                    }
+                                });
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void over(String message) {
+                        Log.d("APP", message);
+                        result.append("\n-\n" + message);
+                        getActivity().stopService(svc);
+                        Log.d("APP", "STOP OVERLAY DIALOG");
+                    }
+                });
+            }
+        });
+
+        btn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Intent svc = new Intent(getActivity(), SplashLoadingService.class);
+                getActivity().startService(svc);
+                Log.d("APP", "START SPLASH DIALOG");
+                String phoneNumber = phone.getText().toString().trim();
+                final USSDController ussdController = USSDController.getInstance(getActivity());
+                result.setText("");
+                ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                    @Override
+                    public void responseInvoke(String message) {
+                        Log.d("APP", message);
+                        result.append("\n-\n" + message);
+                        // first option list - select option 1
+                        ussdController.send("1", new USSDController.CallbackMessage() {
+                            @Override
+                            public void responseMessage(String message) {
+                                Log.d("APP", message);
+                                result.append("\n-\n" + message);
+                                // second option list - select option 1
+                                ussdController.send("1", new USSDController.CallbackMessage() {
+                                    @Override
+                                    public void responseMessage(String message) {
+                                        Log.d("APP", message);
+                                        result.append("\n-\n" + message);
+                                        getActivity().stopService(svc);
+                                        Log.d("APP", "STOP SPLASH DIALOG");
                                         Log.d("APP", "successful");
                                     }
                                 });

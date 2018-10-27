@@ -39,6 +39,10 @@
         <service
             android:name="com.romellfudi.ussdlibrary.OverlayShowingService"
             android:exported="false" />
+
+        <service
+            android:name="com.romellfudi.ussdlibrary.SplashLoadingService"
+            android:exported="false" />
     </application>
 
 </manifest>
