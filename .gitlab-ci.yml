@@ -3,8 +3,8 @@
 image: openjdk:8-jdk
 
 variables:
-  ANDROID_COMPILE_SDK: "26"
-  ANDROID_BUILD_TOOLS: "26.0.2"
+  ANDROID_COMPILE_SDK: "28"
+  ANDROID_BUILD_TOOLS: "28.0.2"
   ANDROID_SDK_TOOLS: "24.4.1"
 
 before_script:
