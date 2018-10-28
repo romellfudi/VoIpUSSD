@@ -9,12 +9,12 @@ android {
             storePassword 'freddyfudi'
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion 28
+    buildToolsVersion "28.0.2"
     defaultConfig {
         applicationId "com.romellfudi.ussd_sample"
         minSdkVersion 17
-        targetSdkVersion 26
+        targetSdkVersion 28
         versionCode 1
         versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,8 +28,8 @@ android {
 }
 
 dependencies {
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:appcompat-v7:28.+'
+    implementation 'com.android.support:design:28.+'
     implementation 'com.romellfudi.permission:fudi-permission:1.0.a'
 
     implementation project(':ussd-library')
