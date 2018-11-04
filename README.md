@@ -169,25 +169,6 @@ getActivity().stopService(svc);
 
 ![](snapshot/device_splash.gif#gif)
 
-### OverlayShowingService
-
-Add Broadcast Service:
-
-```xml
-<service android:name="com.romellfudi.ussdlibrary.OverlayShowingService"
-         android:exported="false" />
-```
-
-Invoke like a normal services, need a tittle set extra vallue `EXTRA`:
-
-```java
-Intent svc = new Intent(activity, OverlayShowingService.class);
-svc.putExtra(OverlayShowingService.EXTRA,"LOADING");
-getActivity().startService(svc);
-// stop
-getActivity().stopService(svc);
-```
-
 ### EXTRA: Use Voip line
 
 In this secction leave the lines to call to Telcom (ussd hadh number) for connected it:
