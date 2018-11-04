@@ -169,25 +169,6 @@ getActivity().stopService(svc);
 
 ![](snapshot/device_splash.gif#gif)
 
-### OverlayShowingService
-
-Agregar Broadcast Service:
-
-```xml
-<service android:name="com.romellfudi.ussdlibrary.OverlayShowingService"
-         android:exported="false" />
-```
-
-Invocar como cualquier servicio, necesita un titulo para ser mostrado mientras se ejecuta la llama `callUSSDInvoke` mediante una variable extra `EXTRA`:
-
-```java
-Intent svc = new Intent(activity, OverlayShowingService.class);
-svc.putExtra(OverlayShowingService.EXTRA,"LOADING");
-getActivity().startService(svc);
-// stop
-getActivity().stopService(svc);
-```
-
 ## EXTRA: Uso de la línea voip
 
 En esta sección dejo las líneas claves para realizar la conexión VOIP-USSD
