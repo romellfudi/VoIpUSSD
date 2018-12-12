@@ -1,10 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 
     package="com.romellfudi.ussd_sample">
+
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -26,6 +28,12 @@
         <activity
             android:name=".act.MainMenuActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:screenOrientation="sensorPortrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+
+        <activity android:name=".act.SplashScreen"
             android:launchMode="singleTop"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.NoActionBar"
