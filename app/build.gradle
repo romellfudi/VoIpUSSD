@@ -3,21 +3,22 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'freddyfudi'
-            keyPassword 'freddyfudi'
+            keyAlias 'romellFUDI956824'
+            keyPassword 'romellFUDI956824'
             storeFile file('keystore.jks')
-            storePassword 'freddyfudi'
+            storePassword 'romellFUDI956824'
         }
     }
     compileSdkVersion 28
     buildToolsVersion "28.0.2"
     defaultConfig {
-        applicationId "com.romellfudi.ussd_sample"
+        applicationId "com.romellfudi.ussd"
         minSdkVersion 17
         targetSdkVersion 28
         versionCode 2
         versionName "1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildTypes {
         release {
@@ -25,14 +26,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    productFlavors {
+    }
 }
 
 dependencies {
     implementation 'com.android.support:appcompat-v7:28.+'
     implementation 'com.android.support:design:28.+'
     implementation 'com.romellfudi.permission:fudi-permission:1.0.a'
-
     implementation project(':ussd-library')
-//    implementation 'com.romellfudi.ussdlibrary:ussd-library:1.1.d'
-
+    //    implementation 'com.romellfudi.ussdlibrary:ussd-library:1.1.d'
 }

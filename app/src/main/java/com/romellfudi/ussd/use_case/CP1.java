@@ -1,4 +1,4 @@
-package com.romellfudi.ussd_sample.use_case;
+package com.romellfudi.ussd.use_case;
 
 import android.Manifest.permission;
 import android.content.Intent;
@@ -19,7 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.romellfudi.permission.PermissionService;
-import com.romellfudi.ussd_sample.R;
+import com.romellfudi.ussd.R;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.SplashLoadingService;
 import com.romellfudi.ussdlibrary.USSDController;
