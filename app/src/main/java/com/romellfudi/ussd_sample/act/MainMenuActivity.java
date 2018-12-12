@@ -173,5 +173,11 @@ public class MainMenuActivity extends AppCompatActivity
         return true;
     }
 
-
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Intent myIntent = new Intent(this, SplashScreen.class);
+        myIntent.putExtra("time", 1000);
+        startActivity(myIntent);
+    }
 }

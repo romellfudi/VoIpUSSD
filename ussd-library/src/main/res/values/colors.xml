@@ -72,6 +72,7 @@
     <!-- OTRO -->
     <color name="black_overlay">#66000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="splash">#f4f3f3</color>
     <color name="dark_blue">#00328E</color>
     <color name="sky_blue">#ff63b8ff</color>
     <color name="grey">#EFEFEF</color>
