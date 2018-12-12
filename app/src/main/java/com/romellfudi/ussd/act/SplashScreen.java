@@ -1,4 +1,4 @@
-package com.romellfudi.ussd_sample.act;
+package com.romellfudi.ussd.act;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 
-import com.romellfudi.ussd_sample.R;
+import com.romellfudi.ussd.R;
 
 /**
  *

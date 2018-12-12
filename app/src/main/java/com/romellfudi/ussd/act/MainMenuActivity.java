@@ -1,4 +1,4 @@
-package com.romellfudi.ussd_sample.act;
+package com.romellfudi.ussd.act;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,8 +20,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.romellfudi.ussd_sample.R;
-import com.romellfudi.ussd_sample.use_case.CP1;
+import com.romellfudi.ussd.R;
+import com.romellfudi.ussd.use_case.CP1;
 import com.romellfudi.ussdlibrary.USSDService;
 /**
  * Main Activity
