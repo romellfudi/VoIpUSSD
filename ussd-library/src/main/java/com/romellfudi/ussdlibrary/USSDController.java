@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,7 +27,7 @@ public class USSDController implements USSDInterface{
 
     protected static USSDController instance;
 
-    protected Activity context;
+    protected Context context;
 
     protected HashMap<String,HashSet<String>> map;
 
@@ -41,19 +42,19 @@ public class USSDController implements USSDInterface{
     private USSDInterface ussdInterface;
 
     /**
-     * The Sinfleton building method
-     * @param activity An activity that could call
+     * The Singleton building method
+     * @param context An activity that could call
      * @return An instance of USSDController
      */
-    public static USSDController getInstance(Activity activity) {
+    public static USSDController getInstance(Context context) {
         if (instance == null)
-            instance = new USSDController(activity);
+            instance = new USSDController(context);
         return instance;
     }
 
-    private USSDController(Activity activity) {
+    private USSDController(Context context) {
         ussdInterface = this;
-        context = activity;
+        this.context = context;
     }
 
     /**
@@ -96,10 +97,19 @@ public class USSDController implements USSDInterface{
         ussdInterface.sendData(text);
     }
 
-    public static boolean verifyAccesibilityAccess(Activity act) {
-        boolean isEnabled = USSDController.isAccessiblityServicesEnable(act);
+    public static boolean verifyAccesibilityAccess(Context context) {
+        boolean isEnabled = USSDController.isAccessiblityServicesEnable(context);
         if (!isEnabled) {
-            openSettingsAccessibility(act);
+            if(context instanceof Activity) {
+                openSettingsAccessibility((Activity) context);
+            } else {
+                Toast.makeText(
+                        context,
+                        "voipUSSD accessibility service is not enabled",
+                        Toast.LENGTH_LONG
+                ).show();
+
+            }
         }
         return isEnabled;
     }
