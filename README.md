@@ -81,10 +81,10 @@ map.put("KEY_LOGIN",new HashSet<>(Arrays.asList("espere", "waiting", "loading", 
 map.put("KEY_ERROR",new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
 ```
 
-Instance an object ussController with activity
+Instance an object ussController with context
 
 ```java
-ussdController = USSDController.getInstance(activity);
+ussdController = USSDController.getInstance(context);
 ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
