@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * AccessibilityService for ussd windows on Android mobile Telcom
  *
@@ -87,19 +90,19 @@ public class USSDService extends AccessibilityService {
     private static void setTextIntoField(AccessibilityEvent event, String data) {
         USSDController ussdController = USSDController.instance;
         Bundle arguments = new Bundle();
-        if (arguments!=null) {
-            arguments.putCharSequence(
-                    AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
-            for (int i = 0; i < event.getSource().getChildCount(); i++) {
-                AccessibilityNodeInfo node = event.getSource().getChild(i);
-                Log.d(TAG, i + ":" + node.getClassName());
-                if (node != null && node.getClassName().equals("android.widget.EditText")
-                        && !node.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
-                    ((ClipboardManager) ussdController.context
-                            .getSystemService(Context.CLIPBOARD_SERVICE))
-                            .setPrimaryClip(ClipData.newPlainText("text", data));
-                    node.performAction(AccessibilityNodeInfo.ACTION_PASTE);
+        arguments.putCharSequence(
+                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
+
+        for (AccessibilityNodeInfo leaf : getLeaves(event)) {
+            if (leaf.getClassName().equals("android.widget.EditText")
+                    && !leaf.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
+                ClipboardManager clipboardManager = ((ClipboardManager) ussdController.context
+                        .getSystemService(Context.CLIPBOARD_SERVICE));
+                if(clipboardManager != null) {
+                    clipboardManager.setPrimaryClip(ClipData.newPlainText("text", data));
                 }
+
+                leaf.performAction(AccessibilityNodeInfo.ACTION_PASTE);
             }
         }
     }
@@ -111,13 +114,9 @@ public class USSDService extends AccessibilityService {
      */
     protected static boolean notInputText(AccessibilityEvent event) {
         boolean flag = true;
-        AccessibilityNodeInfo nodeInfo = event.getSource();
-        if (nodeInfo!=null)
-            for (int i = 0; i < nodeInfo.getChildCount(); i++) {
-                AccessibilityNodeInfo node = event.getSource().getChild(i);
-                if (node != null && node.getClassName().equals("android.widget.EditText"))
-                    flag = false;
-            }
+        for (AccessibilityNodeInfo leaf : getLeaves(event)) {
+            if (leaf.getClassName().equals("android.widget.EditText")) flag = false;
+        }
         return flag;
     }
 
@@ -159,17 +158,34 @@ public class USSDService extends AccessibilityService {
      * @param index button's index
      */
     protected static void clickOnButton(AccessibilityEvent event,int index) {
-        if (event.getSource() != null) {
-            int count = -1;
-            for (int i = 0; i < event.getSource().getChildCount(); i++) {
-                AccessibilityNodeInfo nodeButton = event.getSource().getChild(i);
-                if (nodeButton.getClassName().toString().toLowerCase().contains("button")) {
-                    count++;
-                    if (count == index) {
-                        nodeButton.performAction(AccessibilityNodeInfo.ACTION_CLICK);
-                    }
+        int count = -1;
+        for (AccessibilityNodeInfo leaf : getLeaves(event)) {
+            if (leaf.getClassName().toString().toLowerCase().contains("button")) {
+                count++;
+                if (count == index) {
+                    leaf.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 }
             }
+        }
+    }
+
+    private static List<AccessibilityNodeInfo> getLeaves(AccessibilityEvent event) {
+        List<AccessibilityNodeInfo> leaves = new ArrayList<>();
+        if (event.getSource() != null) {
+            getLeaves(leaves, event.getSource());
+        }
+
+        return leaves;
+    }
+
+    private static void getLeaves(List<AccessibilityNodeInfo> leaves, AccessibilityNodeInfo node) {
+        if (node.getChildCount() == 0) {
+            leaves.add(node);
+            return;
+        }
+
+        for (int i = 0; i < node.getChildCount(); i++) {
+            getLeaves(leaves, node.getChild(i));
         }
     }
 
