@@ -20,7 +20,7 @@ Para manejar la comunicación ussd, hay que tener presente que la interfaz depen
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.1.d
+`latestVersion` is 1.1.e
 
 Agregar en tu archivo `build.gradle` del proyecto Android:
 

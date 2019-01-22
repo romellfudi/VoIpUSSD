@@ -20,7 +20,7 @@ To comunicate with ussd display, It is necessary to have present that the interf
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.1.d
+`latestVersion` is 1.1.e
 
 Add the following in your app's `build.gradle` file:
 
