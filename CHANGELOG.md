@@ -1,5 +1,9 @@
 # Changelog
 
+## Release USSD Library 1.1.e Support for ITEL devices (21/01/2019)
+- Release context instead of activity & support for itel devices
+---
+
 ## Release USSD Library 1.1.d Splash Overlay (27/10/2018)
 - Release adding second Overlay using full device screen, don't show any flashing window
 ---
