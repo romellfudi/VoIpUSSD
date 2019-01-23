@@ -131,7 +131,7 @@ public class USSDController implements USSDInterface{
         intent.putExtra("Cdma_Supp", true);
 
         for (String s : simSlotName)
-            intent.putExtra(s, 0);
+            intent.putExtra(s, simSlot);
 
         return intent;
     }
@@ -213,7 +213,6 @@ public class USSDController implements USSDInterface{
                     Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES);
             if (settingValue != null) {
                 TextUtils.SimpleStringSplitter splitter = new TextUtils.SimpleStringSplitter(':');
-                ;
                 splitter.setString(settingValue);
                 while (splitter.hasNext()) {
                     String accessabilityService = splitter.next();
