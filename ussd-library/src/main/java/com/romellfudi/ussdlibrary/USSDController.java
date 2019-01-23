@@ -10,12 +10,15 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.provider.Settings;
+import android.telecom.PhoneAccountHandle;
+import android.telecom.TelecomManager;
 import android.text.TextUtils;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 /**
  *
@@ -103,6 +106,7 @@ public class USSDController implements USSDInterface{
      * @param uri parsed uri to call
      * @param simSlot simSlot number to use
      */
+    @SuppressLint("MissingPermission")
     private Intent getActionCallIntent(Uri uri, int simSlot) {
         // https://stackoverflow.com/questions/25524476/make-call-using-a-specified-sim-in-a-dual-sim-device
         final String simSlotName[] = {
@@ -132,6 +136,11 @@ public class USSDController implements USSDInterface{
 
         for (String s : simSlotName)
             intent.putExtra(s, simSlot);
+
+        TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
+        List<PhoneAccountHandle> phoneAccountHandleList = telecomManager.getCallCapablePhoneAccounts();
+        if (phoneAccountHandleList != null && phoneAccountHandleList.size() > simSlot)
+            intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", phoneAccountHandleList.get(simSlot));
 
         return intent;
     }
