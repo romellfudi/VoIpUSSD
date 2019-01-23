@@ -137,6 +137,14 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
 });
 ```
 
+for dual sim support
+
+```java
+ussdController.callUSSDInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInvoke() {
+    ...
+}
+```
+
 ## Overlay Service Widget (not required)
 
 A problem huge working with ussd is you cant invisible, disenable, resize or put on back in progressDialog
