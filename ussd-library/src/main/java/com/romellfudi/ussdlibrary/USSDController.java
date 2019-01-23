@@ -116,15 +116,15 @@ public class USSDController implements USSDInterface{
 
     private static void openSettingsAccessibility(final Activity activity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-        alertDialogBuilder.setTitle("Permisos de accesibilidad");
+        alertDialogBuilder.setTitle("Need accessibility permission");
         ApplicationInfo applicationInfo = activity.getApplicationInfo();
         int stringId = applicationInfo.labelRes;
         String name = applicationInfo.labelRes == 0 ?
                 applicationInfo.nonLocalizedLabel.toString() : activity.getString(stringId);
         alertDialogBuilder
-                .setMessage("Debe habilitar los permisos de accesibilidad para la app '" + name + "'");
+                .setMessage("You must enable accessibility permissions for the app '" + name + "'");
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setNeutralButton("Entendido", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNeutralButton("ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 activity.startActivityForResult(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1);
             }
