@@ -63,12 +63,23 @@ public class USSDController implements USSDInterface{
      * @param map Map of Login and problem messages
      * @param callbackInvoke a callback object from return answer
      */
-    @SuppressLint("MissingPermission")
     public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String,HashSet<String>> map, CallbackInvoke callbackInvoke) {
+        callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke);
+    }
+
+    /**
+     * Invoke a dial-up calling a ussd number
+     * @param ussdPhoneNumber ussd number
+     * @param simSlot simSlot number to use
+     * @param map Map of Login and problem messages
+     * @param callbackInvoke a callback object from return answer
+     */
+    @SuppressLint("MissingPermission")
+    public void callUSSDInvoke(String ussdPhoneNumber, int simSlot, HashMap<String,HashSet<String>> map, CallbackInvoke callbackInvoke) {
         this.callbackInvoke = callbackInvoke;
         this.map = map;
 
-        if (map==null || (map!=null && (!map.containsKey(KEY_ERROR) || !map.containsKey(KEY_LOGIN)) )){
+        if (map==null || (!map.containsKey(KEY_ERROR) || !map.containsKey(KEY_LOGIN)) ){
             callbackInvoke.over("Bad Mapping structure");
             return;
         }
@@ -83,8 +94,46 @@ public class USSDController implements USSDInterface{
                 ussdPhoneNumber = ussdPhoneNumber.replace("#", uri);
             Uri uriPhone = Uri.parse("tel:" + ussdPhoneNumber);
             if (uriPhone != null)
-                context.startActivity(new Intent(Intent.ACTION_CALL, uriPhone));
+                context.startActivity(getActionCallIntent(uriPhone, simSlot));
         }
+    }
+
+    /**
+     * get action call Intent
+     * @param uri parsed uri to call
+     * @param simSlot simSlot number to use
+     */
+    private Intent getActionCallIntent(Uri uri, int simSlot) {
+        // https://stackoverflow.com/questions/25524476/make-call-using-a-specified-sim-in-a-dual-sim-device
+        final String simSlotName[] = {
+                "extra_asus_dial_use_dualsim",
+                "com.android.phone.extra.slot",
+                "slot",
+                "simslot",
+                "sim_slot",
+                "subscription",
+                "Subscription",
+                "phone",
+                "com.android.phone.DialingMode",
+                "simSlot",
+                "slot_id",
+                "simId",
+                "simnum",
+                "phone_type",
+                "slotId",
+                "slotIdx"
+        };
+
+
+        Intent intent = new Intent(Intent.ACTION_CALL, uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("com.android.phone.force.slot", true);
+        intent.putExtra("Cdma_Supp", true);
+
+        for (String s : simSlotName)
+            intent.putExtra(s, 0);
+
+        return intent;
     }
 
     @Override
