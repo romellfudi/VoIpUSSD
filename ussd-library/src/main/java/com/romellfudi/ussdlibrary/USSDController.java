@@ -138,9 +138,11 @@ public class USSDController implements USSDInterface{
             intent.putExtra(s, simSlot);
 
         TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
-        List<PhoneAccountHandle> phoneAccountHandleList = telecomManager.getCallCapablePhoneAccounts();
-        if (phoneAccountHandleList != null && phoneAccountHandleList.size() > simSlot)
-            intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", phoneAccountHandleList.get(simSlot));
+        if(telecomManager != null) {
+            List<PhoneAccountHandle> phoneAccountHandleList = telecomManager.getCallCapablePhoneAccounts();
+            if (phoneAccountHandleList != null && phoneAccountHandleList.size() > simSlot)
+                intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", phoneAccountHandleList.get(simSlot));
+        }
 
         return intent;
     }
