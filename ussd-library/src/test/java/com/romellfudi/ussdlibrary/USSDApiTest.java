@@ -106,7 +106,7 @@ public class USSDApiTest {
         String MESSAGE = "waiting";
         texts.add(MESSAGE);
         when(accessibilityEvent.getText()).thenReturn(texts);
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke);
+        ussdController.callUSSDInvoke(0,"*1#", map, callbackInvoke);
         verify(callbackInvoke).over(stringArgumentCaptor.capture());
         assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
 
@@ -114,7 +114,7 @@ public class USSDApiTest {
         texts.remove(0);
         texts.add(MESSAGE);
         when(accessibilityEvent.getText()).thenReturn(texts);
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke);
+        ussdController.callUSSDInvoke(0,"*1#", map, callbackInvoke);
         verify(callbackInvoke,times(2)).over(stringArgumentCaptor.capture());
         assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
     }
@@ -144,7 +144,7 @@ public class USSDApiTest {
         texts.add(MESSAGE);
         when(accessibilityEvent.getText()).thenReturn(texts);
         when(USSDService.notInputText(accessibilityEvent)).thenReturn(true);
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke);
+        ussdController.callUSSDInvoke(0,"*1#", map, callbackInvoke);
         verify(callbackInvoke,times(1)).over(stringArgumentCaptor.capture());
         assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
 
@@ -174,7 +174,7 @@ public class USSDApiTest {
         String MESSAGE = "waiting";
         texts.add(MESSAGE);
         when(accessibilityEvent.getText()).thenReturn(texts);
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke);
+        ussdController.callUSSDInvoke(0,"*1#", map, callbackInvoke);
         verify(callbackInvoke,times(1)).over(stringArgumentCaptor.capture());
         assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
 

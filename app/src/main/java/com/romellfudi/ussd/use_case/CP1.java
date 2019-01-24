@@ -71,7 +71,7 @@ public class CP1 extends Fragment {
                 String phoneNumber = phone.getText().toString().trim();
                 final USSDController ussdController = USSDController.getInstance(getActivity());
                 result.setText("");
-                ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                ussdController.callUSSDInvoke(1,phoneNumber, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
                         Log.d("APP", message);
@@ -113,7 +113,7 @@ public class CP1 extends Fragment {
                 String phoneNumber = phone.getText().toString().trim();
                 final USSDController ussdController = USSDController.getInstance(getActivity());
                 result.setText("");
-                ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                ussdController.callUSSDInvoke(1,phoneNumber, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
                         Log.d("APP", message);
@@ -159,7 +159,7 @@ public class CP1 extends Fragment {
                 String phoneNumber = phone.getText().toString().trim();
                 final USSDController ussdController = USSDController.getInstance(getActivity());
                 result.setText("");
-                ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                ussdController.callUSSDInvoke(1,phoneNumber, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
                         Log.d("APP", message);
