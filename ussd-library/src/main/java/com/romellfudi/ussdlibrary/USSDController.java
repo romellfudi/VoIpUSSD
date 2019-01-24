@@ -62,13 +62,12 @@ public class USSDController implements USSDInterface{
 
     /**
      * Invoke a dial-up calling a ussd number
-     * @param simSlot sim Slot number, [0,1,2,..] depends by device
      * @param ussdPhoneNumber ussd number
      * @param map Map of Login and problem messages
      * @param callbackInvoke a callback object from return answer
      */
-    public void callUSSDInvoke(int simSlot,String ussdPhoneNumber, HashMap<String,HashSet<String>> map, CallbackInvoke callbackInvoke) {
-        callUSSDInvoke(ussdPhoneNumber, simSlot, map, callbackInvoke);
+    public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String,HashSet<String>> map, CallbackInvoke callbackInvoke) {
+        callUSSDInvoke(ussdPhoneNumber, 1, map, callbackInvoke);
     }
 
     /**
