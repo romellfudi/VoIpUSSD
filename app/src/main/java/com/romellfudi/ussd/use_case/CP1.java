@@ -50,7 +50,7 @@ public class CP1 extends Fragment {
         map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
         map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
         new PermissionService(getActivity()).request(
-                new String[]{permission.CALL_PHONE},
+                new String[]{permission.CALL_PHONE, permission.READ_PHONE_STATE},
                 callback);
     }
 
