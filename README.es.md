@@ -20,7 +20,7 @@ Para manejar la comunicación ussd, hay que tener presente que la interfaz depen
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.1.e
+`latestVersion` is ![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)
 
 Agregar en tu archivo `build.gradle` del proyecto Android:
 

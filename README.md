@@ -20,7 +20,7 @@ To comunicate with ussd display, It is necessary to have present that the interf
 
 ## USSD LIBRARY
 
-`latestVersion` is 1.1.e
+`latestVersion` is ![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)
 
 Add the following in your app's `build.gradle` file:
 
