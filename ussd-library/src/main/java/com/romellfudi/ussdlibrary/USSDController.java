@@ -67,7 +67,7 @@ public class USSDController implements USSDInterface{
      * @param callbackInvoke a callback object from return answer
      */
     public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String,HashSet<String>> map, CallbackInvoke callbackInvoke) {
-        callUSSDInvoke(ussdPhoneNumber, 1, map, callbackInvoke);
+        callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke);
     }
 
     /**
