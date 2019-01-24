@@ -1,6 +1,6 @@
 # Changelog
 
-## Release USSD Library 1.1.f Support multi-slot (23/01/2019)
+## Release USSD Library 1.1.g Support multi-slot (23/01/2019)
 - Release support multiple sim slots & increase minSDK to 23
 ---
 
