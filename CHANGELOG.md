@@ -1,5 +1,9 @@
 # Changelog
 
+## Release USSD Library 1.1.f Support multi-slot (23/01/2019)
+- Release support multiple sim slots
+---
+
 ## Release USSD Library 1.1.e Support for ITEL devices (21/01/2019)
 - Release context instead of activity & support for itel devices
 ---

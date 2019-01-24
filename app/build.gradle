@@ -35,5 +35,4 @@ dependencies {
     implementation 'com.android.support:design:28.+'
     implementation 'com.romellfudi.permission:fudi-permission:1.0.a'
     implementation project(':ussd-library')
-    //    implementation 'com.romellfudi.ussdlibrary:ussd-library:1.1.d'
 }
