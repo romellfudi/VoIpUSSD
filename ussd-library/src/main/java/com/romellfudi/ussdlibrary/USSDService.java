@@ -45,13 +45,12 @@ public class USSDService extends AccessibilityService {
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, 0);
-            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
             USSDController.instance.isRunning = false;
+            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
         }else if (problemView(event) || LoginView(event)) {
             // deal down
             clickOnButton(event, 1);
             USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
-            USSDController.instance.isRunning = false;
         }else if (isUSSDWidget(event)) {
             // ready for work
             String response = event.getText().get(0).toString();
@@ -62,8 +61,8 @@ public class USSDService extends AccessibilityService {
                 // not more input panels / LAST MESSAGE
                 // sent 'OK' button
                 clickOnButton(event, 0);
-                USSDController.instance.callbackInvoke.over(response);
                 USSDController.instance.isRunning = false;
+                USSDController.instance.callbackInvoke.over(response);
             } else {
                 // sent option 1
                 if (USSDController.instance.callbackMessage == null)
