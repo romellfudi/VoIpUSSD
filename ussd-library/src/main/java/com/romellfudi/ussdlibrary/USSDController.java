@@ -42,6 +42,8 @@ public class USSDController implements USSDInterface{
 
     protected static final String KEY_ERROR = "KEY_ERROR";
 
+    protected Boolean isRunning = false;
+
     private USSDInterface ussdInterface;
 
     /**
@@ -98,6 +100,7 @@ public class USSDController implements USSDInterface{
             Uri uriPhone = Uri.parse("tel:" + ussdPhoneNumber);
             if (uriPhone != null)
                 context.startActivity(getActionCallIntent(uriPhone, simSlot));
+                isRunning = true;
         }
     }
 
