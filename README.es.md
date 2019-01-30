@@ -10,7 +10,7 @@
 [![](https://img.shields.io/badge/language-EN-blue.svg)](./)
 
 ### by Romell Dominguez
-[![](snapshot/icono.png)](https://www.romellfudi.com/)
+[![](https://raw.githubusercontent.com/romellfudi/assets/master/favicon.ico)](https://www.romellfudi.com/)
 
 ## Objetivo [High Quality](https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif):
 
@@ -171,7 +171,7 @@ getActivity().stopService(svc);
 
 ## EXTRA: Uso de la línea voip
 
-En esta sección dejo las líneas claves para realizar la conexión VOIP-USSD
+En esta sección dejo las líneas requeridas para realizar la conexión VOIP-USSD
 
 ```java
 ussdPhoneNumber = ussdPhoneNumber.replace("#", uri);
