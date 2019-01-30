@@ -10,13 +10,13 @@
 [![](https://img.shields.io/badge/language-ES-blue.svg)](./README.es)
 
 ### by Romell Dominguez
-[![](snapshot/icono.png)](https://www.romellfudi.com/)
+[![](https://raw.githubusercontent.com/romellfudi/assets/master/favicon.ico)](https://www.romellfudi.com/)
 
 ## Target Development [High Quality](https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif):
 
 ![](snapshot/device_recored.gif#gif)
 
-To comunicate with ussd display, It is necessary to have present that the interface depends on the SO and on the manufacturer of Android device.
+Interactive with ussd windoows, It is necessary to have present that the interface depends on the SO and on the manufacturer of Android device.
 
 ## USSD LIBRARY
 
@@ -147,7 +147,7 @@ ussdController.callUSSDInvoke(phoneNumber, simSlot, map, new USSDController.Call
 
 ## Overlay Service Widget (not required)
 
-A problem huge working with ussd is you cant invisible, disenable, resize or put on back in progressDialog
+A huge problem working with ussd is you can not invisible, disenable, resize or put on back in progressDialog
 But now on Android O, Google allow build a nw kind permission from overlay widget, my solution was a widget call OverlayShowingService:
 For use need add permissions at AndroidManifest:
 
@@ -179,7 +179,7 @@ getActivity().stopService(svc);
 
 ### EXTRA: Use Voip line
 
-In this secction leave the lines to call to Telcom (ussd hadh number) for connected it:
+In this section leave the lines to call to Telcom (ussd number) for connected it:
 
 ```java
 ussdPhoneNumber = ussdPhoneNumber.replace("#", uri);
