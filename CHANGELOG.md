@@ -1,5 +1,9 @@
 # Changelog
 
+## Release USSD Library 1.1.h Interface for usage (13/02/2019)
+- Avoid issues when uses the reference: use USSDApi instead USSDController
+---
+
 ## Release USSD Library 1.1.g Support multi-slot (23/01/2019)
 - Release support multiple sim slots & increase minSDK to 23
 ---
