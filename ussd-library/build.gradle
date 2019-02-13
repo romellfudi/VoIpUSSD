@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://romellfudi.github.io/VoIpUSSDSample'
     gitUrl = 'https://romellfudi.github.io/VoIpUSSDSample.git'
 
-    libraryVersion = '1.1.g'
+    libraryVersion = '1.1.h'
 
     developerId = 'romellfudi'
     developerName = 'Romell Dominguez'

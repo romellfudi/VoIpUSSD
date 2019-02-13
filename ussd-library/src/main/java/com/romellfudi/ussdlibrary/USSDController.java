@@ -26,7 +26,7 @@ import java.util.List;
  * @version 1.1.c 27/09/2018
  * @since 1.0.a
  */
-public class USSDController implements USSDInterface{
+public class USSDController implements USSDInterface, USSDApi{
 
     protected static USSDController instance;
 
@@ -150,7 +150,6 @@ public class USSDController implements USSDInterface{
         return intent;
     }
 
-    @Override
     public void sendData(String text) {
         USSDService.send(text);
     }
