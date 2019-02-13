@@ -84,13 +84,13 @@ map.put("KEY_ERROR",new HashSet<>(Arrays.asList("problema", "problem", "error", 
 Instance an object ussController with context
 
 ```java
-ussdController = USSDController.getInstance(context);
-ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+USSDApi ussdApi = USSDController.getInstance(context);
+ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
         // message has the response string data
         String dataToSend = "data"// <- send "data" into USSD's input text
-        ussdController.send(dataToSend,new USSDController.CallbackMessage(){
+        ussdApi.send(dataToSend,new USSDController.CallbackMessage(){
             @Override
             public void responseMessage(String message) {
                 // message has the response string data from USSD
@@ -110,15 +110,15 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
 if you need work with your custom messages, use this structure:
 
 ```java
-ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
         // first option list - select option 1
-        ussdController.send("1",new USSDController.CallbackMessage(){
+        ussdApi.send("1",new USSDController.CallbackMessage(){
             @Override
             public void responseMessage(String message) {
                 // second option list - select option 1
-                ussdController.send("1",new USSDController.CallbackMessage(){
+                ussdApi.send("1",new USSDController.CallbackMessage(){
                     @Override
                     public void responseMessage(String message) {
                         ...
@@ -140,7 +140,7 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
 for dual sim support
 
 ```java
-ussdController.callUSSDInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInvoke() {
+ussdApi.callUSSDInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInvoke() {
     ...
 }
 ```

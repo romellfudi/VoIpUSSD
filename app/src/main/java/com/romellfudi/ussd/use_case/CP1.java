@@ -22,6 +22,7 @@ import com.romellfudi.permission.PermissionService;
 import com.romellfudi.ussd.R;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.SplashLoadingService;
+import com.romellfudi.ussdlibrary.USSDApi;
 import com.romellfudi.ussdlibrary.USSDController;
 
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class CP1 extends Fragment {
     private EditText phone;
     private Button btn1, btn2, btn3, btn4;
     private HashMap<String, HashSet<String>> map;
+    private USSDApi ussdApi;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,21 +71,21 @@ public class CP1 extends Fragment {
             @Override
             public void onClick(View v) {
                 String phoneNumber = phone.getText().toString().trim();
-                final USSDController ussdController = USSDController.getInstance(getActivity());
+                ussdApi = USSDController.getInstance(getActivity());
                 result.setText("");
-                ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
                         Log.d("APP", message);
                         result.append("\n-\n" + message);
                         // first option list - select option 1
-                        ussdController.send("1", new USSDController.CallbackMessage() {
+                        ussdApi.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
                                 Log.d("APP", message);
                                 result.append("\n-\n" + message);
                                 // second option list - select option 1
-                                ussdController.send("1", new USSDController.CallbackMessage() {
+                                ussdApi.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
                                         Log.d("APP", message);
@@ -111,21 +113,21 @@ public class CP1 extends Fragment {
                 getActivity().startService(svc);
                 Log.d("APP", "START OVERLAY DIALOG");
                 String phoneNumber = phone.getText().toString().trim();
-                final USSDController ussdController = USSDController.getInstance(getActivity());
+                ussdApi = USSDController.getInstance(getActivity());
                 result.setText("");
-                ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
                         Log.d("APP", message);
                         result.append("\n-\n" + message);
                         // first option list - select option 1
-                        ussdController.send("1", new USSDController.CallbackMessage() {
+                        ussdApi.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
                                 Log.d("APP", message);
                                 result.append("\n-\n" + message);
                                 // second option list - select option 1
-                                ussdController.send("1", new USSDController.CallbackMessage() {
+                                ussdApi.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
                                         Log.d("APP", message);

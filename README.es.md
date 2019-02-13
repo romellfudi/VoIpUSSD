@@ -84,13 +84,13 @@ map.put("KEY_ERROR",new HashSet<>(Arrays.asList("problema", "problem", "error", 
 Instancia un objeto ussController con su activity
 
 ```java
-ussdController = USSDController.getInstance(activity);
-ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+USSDApi ussdApi = USSDController.getInstance(activity);
+ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
         // message has the response string data
         String dataToSend = "data"// <- send "data" into USSD's input text
-        ussdController.send(dataToSend,new USSDController.CallbackMessage(){
+        ussdApi.send(dataToSend,new USSDController.CallbackMessage(){
             @Override
             public void responseMessage(String message) {
                 // message has the response string data from USSD
@@ -110,15 +110,15 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
 Si requiere un flujo de trabajo, tienes que usar la siguiente estructura:
 
 ```java
-ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
         // first option list - select option 1
-        ussdController.send("1",new USSDController.CallbackMessage(){
+        ussdApi.send("1",new USSDController.CallbackMessage(){
             @Override
             public void responseMessage(String message) {
                 // second option list - select option 1
-                ussdController.send("1",new USSDController.CallbackMessage(){
+                ussdApi.send("1",new USSDController.CallbackMessage(){
                     @Override
                     public void responseMessage(String message) {
                         ...
@@ -135,6 +135,14 @@ ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvok
     }
     ...
 });
+```
+
+Soporte multi-sim card:
+
+```java
+ussdApi.callUSSDInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInvoke() {
+    ...
+}
 ```
 
 ## Overlay Services Widget (no indispensable)
