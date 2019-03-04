@@ -40,7 +40,7 @@ public class USSDService extends AccessibilityService {
                 event.getEventType(), event.getClassName(), event.getPackageName(),
                 event.getEventTime(), event.getText()));
 
-        if(!USSDController.instance.isRunning) { return; }
+        if(USSDController.instance  == null || !USSDController.instance.isRunning) { return; }
 
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
