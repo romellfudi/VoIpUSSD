@@ -61,12 +61,12 @@ public class MainMenuActivity extends AppCompatActivity
             alertDialogBuilder.setTitle("Permisos de accesibilidad");
             alertDialogBuilder
                     .setMessage("Debe habilitar los permisos de accesibilidad para la app '"+getString(R.string.app_name)+"'")
-                            .setCancelable(false)
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    startActivityForResult(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1);
-                                }
-                            });
+                    .setCancelable(false)
+                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            startActivityForResult(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1);
+                        }
+                    });
             AlertDialog alertDialog = alertDialogBuilder.create();
             alertDialog.show();
         }
@@ -91,12 +91,9 @@ public class MainMenuActivity extends AppCompatActivity
                         });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                        && !Settings.canDrawOverlays(MainMenuActivity.this)) {
-                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                            Uri.parse("package:" + MainMenuActivity.this.getPackageName()));
-                    startActivity(intent);
-                }
+            } else if (canOverLay()) {
+                requestOverlayPermission();
+            }
     }
 
     private String TAG = MainMenuActivity.class.getSimpleName();
@@ -136,6 +133,18 @@ public class MainMenuActivity extends AppCompatActivity
         }
 
         return false;
+    }
+
+    public boolean canOverLay() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !Settings.canDrawOverlays(MainMenuActivity.this);
+    }
+
+    public void requestOverlayPermission() {
+        Toast.makeText(this, "You must allow for the app to appear on top of other apps.", Toast.LENGTH_LONG).show();
+        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                Uri.parse("package:" + MainMenuActivity.this.getPackageName()));
+        startActivity(intent);
     }
 
     @Override
