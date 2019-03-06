@@ -210,4 +210,66 @@ public class USSDApiTest {
         verify(callbackInvoke,times(2)).over(stringArgumentCaptor.capture());
         assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
     }
+
+    @Test
+    public void callUSSDOverlayInvokeMultipleMessages() {
+        HashMap<String, HashSet<String>> map = new HashMap<>();
+        map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
+        map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
+        mockStatic(USSDController.class);
+        mockStatic(USSDService.class);
+        mockStatic(Uri.class);
+        when(USSDController.verifyAccesibilityAccess(any(Activity.class))).thenReturn(true);
+        when(USSDController.verifyOverLay(any(Activity.class))).thenReturn(true);
+        when(Uri.decode(any(String.class))).thenReturn(string);
+        when(Uri.parse(any(String.class))).thenReturn(uri);
+        doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                ussdService.onAccessibilityEvent(accessibilityEvent);
+                return null;
+            }
+        }).when(activity).startActivity(any(Intent.class));
+        when(accessibilityEvent.getClassName()).thenReturn("amigo.app.AmigoAlertDialog");
+        List<CharSequence> texts = new ArrayList<CharSequence>(){};
+
+        String MESSAGE = "waiting";
+        texts.add(MESSAGE);
+        when(accessibilityEvent.getText()).thenReturn(texts);
+        ussdController.callUSSDOverlayInvoke("*1#", map, callbackInvoke);
+        verify(callbackInvoke,times(1)).over(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+
+        doAnswer(new Answer<Object>() {
+            @Override
+            public Object answer(InvocationOnMock invocation) throws Throwable {
+                ussdService.onAccessibilityEvent(accessibilityEvent);
+                return null;
+            }
+        }).when(ussdInterface).sendData(any(String.class));
+        MESSAGE = "Return a message from GATEWAY USSD";
+        texts.remove(0);
+        texts.add(MESSAGE);
+        when(accessibilityEvent.getText()).thenReturn(texts);
+        ussdController.send("1",callbackMessage);
+        verify(callbackMessage,times(1)).responseMessage(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        ussdController.send("1",callbackMessage);
+        verify(callbackMessage,times(2)).responseMessage(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        ussdController.send("1",callbackMessage);
+        verify(callbackMessage,times(3)).responseMessage(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        ussdController.send("1",callbackMessage);
+        verify(callbackMessage,times(4)).responseMessage(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+
+        MESSAGE = "Final Close dialog";
+        texts.remove(0);
+        texts.add(MESSAGE);
+        when(USSDService.notInputText(accessibilityEvent)).thenReturn(true);
+        ussdController.send("1",callbackMessage);
+        verify(callbackInvoke,times(2)).over(stringArgumentCaptor.capture());
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+    }
 }
