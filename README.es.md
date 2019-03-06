@@ -180,9 +180,14 @@ Invocar como cualquier servicio:
 
 ```java
 Intent svc = new Intent(activity, SplashLoadingService.class);
+// show layout
 getActivity().startService(svc);
-// stop
-getActivity().stopService(svc);
+ussdApi.callUSSDOverlayInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInvoke() {
+        ...
+        // dismiss layout
+        getActivity().stopService(svc);
+        ...
+}
 ```
 
 ![](snapshot/device_splash.gif#gif)
