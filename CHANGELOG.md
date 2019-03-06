@@ -1,5 +1,9 @@
 # Changelog
 
+## Release USSD Library 1.1.i Interface for usage (06/03/2019)
+- Overlay permissions moves into library and have static methods
+---
+
 ## Release USSD Library 1.1.h Interface for usage (13/02/2019)
 - Avoid issues when uses the reference: use USSDApi instead USSDController
 ---
