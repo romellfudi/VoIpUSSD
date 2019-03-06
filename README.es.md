@@ -137,6 +137,16 @@ ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
 });
 ```
 
+## Static Methods
+En caso de uso android >= M, necesitaras verificar los permisos:
+
+```java
+ # check if accessibility permissions is enable
+    USSDController.verifyAccesibilityAccess(Activity)
+ # check if overlay permissions is enable
+    USSDController.verifyOverLay(Activity)
+```
+
 Soporte multi-sim card:
 
 ```java

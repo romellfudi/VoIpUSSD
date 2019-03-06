@@ -145,6 +145,16 @@ ussdApi.callUSSDInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInv
 }
 ```
 
+## Static Methods
+In case use at android >= M, you need check permissions:
+
+```java
+ # check if accessibility permissions is enable
+    USSDController.verifyAccesibilityAccess(Activity)
+ # check if overlay permissions is enable
+    USSDController.verifyOverLay(Activity)
+```
+
 ## Overlay Service Widget (not required)
 
 A huge problem working with ussd is you can not invisible, disenable, resize or put on back in progressDialog
