@@ -1,11 +1,8 @@
-package com.romellfudi.ussd.use_case;
+package com.romellfudi.ussd.sample;
 
 import android.Manifest.permission;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +17,6 @@ import android.widget.Toast;
 
 import com.romellfudi.permission.PermissionService;
 import com.romellfudi.ussd.R;
-import com.romellfudi.ussd.act.MainMenuActivity;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.SplashLoadingService;
 import com.romellfudi.ussdlibrary.USSDApi;
@@ -38,14 +34,14 @@ import java.util.HashSet;
  * @version 1.1.b 27/09/2018
  * @since 1.0.a
  */
-public class CP1 extends Fragment {
+public class MainFragment extends Fragment {
 
     private TextView result;
     private EditText phone;
     private Button btn1, btn2, btn3, btn4;
     private HashMap<String, HashSet<String>> map;
     private USSDApi ussdApi;
-    private MainMenuActivity menuActivity;
+    private MainActivity menuActivity;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,7 +49,8 @@ public class CP1 extends Fragment {
         map = new HashMap<>();
         map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
         map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
-        menuActivity = (MainMenuActivity)getActivity();
+        ussdApi = USSDController.getInstance(getActivity());
+        menuActivity = (MainActivity) getActivity();
         new PermissionService(getActivity()).request(
                 new String[]{permission.CALL_PHONE, permission.READ_PHONE_STATE},
                 callback);
@@ -111,9 +108,7 @@ public class CP1 extends Fragment {
         btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (menuActivity.canOverLay()) {
-                    menuActivity.requestOverlayPermission();
-                } else {
+                if (USSDController.verifyOverLay(getActivity())) {
                     final Intent svc = new Intent(getActivity(), OverlayShowingService.class);
                     svc.putExtra(OverlayShowingService.EXTRA, "PROCESANDO");
                     getActivity().startService(svc);
@@ -121,7 +116,7 @@ public class CP1 extends Fragment {
                     String phoneNumber = phone.getText().toString().trim();
                     ussdApi = USSDController.getInstance(getActivity());
                     result.setText("");
-                    ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                    ussdApi.callUSSDOverlayInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                         @Override
                         public void responseInvoke(String message) {
                             Log.d("APP", message);
@@ -162,28 +157,25 @@ public class CP1 extends Fragment {
         btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (menuActivity.canOverLay()) {
-                    menuActivity.requestOverlayPermission();
-                } else {
+                if (USSDController.verifyOverLay(getActivity())) {
                     final Intent svc = new Intent(getActivity(), SplashLoadingService.class);
                     getActivity().startService(svc);
                     Log.d("APP", "START SPLASH DIALOG");
                     String phoneNumber = phone.getText().toString().trim();
-                    final USSDController ussdController = USSDController.getInstance(getActivity());
                     result.setText("");
-                    ussdController.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                    ussdApi.callUSSDOverlayInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                         @Override
                         public void responseInvoke(String message) {
                             Log.d("APP", message);
                             result.append("\n-\n" + message);
                             // first option list - select option 1
-                            ussdController.send("1", new USSDController.CallbackMessage() {
+                            ussdApi.send("1", new USSDController.CallbackMessage() {
                                 @Override
                                 public void responseMessage(String message) {
                                     Log.d("APP", message);
                                     result.append("\n-\n" + message);
                                     // second option list - select option 1
-                                    ussdController.send("1", new USSDController.CallbackMessage() {
+                                    ussdApi.send("1", new USSDController.CallbackMessage() {
                                         @Override
                                         public void responseMessage(String message) {
                                             Log.d("APP", message);
@@ -231,9 +223,6 @@ public class CP1 extends Fragment {
         @Override
         public void onFinally() {
             // pass
-            if (menuActivity.canOverLay()) {
-                menuActivity.requestOverlayPermission();
-            }
         }
     };
 

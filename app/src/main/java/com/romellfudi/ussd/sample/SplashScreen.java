@@ -1,4 +1,4 @@
-package com.romellfudi.ussd.act;
+package com.romellfudi.ussd.sample;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,7 +27,7 @@ public class SplashScreen extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(me, MainMenuActivity.class);
+                Intent intent = new Intent(me, MainActivity.class);
                 intent.putExtra("stop", true);
                 startActivity(intent);
                 finish();

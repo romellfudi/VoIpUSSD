@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.Settings;
 import android.telecom.PhoneAccountHandle;
 import android.telecom.TelecomManager;
@@ -21,18 +22,17 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- *
  * @author Romell Dominguez
  * @version 1.1.c 27/09/2018
  * @since 1.0.a
  */
-public class USSDController implements USSDInterface, USSDApi{
+public class USSDController implements USSDInterface, USSDApi {
 
     protected static USSDController instance;
 
     protected Context context;
 
-    protected HashMap<String,HashSet<String>> map;
+    protected HashMap<String, HashSet<String>> map;
 
     protected CallbackInvoke callbackInvoke;
 
@@ -48,6 +48,7 @@ public class USSDController implements USSDInterface, USSDApi{
 
     /**
      * The Singleton building method
+     *
      * @param context An activity that could call
      * @return An instance of USSDController
      */
@@ -64,49 +65,88 @@ public class USSDController implements USSDInterface, USSDApi{
 
     /**
      * Invoke a dial-up calling a ussd number
+     *
      * @param ussdPhoneNumber ussd number
-     * @param map Map of Login and problem messages
-     * @param callbackInvoke a callback object from return answer
+     * @param map             Map of Login and problem messages
+     * @param callbackInvoke  a callback object from return answer
      */
-    public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String,HashSet<String>> map, CallbackInvoke callbackInvoke) {
+    public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
         callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke);
     }
 
     /**
-     * Invoke a dial-up calling a ussd number
+     * Invoke a dial-up calling a ussd number &
+     * you had a overlay progress widget
+     *
      * @param ussdPhoneNumber ussd number
-     * @param simSlot simSlot number to use
-     * @param map Map of Login and problem messages
-     * @param callbackInvoke a callback object from return answer
+     * @param map             Map of Login and problem messages
+     * @param callbackInvoke  a callback object from return answer
+     */
+    public void callUSSDOverlayInvoke(String ussdPhoneNumber, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
+        callUSSDOverlayInvoke(ussdPhoneNumber, 0, map, callbackInvoke);
+    }
+
+    /**
+     * Invoke a dial-up calling a ussd number
+     *
+     * @param ussdPhoneNumber ussd number
+     * @param simSlot         simSlot number to use
+     * @param map             Map of Login and problem messages
+     * @param callbackInvoke  a callback object from return answer
      */
     @SuppressLint("MissingPermission")
-    public void callUSSDInvoke(String ussdPhoneNumber, int simSlot, HashMap<String,HashSet<String>> map, CallbackInvoke callbackInvoke) {
+    public void callUSSDInvoke(String ussdPhoneNumber, int simSlot, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
         this.callbackInvoke = callbackInvoke;
         this.map = map;
-
-        if (map==null || (!map.containsKey(KEY_ERROR) || !map.containsKey(KEY_LOGIN)) ){
-            callbackInvoke.over("Bad Mapping structure");
-            return;
-        }
-
-        if (ussdPhoneNumber.isEmpty()) {
-            callbackInvoke.over("Bad ussd number");
-            return;
-        }
         if (verifyAccesibilityAccess(context)) {
-            String uri = Uri.encode("#");
-            if (uri != null)
-                ussdPhoneNumber = ussdPhoneNumber.replace("#", uri);
-            Uri uriPhone = Uri.parse("tel:" + ussdPhoneNumber);
-            if (uriPhone != null)
-                isRunning = true;
-                context.startActivity(getActionCallIntent(uriPhone, simSlot));
+            dialUp(ussdPhoneNumber, simSlot);
+        } else {
+            this.callbackInvoke.over("Check your accessibility");
         }
     }
 
     /**
+     * Invoke a dial-up calling a ussd number &
+     * you had a overlay progress widget
+     *
+     * @param ussdPhoneNumber ussd number
+     * @param simSlot         simSlot number to use
+     * @param map             Map of Login and problem messages
+     * @param callbackInvoke  a callback object from return answer
+     */
+    @SuppressLint("MissingPermission")
+    public void callUSSDOverlayInvoke(String ussdPhoneNumber, int simSlot, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
+        this.callbackInvoke = callbackInvoke;
+        this.map = map;
+        if (verifyAccesibilityAccess(context) && verifyOverLay(context)) {
+            dialUp(ussdPhoneNumber, simSlot);
+        } else {
+            this.callbackInvoke.over("Check your accessibility | overlay permission");
+        }
+    }
+
+    private void dialUp(String ussdPhoneNumber, int simSlot) {
+        if (map == null || (!map.containsKey(KEY_ERROR) || !map.containsKey(KEY_LOGIN))) {
+            this.callbackInvoke.over("Bad Mapping structure");
+            return;
+        }
+        if (ussdPhoneNumber.isEmpty()) {
+            this.callbackInvoke.over("Bad ussd number");
+            return;
+        }
+        String uri = Uri.encode("#");
+        if (uri != null)
+            ussdPhoneNumber = ussdPhoneNumber.replace("#", uri);
+        Uri uriPhone = Uri.parse("tel:" + ussdPhoneNumber);
+        if (uriPhone != null)
+            isRunning = true;
+        this.context.startActivity(getActionCallIntent(uriPhone, simSlot));
+    }
+
+    /**
      * get action call Intent
-     * @param uri parsed uri to call
+     *
+     * @param uri     parsed uri to call
      * @param simSlot simSlot number to use
      */
     @SuppressLint("MissingPermission")
@@ -131,7 +171,6 @@ public class USSDController implements USSDInterface, USSDApi{
                 "slotIdx"
         };
 
-
         Intent intent = new Intent(Intent.ACTION_CALL, uri);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("com.android.phone.force.slot", true);
@@ -141,7 +180,7 @@ public class USSDController implements USSDInterface, USSDApi{
             intent.putExtra(s, simSlot);
 
         TelecomManager telecomManager = (TelecomManager) context.getSystemService(Context.TELECOM_SERVICE);
-        if(telecomManager != null) {
+        if (telecomManager != null) {
             List<PhoneAccountHandle> phoneAccountHandleList = telecomManager.getCallCapablePhoneAccounts();
             if (phoneAccountHandleList != null && phoneAccountHandleList.size() > simSlot)
                 intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", phoneAccountHandleList.get(simSlot));
@@ -154,7 +193,7 @@ public class USSDController implements USSDInterface, USSDApi{
         USSDService.send(text);
     }
 
-    public void send(String text, CallbackMessage callbackMessage){
+    public void send(String text, CallbackMessage callbackMessage) {
         this.callbackMessage = callbackMessage;
         ussdInterface.sendData(text);
     }
@@ -162,7 +201,7 @@ public class USSDController implements USSDInterface, USSDApi{
     public static boolean verifyAccesibilityAccess(Context context) {
         boolean isEnabled = USSDController.isAccessiblityServicesEnable(context);
         if (!isEnabled) {
-            if(context instanceof Activity) {
+            if (context instanceof Activity) {
                 openSettingsAccessibility((Activity) context);
             } else {
                 Toast.makeText(
@@ -170,25 +209,63 @@ public class USSDController implements USSDInterface, USSDApi{
                         "voipUSSD accessibility service is not enabled",
                         Toast.LENGTH_LONG
                 ).show();
-
             }
         }
         return isEnabled;
     }
 
+    public static boolean verifyOverLay(Context context) {
+        boolean m_android_doesnt_grant = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !Settings.canDrawOverlays(context);
+        if (m_android_doesnt_grant) {
+            if (context instanceof Activity) {
+                openSettingsOverlay((Activity) context);
+            } else {
+                Toast.makeText(context,
+                        "Overlay permission have not grant permission.",
+                        Toast.LENGTH_LONG).show();
+            }
+            return false;
+        } else
+            return true;
+    }
+
     private static void openSettingsAccessibility(final Activity activity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
-        alertDialogBuilder.setTitle("Need accessibility permission");
+        alertDialogBuilder.setTitle("USSD Accessibility permission");
         ApplicationInfo applicationInfo = activity.getApplicationInfo();
         int stringId = applicationInfo.labelRes;
         String name = applicationInfo.labelRes == 0 ?
                 applicationInfo.nonLocalizedLabel.toString() : activity.getString(stringId);
         alertDialogBuilder
                 .setMessage("You must enable accessibility permissions for the app '" + name + "'");
-        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setCancelable(true);
         alertDialogBuilder.setNeutralButton("ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 activity.startActivityForResult(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1);
+            }
+        });
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        if (alertDialog != null) {
+            alertDialog.show();
+        }
+    }
+
+    private static void openSettingsOverlay(final Activity activity) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+        alertDialogBuilder.setTitle("USSD Overlay permission");
+        ApplicationInfo applicationInfo = activity.getApplicationInfo();
+        int stringId = applicationInfo.labelRes;
+        String name = applicationInfo.labelRes == 0 ?
+                applicationInfo.nonLocalizedLabel.toString() : activity.getString(stringId);
+        alertDialogBuilder
+                .setMessage("You must allow for the app to appear '" + name + "' on top of other apps.");
+        alertDialogBuilder.setCancelable(true);
+        alertDialogBuilder.setNeutralButton("ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                        Uri.parse("package:" + activity.getPackageName()));
+                activity.startActivity(intent);
             }
         });
         AlertDialog alertDialog = alertDialogBuilder.create();
@@ -240,6 +317,7 @@ public class USSDController implements USSDInterface, USSDApi{
 
     public interface CallbackInvoke {
         void responseInvoke(String message);
+
         void over(String message);
     }
 
