@@ -75,7 +75,7 @@ public class USSDController implements USSDInterface, USSDApi {
     }
 
     /**
-     * Invoke a dial-up calling a ussd number &
+     * Invoke a dial-up calling a ussd number and
      * you had a overlay progress widget
      *
      * @param ussdPhoneNumber ussd number
@@ -106,7 +106,7 @@ public class USSDController implements USSDInterface, USSDApi {
     }
 
     /**
-     * Invoke a dial-up calling a ussd number &
+     * Invoke a dial-up calling a ussd number and
      * you had a overlay progress widget
      *
      * @param ussdPhoneNumber ussd number
