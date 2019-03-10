@@ -138,7 +138,7 @@ ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
 ```
 
 ## Static Methods
-En caso de uso android >= M, necesitaras verificar los permisos:
+En caso de uso android >= M, necesitaras verificar los permisos, igualmente los métodos `callUSSDInvoke` y `callUSSDOverlayInvoke` también verifican que esten habilitados;
 
 ```java
  # check if accessibility permissions is enable
