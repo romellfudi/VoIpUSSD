@@ -100,7 +100,7 @@ ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
 
     @Override
     public void over(String message) {
-        // message has the response string data from USSD
+        // message has the response string data from USSD or error
         // response no have input text, NOT SEND ANY DATA
     }
 });
@@ -146,7 +146,7 @@ ussdApi.callUSSDInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInv
 ```
 
 ## Static Methods
-In case use at android >= M, you need check permissions:
+In case use at android >= M, you could check previusly permissions, `callInvoke` and `callUSSDOverlayInvoke` methods check eneble too:
 
 ```java
  # check if accessibility permissions is enable
