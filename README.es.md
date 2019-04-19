@@ -22,6 +22,8 @@ Para manejar la comunicación ussd, hay que tener presente que la interfaz depen
 
 `latestVersion` is ![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)
 
+`kotlinLatestVersion` is ![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)
+
 Agregar en tu archivo `build.gradle` del proyecto Android:
 
 ```groovy
@@ -29,9 +31,14 @@ repositories {
     jcenter()
 }
 dependencies {
-    compile 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+    // java
+    implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+    // kotlin
+    implementation 'com.romellfudi.ussdlibrary:ussd-libraryKt:{kotlinLatestVersion}'
 }
 ```
+
+En caso uses Kotlin, revisar mi otro proyecto (kotlin branch en archivado): [`Kotlin Void USSD`](https://github.com/romellfudi/KotlinVoIpUSSD)
 
 * Escribir el archivo xml [acá](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
 

@@ -22,6 +22,8 @@ Interactive with ussd windoows, It is necessary to have present that the interfa
 
 `latestVersion` is ![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)
 
+`kotlinLatestVersion` is ![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)
+
 Add the following in your app's `build.gradle` file:
 
 ```groovy
@@ -29,9 +31,14 @@ repositories {
     jcenter()
 }
 dependencies {
+    // java
     implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+    // kotlin
+    implementation 'com.romellfudi.ussdlibrary:ussd-libraryKt:{kotlinLatestVersion}'
 }
 ```
+
+if you use Kotlin please check my other project (kotlin branch is deprecated): [`Kotlin Void USSD`](https://github.com/romellfudi/KotlinVoIpUSSD)
 
 * Writing xml config file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
 
