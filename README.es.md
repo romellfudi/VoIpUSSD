@@ -34,7 +34,7 @@ dependencies {
     // java
     implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
     // kotlin
-    implementation 'com.romellfudi.ussdlibrary:ussd-libraryKt:{kotlinLatestVersion}'
+    implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{kotlinLatestVersion}'
 }
 ```
 
