@@ -1,1 +1,1 @@
-include ':app', ':ussd-library'
+include ':app', ':ussd-library',':app-kotlin', ':ussd-library-kotlin'
