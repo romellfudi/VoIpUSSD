@@ -21,12 +21,19 @@ jobs:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
-          name: Run Tests
+          name: Run Java Tests
           command: ./gradlew assembleDebug lint testDebugUnitTest -p ussd-library
       - store_artifacts:
           path: ussd-library/build/reports
           destination: reports
       - store_test_results:
           path: ussd-library/build/test-results
-
+      - run:
+          name: Run Kotlin Tests
+          command: ./gradlew assembleDebug lint testDebugUnitTest -p ussd-library-kotlin
+      - store_artifacts:
+          path: ussd-library-kotlin/build/reports
+          destination: reports
+      - store_test_results:
+          path: ussd-library-kotlin/build/test-results
 #
