@@ -1,0 +1,128 @@
+<resources>
+
+    <color name="float_button">#44658d</color>
+    <color name="fondo">#22344A</color>
+    <color name="transparent_gray">#BF7d817d</color>
+    <color name="transparent_blue">#BF051A2B</color>
+    <color name="blue_button">#0E3149</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="bloqueanteH">#c60e0e</color>
+    <color name="bloqueanteB">#c60e0e</color>
+    <color name="excepcionH">#ff6700</color>
+    <color name="excepcionB">#ff6700</color>
+    <color name="alertaH">#f7be2f</color>
+    <color name="alertaB">#f7be2f</color>
+    <color name="informativaH">#57a356</color>
+    <color name="informativaB">#57a356</color>
+    <color name="green">#00B050</color>
+    <color name="bg_buttonOfertaComercial">#509386</color>
+    <color name="black_button">#4D4D4D</color>
+    <!-- BLUE -->
+    <color name="blue_background">#FFFFFF</color>
+    <color name="blue_header_background">#00328E</color>
+    <color name="blue_title_text">#FFFFFF</color>
+    <color name="blue_normal_text">#00328E</color>
+    <color name="blue_divider">#EAEAEA</color>
+    <color name="blue_listview_background">#EAEAEA</color>
+    <color name="blue_listview_item_background">#FFFFFF</color>
+    <color name="blue_listview_item_pressed_background">#00DBFF</color>
+    <color name="blue_button_background">#007CB2</color>
+    <color name="spinner_popup_background">#4c4c4c</color>
+    <color name="blue_button_pressed_background">#006793</color>
+    <color name="blue_header_listview_background">#004675</color>
+    <color name="blue_menu_background">#EAEAEA</color>
+    <color name="blue_menu_button_background">#FFFFFF</color>
+    <color name="blue_menu_button_pressed_background">#E8E8E8</color>
+
+    <!-- BLACK -->
+    <color name="black_background">#000000</color>
+    <color name="black_header_background">#000000</color>
+    <color name="black_title_text">#FFFFFF</color>
+    <color name="black_normal_text">#FFFFFF</color>
+    <color name="black_divider">#930000</color>
+    <color name="black_listview_background">#000000</color>
+    <color name="black_listview_item_background">#000000</color>
+    <color name="black_listview_item_pressed_background">#00003A</color>
+    <color name="black_button_background">#B20000</color>
+    <color name="black_button_pressed_background">#970000</color>
+    <color name="black_button2_background">#006D00</color>
+    <color name="black_button2_pressed_background">#005100</color>
+    <color name="black_header_listview_background">#000000</color>
+    <color name="black_menu_button_background">#000000</color>
+    <color name="black_menu_button_stroke">#930000</color>
+    <color name="black_menu_button_pressed_background">#1A1A1A</color>
+
+    <!-- BLUE BLACK -->
+    <color name="blue_black_background">#001733</color>
+    <color name="blue_black_header_background">#001733</color>
+    <color name="blue_black_title_text">#FFFFFF</color>
+    <color name="blue_black_normal_text">#FFFFFF</color>
+    <color name="blue_black_divider">#FFFFFF</color>
+    <color name="blue_black_listview_background">#001733</color>
+    <color name="blue_black_listview_item_background">#001733</color>
+    <color name="blue_black_listview_item_pressed_background">#006CC4</color>
+    <color name="blue_black_button_background">#04A32A</color>
+    <color name="blue_black_button_pressed_background">#038925</color>
+    <color name="blue_black_button2_background">#00826F</color>
+    <color name="blue_black_button2_pressed_background">#006A5A</color>
+    <color name="blue_black_header_listview_background">#00567C</color>
+    <color name="blue_black_menu_button_background">#002D59</color>
+    <color name="blue_black_menu_button_pressed_background">#001C37</color>
+
+    <!-- OTRO -->
+    <color name="black_overlay">#66000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="splash">#f4f3f3</color>
+    <color name="dark_blue">#00328E</color>
+    <color name="sky_blue">#ff63b8ff</color>
+    <color name="grey">#EFEFEF</color>
+    <color name="dark_grey">#545454</color>
+    <color name="red">#FF0000</color>
+    <color name="light_red">#F5A9A9</color>
+    <color name="black">#000000</color>
+    <color name="button_color">#03111E</color>
+    <color name="table_header_color">#004675</color>
+    <color name="green_table">#14b702</color>
+    <color name="orange_text">#fc8f00</color>
+    <color name="gray_row_background">#1e1e1e</color>
+    <color name="gray_row_background2">#1e1e1e</color>
+    <color name="button_login">#D3CF44</color>
+    <color name="splash_back">#1175A5</color>
+    <color name="login_back">#1175A5</color>
+    <color name="Black">#000000</color>
+    <color name="btn_enviar">#0F73A4</color>
+    <color name="background_color">#051A2B</color>
+    <color name="transparent">#80000000</color>
+    <color name="verde_pastel">#5BB8AC</color>
+    <color name="gray_text">#A9AAA9</color>
+    <color name="gray_custom">#e2e2e2</color>
+    <color name="et_background">#A7A6A5</color>
+    <color name="blue_slide_background">#2B6590</color>
+    <color name="red_slide_background">#E16C62</color>
+    <color name="line_color">#8A8888</color>
+
+    <color name="comercial_text_cabecera">#414141</color>
+    <color name="comercial_fondo">#D5D6D7</color>
+    <color name="comercial_data_cabecera">#787979</color>
+    <color name="comercial_linea_divisoria">#787979</color>
+    <color name="comercial_fondo_parent_stroke">#A6000000</color>
+    <color name="comercial_fondo_parent">#2D6590</color>
+    <color name="comercial_fondo_txtParent">#FFFFFF</color>
+
+    <color name="comercial_oferta_child_background">#626262</color>
+    <color name="comercial_oferta_child_text">#FFFFFF</color>
+
+    <color name="comercial_oferta_cot_cab2_matriz">#5BB9AC</color>
+    <color name="comercial_oferta_cot_cab1_matriz_izq">#2D6590</color>
+    <color name="comercial_oferta_cot_cab1_matriz_der">#444444</color>
+    <color name="comercial_oferta_cot_detail_Ambar">#E4C171</color>
+    <color name="comercial_oferta_cot_detail_Gris">#BEBEBE</color>
+    <color name="comercial_oferta_cot_detail_Verde">#5BB9AC</color>
+    <color name="comercial_oferta_cot_detail_Rojo">#FF5C5C</color>
+    <color name="background_rounded_corner">#FBFDFF</color>
+    <color name="comercial_error_header_fondo">#FF4D4D</color>
+    <color name="comercial_error_header_text">#FFFFFF</color>
+    <color name="comercial_error_body_fondo">#FFFFFF</color>
+    <color name="comercial_error_body_text">#FF4D4D</color>
+
+</resources>
