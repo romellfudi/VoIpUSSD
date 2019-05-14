@@ -236,8 +236,9 @@ Add Broadcast Service:
 Invoke like a normal service:
 
 ```java
+svc = new Intent(activity, SplashLoadingService.class);
 // show layout
-getActivity().startService(new Intent(activity, SplashLoadingService.class));
+getActivity().startService();
 ussdApi.callUSSDOverlayInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInvoke() {
         ...
         // dismiss layout
@@ -247,8 +248,9 @@ ussdApi.callUSSDOverlayInvoke(phoneNumber, simSlot, map, new USSDController.Call
 ```
 
 ```kotlin
+svc = Intent(activity, OverlayShowingService::class.java)
 // show layout
-activity.startService(Intent(activity, OverlayShowingService::class.java))
+activity.startService(svc)
 ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
         ...
         // dismiss layout
