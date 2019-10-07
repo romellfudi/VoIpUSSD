@@ -261,6 +261,10 @@ ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!, object : USSDController.Callba
 
 ![](snapshot/device_splash.gif#gif)
 
+## Cordova Plugin
+
+* **cordova-plugin-VoIpUSSD** - [Ramy Mokako](https://github.com/rmxakalogistik/cordova-plugin-VoIpUSSD#cordova-plugin-voipussd)
+
 ## EXTRA: Uso de la línea voip
 
 En esta sección dejo las líneas requeridas para realizar la conexión VOIP-USSD
