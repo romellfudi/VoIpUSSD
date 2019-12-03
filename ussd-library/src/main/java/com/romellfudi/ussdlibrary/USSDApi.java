@@ -19,4 +19,5 @@ public interface USSDApi {
                                USSDController.CallbackInvoke callbackInvoke);
     void callUSSDOverlayInvoke(String ussdPhoneNumber, int simSlot, HashMap<String,HashSet<String>> map,
                                USSDController.CallbackInvoke callbackInvoke);
+    void close();
 }
