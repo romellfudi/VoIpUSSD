@@ -229,6 +229,10 @@ public class USSDController implements USSDInterface, USSDApi {
         } else
             return true;
     }
+    
+    public static void close() {
+        USSDService.close();
+    }
 
     private static void openSettingsAccessibility(final Activity activity) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
