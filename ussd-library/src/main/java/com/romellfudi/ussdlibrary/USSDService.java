@@ -84,6 +84,10 @@ public class USSDService extends AccessibilityService {
         setTextIntoField(event, text);
         clickOnButton(event, 1);
     }
+    
+    public static void close() {
+        clickOnButton(event, 0);
+    }
 
     /**
      * set text into input text at USSD widget
