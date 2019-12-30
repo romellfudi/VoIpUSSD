@@ -3,7 +3,7 @@
 [![Platform](https://img.shields.io/badge/platform-android-brightgreen.svg)](https://developer.android.com/index.html)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/romellfudi/VoIpUSSDSample/blob/master/LICENSE)
-[![Gitter](https://badges.gitter.im/AndroidVoIpUSSD/community.svg)](https://gitter.im/AndroidVoIpUSSD/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![Gitter](https://badges.gitter.im/romellfudi/VoIpUSSD.svg)](https://gitter.im/romellfudi/VoIpUSSD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Bintray](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)](https://bintray.com/romllz489/maven/ussd-library)
 [![Bintray Kotlin](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Void%20USSD%20Library-green.svg?style=flat )]( https://android-arsenal.com/details/1/7151 )
@@ -21,7 +21,7 @@
 Interactive with ussd windoows, It is necessary to have present that the interface depends on the SO and on the manufacturer of Android device.
 
 ## Community Chat
-- Join us [![Gitter](https://badges.gitter.im/AndroidVoIpUSSD/community.svg)](https://gitter.im/AndroidVoIpUSSD/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+- Join us [![Gitter](https://badges.gitter.im/romellfudi/VoIpUSSD.svg)](https://gitter.im/romellfudi/VoIpUSSD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 ## USSD LIBRARY
 
