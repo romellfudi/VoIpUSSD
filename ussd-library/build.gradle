@@ -54,5 +54,5 @@ dependencies {
     testImplementation 'org.powermock:powermock-api-mockito:1.6.2'
 }
 
-apply from: 'https://raw.githubusercontent.com/romellfudi/assets/master/artifactory_bintray.gradle'
-apply from: 'https://raw.githubusercontent.com/romellfudi/assets/master/artifactory_install.gradle'
+apply from: 'https://raw.githubusercontent.com/romellfudi/assets/bintray/artifactory_bintray.gradle'
+apply from: 'https://raw.githubusercontent.com/romellfudi/assets/bintray/artifactory_install.gradle'
