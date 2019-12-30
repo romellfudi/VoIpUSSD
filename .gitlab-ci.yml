@@ -4,7 +4,7 @@ image: openjdk:8-jdk
 
 variables:
   ANDROID_COMPILE_SDK: "28"
-  ANDROID_BUILD_TOOLS: "28.0.2"
+  ANDROID_BUILD_TOOLS: "28.0.3"
   ANDROID_SDK_TOOLS: "24.4.1"
 
 before_script:
@@ -23,13 +23,23 @@ before_script:
   - chmod +x ./gradlew
 
 stages:
-  - build_test
+  - build_test_1
+  - build_test_2
 
 build_test:
-  stage: build_test
+  stage: build_test_1
   script:
     - ./gradlew assembleDebug testDebugUnitTest -p ussd-library
   artifacts:
     paths:
     - ussd-library/build/outputs/
     - ussd-library/build/reports/
+
+build_test:
+  stage: build_test_2
+  script:
+    - ./gradlew assembleDebug testDebugUnitTest -p ussd-library-kotlin
+  artifacts:
+    paths:
+    - ussd-library-kotlin/build/outputs/
+    - ussd-library-kotlin/build/reports/
