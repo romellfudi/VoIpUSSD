@@ -3,7 +3,7 @@
 [![Platform](https://img.shields.io/badge/platform-android-brightgreen.svg)](https://developer.android.com/index.html)
 [![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=23)
 [![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg)](https://github.com/romellfudi/VoIpUSSDSample/blob/master/LICENSE)
-[![](https://github.com/romellfudi/VoIpUSSD/workflows/Android%20CI/badge.svg)](https://github.com/romellfudi/VoIpUSSD/workflows/Android%20CI/badge.svg)
+[![](https://github.com/romellfudi/VoIpUSSD/workflows/Android%20CI/badge.svg)](https://github.com/romellfudi/VoIpUSSD/actions)
 [![Gitter](https://badges.gitter.im/romellfudi/VoIpUSSD.svg)](https://gitter.im/romellfudi/VoIpUSSD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Bintray](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)](https://bintray.com/romllz489/maven/ussd-library)
 [![Bintray Kotlin](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
