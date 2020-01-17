@@ -13,7 +13,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <!--  -->
         <service
             android:name="com.romellfudi.ussdlibrary.USSDService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -24,16 +23,9 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/ussd_service" />
         </service>
-
         <activity
             android:name="com.romellfudi.ussd.sample.MainActivity"
             android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="sensorPortrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
-
-        <activity android:name="com.romellfudi.ussd.sample.SplashScreen"
             android:launchMode="singleTop"
             android:screenOrientation="sensorPortrait"
             android:theme="@style/AppTheme.NoActionBar"
