@@ -1,6 +1,5 @@
 package com.romellfudi.ussd.sample;
 
-import android.Manifest.permission;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -51,9 +50,7 @@ public class MainFragment extends Fragment {
         map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
         ussdApi = USSDController.getInstance(getActivity());
         menuActivity = (MainActivity) getActivity();
-        new PermissionService(getActivity()).request(
-                new String[]{permission.CALL_PHONE, permission.READ_PHONE_STATE},
-                callback);
+        new PermissionService(getActivity()).request(callback);
     }
 
     @Override
@@ -213,16 +210,13 @@ public class MainFragment extends Fragment {
 
     private PermissionService.Callback callback = new PermissionService.Callback() {
         @Override
-        public void onRefuse(ArrayList<String> RefusePermissions) {
-            Toast.makeText(getContext(),
-                    getString(R.string.refuse_permissions),
-                    Toast.LENGTH_SHORT).show();
-            getActivity().finish();
-        }
-
-        @Override
-        public void onFinally() {
-            // pass
+        public void onResponse(ArrayList<String> refusePermissions) {
+            if (refusePermissions != null) {
+                Toast.makeText(getContext(),
+                        getString(R.string.refuse_permissions),
+                        Toast.LENGTH_SHORT).show();
+                getActivity().finish();
+            }
         }
     };
 
