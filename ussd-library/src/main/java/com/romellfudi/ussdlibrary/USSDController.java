@@ -193,6 +193,11 @@ public class USSDController implements USSDInterface, USSDApi {
         USSDService.send(text);
     }
 
+    @Override
+    public void cancelSession() {
+        USSDService.cancelSession();
+    }
+
     public void send(String text, CallbackMessage callbackMessage) {
         this.callbackMessage = callbackMessage;
         ussdInterface.sendData(text);
