@@ -97,6 +97,8 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
         }
     }
 
+    override fun cancelUssdSession() { USSDService.cancelSession() }
+
     /**
      * Invoke a dial-up calling a ussd number and
      * you had a overlay progress widget

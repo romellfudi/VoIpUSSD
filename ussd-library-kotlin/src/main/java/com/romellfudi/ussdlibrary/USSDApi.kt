@@ -21,4 +21,6 @@ interface USSDApi {
 
     fun callUSSDOverlayInvoke(ussdPhoneNumber: String, simSlot: Int, map: HashMap<String, HashSet<String>>,
                               callbackInvoke: USSDController.CallbackInvoke)
+
+    fun cancelUssdSession()
 }
