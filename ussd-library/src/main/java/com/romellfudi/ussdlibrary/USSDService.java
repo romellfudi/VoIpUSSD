@@ -85,6 +85,8 @@ public class USSDService extends AccessibilityService {
         clickOnButton(event, 1);
     }
 
+    public static void cancelSession() { clickOnCancelButton(event); }
+
     /**
      * set text into input text at USSD widget
      * @param event AccessibilityEvent
@@ -166,6 +168,18 @@ public class USSDService extends AccessibilityService {
             if (leaf.getClassName().toString().toLowerCase().contains("button")) {
                 count++;
                 if (count == index) {
+                    leaf.performAction(AccessibilityNodeInfo.ACTION_CLICK);
+                }
+            }
+        }
+    }
+
+    protected static void clickOnCancelButton(AccessibilityEvent event) {
+        for (AccessibilityNodeInfo leaf : getLeaves(event)) {
+            if (leaf.getClassName().toString().toLowerCase().contains("button")) {
+
+                if (leaf.getText().toString().contains("cancel")
+                || leaf.getText().toString().contains("end")) {
                     leaf.performAction(AccessibilityNodeInfo.ACTION_CLICK);
                 }
             }
