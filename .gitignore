@@ -9,3 +9,6 @@
 .externalNativeBuild
 .classpath
 /.settings
+.idea
+/ussd-library-kotlin/build/
+/app-kotlin/build/
