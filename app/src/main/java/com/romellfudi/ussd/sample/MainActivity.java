@@ -46,25 +46,24 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_menu);
-
         if (savedInstanceState == null)
             splashy();
+        setContentView(R.layout.activity_main_menu);
 
         appUpdateManager = AppUpdateManagerFactory.create(this);
         appUpdateManager.registerListener(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getString(R.string.title_activity_cp1));
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentTransaction fragment = getSupportFragmentManager().beginTransaction();
-        fragment.replace(R.id.fragment_layout, new MainFragment()); // f1_container is your FrameLayout container
-        fragment.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        fragment.addToBackStack(null);
-        fragment.commit();
-        getSupportActionBar().setTitle(getString(R.string.title_activity_cp1));
+        fragment.replace(R.id.fragment_layout, new MainFragment())
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                .addToBackStack(null)
+                .commit();
 
     }
 
@@ -177,11 +176,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void showMessage(String message) {
-        Snackbar.make(getCurrentFocus(), message, Snackbar.LENGTH_SHORT).show();
+        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show();
     }
 
     private void notifyUser() {
-        Snackbar.make(getCurrentFocus(), "Restart to update", Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(findViewById(android.R.id.content), "Restart to update", Snackbar.LENGTH_INDEFINITE)
                 .setAction("Restart to update", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
