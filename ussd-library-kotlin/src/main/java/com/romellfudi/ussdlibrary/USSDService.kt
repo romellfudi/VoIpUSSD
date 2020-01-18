@@ -206,7 +206,7 @@ class USSDService : AccessibilityService() {
                 leaves.add(node)
                 return
             }
-            (0..node.childCount).forEach {
+            (0 until  node.childCount).forEach {
                 getLeaves(leaves, node.getChild(it))
             }
         }
