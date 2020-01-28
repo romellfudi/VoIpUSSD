@@ -1,3 +1,7 @@
+/**
+ * BoostTag E.I.R.L. All Copyright Reserved
+ * www.boosttag.com
+ */
 package com.romellfudi.ussdlibrary
 
 import android.annotation.SuppressLint

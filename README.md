@@ -67,6 +67,7 @@ Puts dependencies on manifest, into manifest put CALL_PHONE, READ_PHONE_STATE an
 Add service:
 
 ```xml
+java
     <service
         android:name="com.romellfudi.ussdlibrary.USSDService"
         android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
@@ -76,6 +77,20 @@ Add service:
         <meta-data
             android:name="android.accessibilityservice"
             android:resource="@xml/ussd_service" />
+    </service>
+```
+
+```xml
+kotlin
+    <service
+        android:name="com.romellfudi.ussdlibrary.USSDServiceKT"
+        android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+        <intent-filter>
+            <action android:name="android.accessibilityservice.AccessibilityService" />
+        </intent-filter>
+        <meta-data
+            android:name="android.accessibilityservice"
+            android:resource="@xml/ussd_service_kt" />
     </service>
 ```
 

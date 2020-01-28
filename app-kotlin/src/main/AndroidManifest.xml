@@ -13,7 +13,7 @@
         android:theme="@style/AppTheme">
 
         <service
-            android:name="com.romellfudi.ussdlibrary.USSDService"
+            android:name="com.romellfudi.ussdlibrary.USSDServiceKT"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />

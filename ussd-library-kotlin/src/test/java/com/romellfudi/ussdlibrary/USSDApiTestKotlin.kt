@@ -1,3 +1,7 @@
+/**
+ * BoostTag E.I.R.L. All Copyright Reserved
+ * www.boosttag.com
+ */
 package com.romellfudi.ussdlibrary
 
 import android.app.Activity
@@ -39,7 +43,7 @@ class USSDApiTestKotlin {
     internal var ussdController = USSDController.getInstance(activity)
 
     @InjectMockKs
-    internal var ussdService = USSDService()
+    internal var ussdService = USSDServiceKT()
 
     @MockK
     lateinit var applicationInfo: ApplicationInfo
@@ -131,7 +135,7 @@ class USSDApiTestKotlin {
         val map = prepareTest()
         var MESSAGE = "loading"
 
-        every { USSDService.notInputText(any()) } returns true
+        every { USSDServiceKT.notInputText(any()) } returns true
         every { accessibilityEvent.source } returns null
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
@@ -175,7 +179,7 @@ class USSDApiTestKotlin {
         assertThat(stringSlot.captured, `is`(equalTo(message)))
 
         message = "Final Close dialog"
-        every { USSDService.notInputText(any()) } returns true
+        every { USSDServiceKT.notInputText(any()) } returns true
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke!!)
         verify { callbackInvoke.over(capture(stringSlot)) }
         assertThat(stringSlot.captured, `is`(equalTo(message)))
@@ -198,7 +202,7 @@ class USSDApiTestKotlin {
         map["KEY_LOGIN"] = HashSet(Arrays.asList("espere", "waiting", "loading", "esperando"))
         map["KEY_ERROR"] = HashSet(Arrays.asList("problema", "problem", "error", "null"))
         mockkObject(USSDController)
-        mockkObject(USSDService)
+        mockkObject(USSDServiceKT)
         mockkStatic(Uri::class)
 
         every { USSDController.verifyAccesibilityAccess(any()) } returns true

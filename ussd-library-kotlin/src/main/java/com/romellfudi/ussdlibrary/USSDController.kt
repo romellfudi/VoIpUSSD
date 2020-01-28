@@ -1,3 +1,7 @@
+/**
+ * BoostTag E.I.R.L. All Copyright Reserved
+ * www.boosttag.com
+ */
 package com.romellfudi.ussdlibrary
 
 import android.annotation.SuppressLint
@@ -25,14 +29,14 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
 
     lateinit var callbackInvoke: CallbackInvoke
 
-    lateinit var callbackMessage: (String) -> Unit
+    var callbackMessage: ((String) -> Unit)? = null
 
     var isRunning: Boolean? = false
 
     var ussdInterface: USSDInterface? = null
 
     init {
-            ussdInterface = this
+        ussdInterface = this
     }
 
     /**
@@ -156,7 +160,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
     }
 
     override fun sendData(text: String) {
-        USSDService.send(text)
+        USSDServiceKT.send(text)
     }
 
     override fun send(text: String, callbackMessage: (String) -> Unit) {
@@ -257,7 +261,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
             alertDialog?.show()
         }
 
-        private fun getNameApp(activity: Activity): String{
+        private fun getNameApp(activity: Activity): String {
             val applicationInfo = activity.applicationInfo
             val stringId = applicationInfo.labelRes
             return if (applicationInfo.labelRes == 0)

@@ -36,7 +36,9 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.+'
     implementation 'com.android.support:design:28.+'
     implementation 'com.romellfudi.permission:fudi-permission:1.0.a'
-    implementation project(':ussd-library')
+//    implementation project(':ussd-library-kotlin')
+    implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:1.1.k'
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 repositories {
