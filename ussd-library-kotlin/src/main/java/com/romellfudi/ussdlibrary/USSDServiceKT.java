@@ -95,6 +95,14 @@ public class USSDServiceKT extends AccessibilityService {
     }
 
     /**
+     * Cancel USSD
+     *
+     */
+    public static void cancel() {
+        clickOnButton(event,0);
+    }
+
+    /**
      * set text into input text at USSD widget
      *
      * @param event AccessibilityEvent
