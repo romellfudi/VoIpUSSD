@@ -155,8 +155,8 @@ class MainFragment : Fragment() {
                         Log.d("APP", message)
                         result!!.append("\n-\n$message")
                         // first option list - select option 1
-                        ussdApi!!.send("1", fun(message) {
-                                Log.d("APP", message)
+                        ussdApi!!.send("1")  {
+                                Log.d("APP", it)
                                 result!!.append("\n-\n$message")
                                 // second option list - select option 1
                                 ussdApi!!.send("1") {
@@ -166,7 +166,7 @@ class MainFragment : Fragment() {
                                         Log.d("APP", "STOP SPLASH DIALOG")
                                         Log.d("APP", "successful")
                                 }
-                        })
+                        }
                     }
 
                     override fun over(message: String) {
