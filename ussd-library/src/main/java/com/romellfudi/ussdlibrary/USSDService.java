@@ -27,11 +27,12 @@ public class USSDService extends AccessibilityService {
 
     /**
      * Catch widget by Accessibility, when is showing at mobile display
+     *
      * @param event AccessibilityEvent
      */
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        this.event=event;
+        this.event = event;
 
         Log.d(TAG, "onAccessibilityEvent");
 
@@ -40,18 +41,20 @@ public class USSDService extends AccessibilityService {
                 event.getEventType(), event.getClassName(), event.getPackageName(),
                 event.getEventTime(), event.getText()));
 
-        if(USSDController.instance  == null || !USSDController.instance.isRunning) { return; }
+        if (USSDController.instance == null || !USSDController.instance.isRunning) {
+            return;
+        }
 
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, 0);
             USSDController.instance.isRunning = false;
             USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
-        }else if (problemView(event) || LoginView(event)) {
+        } else if (problemView(event) || LoginView(event)) {
             // deal down
             clickOnButton(event, 1);
             USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
-        }else if (isUSSDWidget(event)) {
+        } else if (isUSSDWidget(event)) {
             // ready for work
             String response = event.getText().get(0).toString();
             if (response.contains("\n")) {
@@ -78,6 +81,7 @@ public class USSDService extends AccessibilityService {
 
     /**
      * Send whatever you want via USSD
+     *
      * @param text any string
      */
     public static void send(String text) {
@@ -86,9 +90,18 @@ public class USSDService extends AccessibilityService {
     }
 
     /**
+     * Cancel USSD
+     *
+     */
+    public static void cancel() {
+        clickOnButton(event, 0);
+    }
+
+    /**
      * set text into input text at USSD widget
+     *
      * @param event AccessibilityEvent
-     * @param data Any String
+     * @param data  Any String
      */
     private static void setTextIntoField(AccessibilityEvent event, String data) {
         USSDController ussdController = USSDController.instance;
@@ -101,7 +114,7 @@ public class USSDService extends AccessibilityService {
                     && !leaf.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
                 ClipboardManager clipboardManager = ((ClipboardManager) ussdController.context
                         .getSystemService(Context.CLIPBOARD_SERVICE));
-                if(clipboardManager != null) {
+                if (clipboardManager != null) {
                     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", data));
                 }
 
@@ -112,6 +125,7 @@ public class USSDService extends AccessibilityService {
 
     /**
      * Method evaluate if USSD widget has input text
+     *
      * @param event AccessibilityEvent
      * @return boolean has or not input text
      */
@@ -125,6 +139,7 @@ public class USSDService extends AccessibilityService {
 
     /**
      * The AccessibilityEvent is instance of USSD Widget class
+     *
      * @param event AccessibilityEvent
      * @return boolean AccessibilityEvent is USSD
      */
@@ -135,6 +150,7 @@ public class USSDService extends AccessibilityService {
 
     /**
      * The View has a login message into USSD Widget
+     *
      * @param event AccessibilityEvent
      * @return boolean USSD Widget has login message
      */
@@ -146,6 +162,7 @@ public class USSDService extends AccessibilityService {
 
     /**
      * The View has a problem message into USSD Widget
+     *
      * @param event AccessibilityEvent
      * @return boolean USSD Widget has problem message
      */
@@ -157,10 +174,11 @@ public class USSDService extends AccessibilityService {
 
     /**
      * click a button using the index
+     *
      * @param event AccessibilityEvent
      * @param index button's index
      */
-    protected static void clickOnButton(AccessibilityEvent event,int index) {
+    protected static void clickOnButton(AccessibilityEvent event, int index) {
         int count = -1;
         for (AccessibilityNodeInfo leaf : getLeaves(event)) {
             if (leaf.getClassName().toString().toLowerCase().contains("button")) {

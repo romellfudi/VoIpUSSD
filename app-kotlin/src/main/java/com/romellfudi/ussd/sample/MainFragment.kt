@@ -100,6 +100,7 @@ class MainFragment : Fragment() {
                                 result!!.append("\n-\n$it")
                             }
                     }
+//                    ussdApi!!.cancel()
                 }
 
                 override fun over(message: String) {
@@ -131,6 +132,7 @@ class MainFragment : Fragment() {
                                 Log.d("APP", it)
                             }
                         }
+//                        ussdApi!!.cancel()
                     }
 
                     override fun over(message: String) {
@@ -167,6 +169,7 @@ class MainFragment : Fragment() {
                                         Log.d("APP", "successful")
                                 }
                         }
+//                        ussdApi!!.cancel()
                     }
 
                     override fun over(message: String) {

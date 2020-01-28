@@ -168,6 +168,10 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
         ussdInterface?.sendData(text)
     }
 
+    override fun cancel() {
+        USSDServiceKT.cancel()
+    }
+
     /**
      * Invoke class to comunicate messages between USSD and App
      */

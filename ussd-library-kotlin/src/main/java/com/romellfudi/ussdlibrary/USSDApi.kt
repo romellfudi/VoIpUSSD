@@ -14,6 +14,7 @@ import java.util.*
  */
 interface USSDApi {
     fun send(text: String, callbackMessage: (String) -> Unit)
+    fun cancel()
     fun callUSSDInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
                        callbackInvoke: USSDController.CallbackInvoke)
 

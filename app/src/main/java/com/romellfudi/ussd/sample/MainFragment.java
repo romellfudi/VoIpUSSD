@@ -91,6 +91,7 @@ public class MainFragment extends Fragment {
                                 });
                             }
                         });
+//                        ussdApi.cancel();
                     }
 
                     @Override
@@ -137,6 +138,7 @@ public class MainFragment extends Fragment {
                                     });
                                 }
                             });
+//                            ussdApi.cancel();
                         }
 
                         @Override
@@ -184,6 +186,7 @@ public class MainFragment extends Fragment {
                                     });
                                 }
                             });
+                            ussdApi.cancel();
                         }
 
                         @Override
