@@ -30,7 +30,7 @@ import android.widget.RelativeLayout
 class SplashLoadingService : Service() {
 
     private var layout: LinearLayout? = null
-    private var wm: WindowManager? = null
+    private lateinit var wm: WindowManager
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -40,16 +40,14 @@ class SplashLoadingService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val size = Point()
-        wm!!.defaultDisplay.getSize(size)
-        val LAYOUT_FLAG: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        wm.defaultDisplay.getSize(size)
+        val LAYOUT_FLAG: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        } else {
-            WindowManager.LayoutParams.TYPE_PHONE
-        }
+        else WindowManager.LayoutParams.TYPE_PHONE
 
-        val padding_in_dp = 100
+        val paddingInDp = 100
         val scale = resources.displayMetrics.density
-        val padding_in_px = (padding_in_dp * scale + 0.5f).toInt()
+        val paddingInPx = (paddingInDp * scale + 0.5f).toInt()
 
         layout = LinearLayout(this)
         layout!!.setBackgroundColor(R.color.blue_background)
@@ -62,7 +60,7 @@ class SplashLoadingService : Service() {
 
         val imageView = ImageView(this)
         imageView.setImageResource(R.drawable.favico)
-        imageView.setPaddingRelative(0, padding_in_px, 0, padding_in_px)
+        imageView.setPaddingRelative(0, paddingInPx, 0, paddingInPx)
         val params_ll = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0)
         params_ll.gravity = Gravity.CENTER
         params_ll.weight = 1f
@@ -77,7 +75,7 @@ class SplashLoadingService : Service() {
 
         val gifImageView = GifImageView(this)
         gifImageView.setGifImageResource(R.drawable.loading)
-        gifImageView.setPaddingRelative(0, padding_in_px, 0, padding_in_px)
+        gifImageView.setPaddingRelative(0, paddingInPx, 0, paddingInPx)
 
         relativeLayout = RelativeLayout(this)
         rp = RelativeLayout.LayoutParams(

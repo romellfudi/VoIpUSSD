@@ -1,6 +1,5 @@
 package com.romellfudi.ussd.sample
 
-import android.Manifest.permission
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
@@ -13,18 +12,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
 import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.SplashLoadingService
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
-
-import java.util.ArrayList
-import java.util.Arrays
-import java.util.HashMap
-import java.util.HashSet
+import java.util.*
 
 /**
  * Use Case for Test Windows
@@ -36,40 +30,35 @@ import java.util.HashSet
 
 class MainFragment : Fragment() {
 
-    private var result: TextView? = null
+    private lateinit var result: TextView
     private var phone: EditText? = null
     private var btn1: Button? = null
     private var btn2: Button? = null
     private var btn3: Button? = null
     private var btn4: Button? = null
-    private var map: HashMap<String, HashSet<String>>? = null
-    private var ussdApi: USSDApi? = null
-    private var menuActivity: MainActivity? = null
+    private lateinit var map: HashMap<String, HashSet<String>>
+    private lateinit var ussdApi: USSDApi
+    private lateinit var menuActivity: MainActivity
 
     private val callback = object : PermissionService.Callback() {
-        override fun onRefuse(RefusePermissions: ArrayList<String>) {
+        override fun onResponse(refusePermissions: ArrayList<String>?) {
             Toast.makeText(context,
                     getString(R.string.refuse_permissions),
                     Toast.LENGTH_SHORT).show()
             activity!!.finish()
         }
 
-        override fun onFinally() {
-            // pass
-        }
     }
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         map = HashMap()
-        map!!["KEY_LOGIN"] = HashSet(Arrays.asList("espere", "waiting", "loading", "esperando"))
-        map!!["KEY_ERROR"] = HashSet(Arrays.asList("problema", "problem", "error", "null"))
+        map["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
+        map["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
         ussdApi = USSDController.getInstance(activity!!)
-        menuActivity = activity as MainActivity?
-        PermissionService(activity).request(
-                arrayOf(permission.CALL_PHONE, permission.READ_PHONE_STATE),
-                callback)
+        menuActivity = activity as MainActivity
+        PermissionService(activity).request(callback)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -85,27 +74,27 @@ class MainFragment : Fragment() {
         btn1!!.setOnClickListener {
             val phoneNumber = phone!!.text.toString().trim { it <= ' ' }
             ussdApi = USSDController.getInstance(activity!!)
-            result!!.text = ""
-            ussdApi!!.callUSSDInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
+            result.text = ""
+            ussdApi.callUSSDInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
                 override fun responseInvoke(message: String) {
                     Log.d("APP", message)
-                    result!!.append("\n-\n$message")
+                    result.append("\n-\n$message")
                     // first option list - select option 1
-                    ussdApi!!.send("1") {
+                    ussdApi.send("1") {
+                        Log.d("APP", it)
+                        result.append("\n-\n$it")
+                        // second option list - select option 1
+                        ussdApi.send("1") {
                             Log.d("APP", it)
-                            result!!.append("\n-\n$it")
-                            // second option list - select option 1
-                            ussdApi!!.send("1") {
-                                Log.d("APP", it)
-                                result!!.append("\n-\n$it")
-                            }
+                            result.append("\n-\n$it")
+                        }
                     }
 //                    ussdApi!!.cancel()
                 }
 
                 override fun over(message: String) {
                     Log.d("APP", message)
-                    result!!.append("\n-\n$message")
+                    result.append("\n-\n$message")
                 }
             })
         }
@@ -118,17 +107,17 @@ class MainFragment : Fragment() {
                 Log.d("APP", "START OVERLAY DIALOG")
                 val phoneNumber = phone!!.text.toString().trim { it <= ' ' }
                 ussdApi = USSDController.getInstance(activity!!)
-                result!!.text = ""
-                ussdApi!!.callUSSDOverlayInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
+                result.text = ""
+                ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
                     override fun responseInvoke(message: String) {
                         Log.d("APP", message)
-                        result!!.append("\n-\n$message")
+                        result.append("\n-\n$message")
                         // first option list - select option 1
-                        ussdApi!!.send("1") {
+                        ussdApi.send("1") {
                             Log.d("APP", it)
-                            result!!.append("\n-\n$it")
+                            result.append("\n-\n$it")
                             // second option list - select option 1
-                            ussdApi!!.send("1") {
+                            ussdApi.send("1") {
                                 Log.d("APP", it)
                             }
                         }
@@ -137,7 +126,7 @@ class MainFragment : Fragment() {
 
                     override fun over(message: String) {
                         Log.d("APP", message)
-                        result!!.append("\n-\n$message")
+                        result.append("\n-\n$message")
                         activity!!.stopService(svc)
                         Log.d("APP", "STOP OVERLAY DIALOG")
                     }
@@ -151,23 +140,23 @@ class MainFragment : Fragment() {
                 activity!!.startService(svc)
                 Log.d("APP", "START SPLASH DIALOG")
                 val phoneNumber = phone!!.text.toString().trim { it <= ' ' }
-                result!!.text = ""
-                ussdApi!!.callUSSDOverlayInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
+                result.text = ""
+                ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
                     override fun responseInvoke(message: String) {
                         Log.d("APP", message)
-                        result!!.append("\n-\n$message")
+                        result.append("\n-\n$message")
                         // first option list - select option 1
-                        ussdApi!!.send("1")  {
+                        ussdApi.send("1") {
+                            Log.d("APP", it)
+                            result.append("\n-\n$message")
+                            // second option list - select option 1
+                            ussdApi.send("1") {
                                 Log.d("APP", it)
-                                result!!.append("\n-\n$message")
-                                // second option list - select option 1
-                                ussdApi!!.send("1") {
-                                        Log.d("APP", it)
-                                        result!!.append("\n-\n$it")
-                                        activity!!.stopService(svc)
-                                        Log.d("APP", "STOP SPLASH DIALOG")
-                                        Log.d("APP", "successful")
-                                }
+                                result.append("\n-\n$it")
+                                activity!!.stopService(svc)
+                                Log.d("APP", "STOP SPLASH DIALOG")
+                                Log.d("APP", "successful")
+                            }
                         }
 //                        ussdApi!!.cancel()
                     }
@@ -187,7 +176,8 @@ class MainFragment : Fragment() {
         return view
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        callback.handler(permissions, grantResults)
-    }
+    override fun onRequestPermissionsResult(requestCode: Int,
+                                            permissions: Array<String>, grantResults: IntArray) =
+            callback.handler(permissions, grantResults)
+
 }

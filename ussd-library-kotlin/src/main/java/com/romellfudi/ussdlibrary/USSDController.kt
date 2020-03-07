@@ -159,18 +159,14 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
         return intent
     }
 
-    override fun sendData(text: String) {
-        USSDServiceKT.send(text)
-    }
+    override fun sendData(text: String) = USSDServiceKT.send(text)
 
     override fun send(text: String, callbackMessage: (String) -> Unit) {
         this.callbackMessage = callbackMessage
         ussdInterface?.sendData(text)
     }
 
-    override fun cancel() {
-        USSDServiceKT.cancel()
-    }
+    override fun cancel() = USSDServiceKT.cancel()
 
     /**
      * Invoke class to comunicate messages between USSD and App
@@ -225,13 +221,9 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
             val notGrant = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                     && !Settings.canDrawOverlays(context)
             return if (notGrant) {
-                if (context is Activity) {
-                    openSettingsOverlay(context)
-                } else {
-                    Toast.makeText(context,
-                            "Overlay permission have not grant permission.",
-                            Toast.LENGTH_LONG).show()
-                }
+                if (context is Activity)
+                    openSettingsOverlay(context) else Toast.makeText(context,
+                        "Overlay permission have not grant permission.", Toast.LENGTH_LONG).show()
                 false
             } else
                 true
@@ -244,7 +236,10 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
             alertDialogBuilder
                     .setMessage("You must enable accessibility permissions for the app '$name'")
             alertDialogBuilder.setCancelable(true)
-            alertDialogBuilder.setNeutralButton("ok") { dialog, id -> activity.startActivityForResult(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1) }
+            alertDialogBuilder.setNeutralButton("ok") { _, _ ->
+                activity.startActivityForResult(
+                        Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1)
+            }
             val alertDialog = alertDialogBuilder.create()
             alertDialog?.show()
         }
@@ -256,7 +251,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
             alertDialogBuilder
                     .setMessage("You must allow for the app to appear '$name' on top of other apps.")
             alertDialogBuilder.setCancelable(true)
-            alertDialogBuilder.setNeutralButton("ok") { dialog, id ->
+            alertDialogBuilder.setNeutralButton("ok") { _, _ ->
                 val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                         Uri.parse("package:" + activity.packageName))
                 activity.startActivity(intent)
@@ -275,7 +270,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
         }
 
 
-        protected fun isAccessiblityServicesEnable(context: Context): Boolean {
+        private fun isAccessiblityServicesEnable(context: Context): Boolean {
             val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE)
             if (am != null) {
                 val am = am as AccessibilityManager
@@ -288,7 +283,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
             return false
         }
 
-        protected fun isAccessibilitySettingsOn(context: Context, service: String): Boolean {
+        private fun isAccessibilitySettingsOn(context: Context, service: String): Boolean {
             var accessibilityEnabled = 0
             try {
                 accessibilityEnabled = Settings.Secure.getInt(
