@@ -63,11 +63,6 @@ class OverlayShowingService : Service() {
         return START_STICKY
     }
 
-    override fun onCreate() {
-        super.onCreate()
-
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         Handler().postDelayed({

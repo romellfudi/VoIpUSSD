@@ -24,17 +24,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
-        val toolbar = findViewById<View>(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
-        val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
-        navigationView.setNavigationItemSelectedListener(this)
+        setSupportActionBar(findViewById<View>(R.id.toolbar) as Toolbar)
+        (findViewById<View>(R.id.nav_view) as NavigationView).setNavigationItemSelectedListener(this)
 
-        val fragment = supportFragmentManager.beginTransaction()
-        fragment.replace(R.id.fragment_layout, MainFragment()) // f1_container is your FrameLayout container
-        fragment.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        fragment.addToBackStack(null)
-        fragment.commit()
-        supportActionBar!!.setTitle(getString(R.string.title_activity_cp1))
+        with(supportFragmentManager.beginTransaction()) {
+            replace(R.id.fragment_layout, MainFragment()) // f1_container is your FrameLayout container
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            addToBackStack(null)
+            commit()
+        }
+        supportActionBar?.title = getString(R.string.title_activity_cp1)
 
     }
 
@@ -50,22 +49,20 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         val id = item.itemId
-
-
         var newFragment: Fragment? = null
         var tittle: String? = null
         if (id == R.id.op1) {
             newFragment = MainFragment()
             tittle = resources.getString(R.string.title_activity_cp1)
         }
-        val ft = supportFragmentManager.beginTransaction()
-        supportActionBar!!.setTitle(tittle)
-        ft.replace(R.id.fragment_layout, newFragment!!) // f1_container is your FrameLayout container
-        ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-        ft.addToBackStack(null)
-        ft.commit()
-        val drawer = findViewById<View>(R.id.drawer_layout) as DrawerLayout
-        drawer.closeDrawer(GravityCompat.START)
+        supportActionBar?.title = tittle
+        with(supportFragmentManager.beginTransaction()) {
+            replace(R.id.fragment_layout, newFragment!!) // f1_container is your FrameLayout container
+            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+            addToBackStack(null)
+            commit()
+        }
+        (findViewById<View>(R.id.drawer_layout) as DrawerLayout).closeDrawer(GravityCompat.START)
         return true
     }
 
