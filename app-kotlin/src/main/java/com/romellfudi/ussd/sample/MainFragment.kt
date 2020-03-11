@@ -8,9 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import android.widget.Toast
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
@@ -18,6 +15,7 @@ import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.SplashLoadingService
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
+import kotlinx.android.synthetic.main.content_op1.*
 import java.util.*
 
 /**
@@ -30,15 +28,8 @@ import java.util.*
 
 class MainFragment : Fragment() {
 
-    private lateinit var result: TextView
-    private var phone: EditText? = null
-    private var btn1: Button? = null
-    private var btn2: Button? = null
-    private var btn3: Button? = null
-    private var btn4: Button? = null
     private lateinit var map: HashMap<String, HashSet<String>>
     private lateinit var ussdApi: USSDApi
-    private lateinit var menuActivity: MainActivity
 
     private val callback = object : PermissionService.Callback() {
         override fun onResponse(refusePermissions: ArrayList<String>?) {
@@ -57,46 +48,44 @@ class MainFragment : Fragment() {
         map["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
         map["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
         ussdApi = USSDController.getInstance(activity!!)
-        menuActivity = activity as MainActivity
         PermissionService(activity).request(callback)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.content_op1, container, false)
-        result = view.findViewById<View>(R.id.result) as TextView
-        phone = view.findViewById<View>(R.id.phone) as EditText
-        btn1 = view.findViewById<View>(R.id.btn1) as Button
-        btn2 = view.findViewById<View>(R.id.btn2) as Button
-        btn3 = view.findViewById<View>(R.id.btn3) as Button
-        btn4 = view.findViewById<View>(R.id.btn4) as Button
+        return inflater.inflate(R.layout.content_op1, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
 
         btn1!!.setOnClickListener {
             val phoneNumber = phone!!.text.toString().trim { it <= ' ' }
             ussdApi = USSDController.getInstance(activity!!)
             result.text = ""
-            ussdApi.callUSSDInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
-                override fun responseInvoke(message: String) {
-                    Log.d("APP", message)
-                    result.append("\n-\n$message")
-                    // first option list - select option 1
-                    ussdApi.send("1") {
-                        Log.d("APP", it)
-                        result.append("\n-\n$it")
-                        // second option list - select option 1
-                        ussdApi.send("1") {
-                            Log.d("APP", it)
-                            result.append("\n-\n$it")
+            ussdApi.callUSSDInvoke(phoneNumber, map!!,
+                    object : USSDController.CallbackInvoke {
+                        override fun responseInvoke(message: String) {
+                            Log.d("APP", message)
+                            result.append("\n-\n$message")
+                            // first option list - select option 1
+                            ussdApi.send("1") {
+                                Log.d("APP", it)
+                                result.append("\n-\n$it")
+                                // second option list - select option 1
+                                ussdApi.send("1") {
+                                    Log.d("APP", it)
+                                    result.append("\n-\n$it")
+                                }
+                            }
+//                            ussdApi.cancel()
                         }
-                    }
-//                    ussdApi!!.cancel()
-                }
 
-                override fun over(message: String) {
-                    Log.d("APP", message)
-                    result.append("\n-\n$message")
-                }
-            })
+                        override fun over(message: String) {
+                            Log.d("APP", message)
+                            result.append("\n-\n$message")
+                        }
+                    })
         }
 
         btn2!!.setOnClickListener(fun(_: View) {
@@ -108,29 +97,30 @@ class MainFragment : Fragment() {
                 val phoneNumber = phone!!.text.toString().trim { it <= ' ' }
                 ussdApi = USSDController.getInstance(activity!!)
                 result.text = ""
-                ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
-                    override fun responseInvoke(message: String) {
-                        Log.d("APP", message)
-                        result.append("\n-\n$message")
-                        // first option list - select option 1
-                        ussdApi.send("1") {
-                            Log.d("APP", it)
-                            result.append("\n-\n$it")
-                            // second option list - select option 1
-                            ussdApi.send("1") {
-                                Log.d("APP", it)
+                ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!,
+                        object : USSDController.CallbackInvoke {
+                            override fun responseInvoke(message: String) {
+                                Log.d("APP", message)
+                                result.append("\n-\n$message")
+                                // first option list - select option 1
+                                ussdApi.send("1") {
+                                    Log.d("APP", it)
+                                    result.append("\n-\n$it")
+                                    // second option list - select option 1
+                                    ussdApi.send("1") {
+                                        Log.d("APP", it)
+                                    }
+                                }
+//                                ussdApi.cancel()
                             }
-                        }
-//                        ussdApi!!.cancel()
-                    }
 
-                    override fun over(message: String) {
-                        Log.d("APP", message)
-                        result.append("\n-\n$message")
-                        activity!!.stopService(svc)
-                        Log.d("APP", "STOP OVERLAY DIALOG")
-                    }
-                })
+                            override fun over(message: String) {
+                                Log.d("APP", message)
+                                result.append("\n-\n$message")
+                                activity!!.stopService(svc)
+                                Log.d("APP", "STOP OVERLAY DIALOG")
+                            }
+                        })
             }
         })
 
@@ -141,43 +131,44 @@ class MainFragment : Fragment() {
                 Log.d("APP", "START SPLASH DIALOG")
                 val phoneNumber = phone!!.text.toString().trim { it <= ' ' }
                 result.text = ""
-                ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!, object : USSDController.CallbackInvoke {
-                    override fun responseInvoke(message: String) {
-                        Log.d("APP", message)
-                        result.append("\n-\n$message")
-                        // first option list - select option 1
-                        ussdApi.send("1") {
-                            Log.d("APP", it)
-                            result.append("\n-\n$message")
-                            // second option list - select option 1
-                            ussdApi.send("1") {
-                                Log.d("APP", it)
-                                result.append("\n-\n$it")
-                                activity!!.stopService(svc)
-                                Log.d("APP", "STOP SPLASH DIALOG")
-                                Log.d("APP", "successful")
+                ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!,
+                        object : USSDController.CallbackInvoke {
+                            override fun responseInvoke(message: String) {
+                                Log.d("APP", message)
+                                result.append("\n-\n$message")
+                                // first option list - select option 1
+                                ussdApi.send("1") {
+                                    Log.d("APP", it)
+                                    result.append("\n-\n$message")
+                                    // second option list - select option 1
+                                    ussdApi.send("1") {
+                                        Log.d("APP", it)
+                                        result.append("\n-\n$it")
+                                        activity!!.stopService(svc)
+                                        Log.d("APP", "STOP SPLASH DIALOG")
+                                        Log.d("APP", "successful")
+                                    }
+                                }
+//                                ussdApi.cancel()
                             }
-                        }
-//                        ussdApi!!.cancel()
-                    }
 
-                    override fun over(message: String) {
-                        Log.d("APP", message)
-                        result!!.append("\n-\n$message")
-                        activity!!.stopService(svc)
-                        Log.d("APP", "STOP OVERLAY DIALOG")
-                    }
-                })
+                            override fun over(message: String) {
+                                Log.d("APP", message)
+                                result!!.append("\n-\n$message")
+                                activity!!.stopService(svc)
+                                Log.d("APP", "STOP OVERLAY DIALOG")
+                            }
+                        })
             }
         }
 
         btn3!!.setOnClickListener { USSDController.verifyAccesibilityAccess(activity!!) }
 
-        return view
     }
 
     override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) =
+                                            permissions: Array<String>,
+                                            grantResults: IntArray) =
             callback.handler(permissions, grantResults)
 
 }
