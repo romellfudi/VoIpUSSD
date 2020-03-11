@@ -5,12 +5,11 @@ import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
-import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.view.View
 import com.romellfudi.ussd.R
+import kotlinx.android.synthetic.main.activity_main_menu.*
+import kotlinx.android.synthetic.main.app_bar_main_menu.*
 
 /**
  * Main Activity
@@ -24,8 +23,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
-        setSupportActionBar(findViewById<View>(R.id.toolbar) as Toolbar)
-        (findViewById<View>(R.id.nav_view) as NavigationView).setNavigationItemSelectedListener(this)
+        setSupportActionBar(toolbar)
+        nav_view.setNavigationItemSelectedListener(this)
 
         with(supportFragmentManager.beginTransaction()) {
             replace(R.id.fragment_layout, MainFragment()) // f1_container is your FrameLayout container
@@ -38,16 +37,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     override fun onBackPressed() {
-        val drawer = findViewById<View>(R.id.drawer_layout) as DrawerLayout
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START)
+        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+            drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             finish()
         }
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        // Handle navigation view item clicks here.
         val id = item.itemId
         var newFragment: Fragment? = null
         var tittle: String? = null
@@ -57,12 +54,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
         supportActionBar?.title = tittle
         with(supportFragmentManager.beginTransaction()) {
-            replace(R.id.fragment_layout, newFragment!!) // f1_container is your FrameLayout container
+            replace(R.id.fragment_layout, newFragment!!)
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             addToBackStack(null)
             commit()
         }
-        (findViewById<View>(R.id.drawer_layout) as DrawerLayout).closeDrawer(GravityCompat.START)
+        drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
 
