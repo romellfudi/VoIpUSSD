@@ -41,6 +41,9 @@ dependencies {
     implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
     // kotlin
     implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{kotlinLatestVersion}'
+    // alternative SNAPSHOT
+    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:alternative-SNAPSHOT'
+    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:alternative-SNAPSHOT'
 }
 ```
 
