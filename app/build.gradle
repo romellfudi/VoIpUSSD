@@ -4,17 +4,17 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 ext.enableCrashlytics = true
 
-def keystorePropertiesFile = rootProject.file("app.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def keystorePropertiesFile = rootProject.file("app/app.properties")
+def attrs = new Properties()
+attrs.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     signingConfigs {
         config {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['password']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['password']
+            keyAlias attrs['keyAlias']
+            keyPassword attrs['password']
+            storeFile file(attrs['storeFile'] == null ? "build.gradle" : attrs['storeFile'])
+            storePassword attrs['password']
         }
     }
     compileSdkVersion 28
@@ -45,6 +45,13 @@ android {
             dimension "version"
             versionNameSuffix "-publish"
         }
+    }
+    android.variantFilter { variant ->
+        if ((variant.buildType.name == 'release'
+                && variant.getFlavors().get(0).name == 'demo')
+                || (variant.buildType.name == 'debug'
+                && variant.getFlavors().get(0).name == 'publish'))
+            variant.setIgnore(true)
     }
 }
 
