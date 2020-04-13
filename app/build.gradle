@@ -46,6 +46,13 @@ android {
             versionNameSuffix "-publish"
         }
     }
+    android.variantFilter { variant ->
+        if ((variant.buildType.name == 'release'
+                && variant.getFlavors().get(0).name == 'demo')
+                || (variant.buildType.name == 'debug'
+                && variant.getFlavors().get(0).name == 'publish'))
+            variant.setIgnore(true)
+    }
 }
 
 dependencies {
