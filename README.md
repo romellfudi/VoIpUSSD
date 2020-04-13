@@ -306,8 +306,6 @@ context.startActivity(Intent(Intent.ACTION_CALL, uri))
 
 Once initialized the call will begin to receive and send the **famous USSD windows**
 
-![image](snapshot/telcom.png#center)
-
 ### License
 ```
 Copyright 2018 Romell D.Z.
