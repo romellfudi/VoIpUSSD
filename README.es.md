@@ -9,7 +9,6 @@
 [![Bintray Kotlin](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
 [![Android Arsenal]( https://img.shields.io/badge/Android%20Arsenal-Void%20USSD%20Library-green.svg?style=flat )]( https://android-arsenal.com/details/1/7151 )
 [![Jitpack](https://jitpack.io/v/romellfudi/VoIpUSSD.svg)](https://jitpack.io/#romellfudi/VoIpUSSD)
-[![CircleCi](https://img.shields.io/circleci/project/github/romellfudi/VoIpUSSD.svg)](https://circleci.com/gh/romellfudi/VoIpUSSD/tree/master)
 [![](https://img.shields.io/badge/language-EN-blue.svg)](./)
 
 ### by Romell Dominguez
