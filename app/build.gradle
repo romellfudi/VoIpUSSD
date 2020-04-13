@@ -4,13 +4,17 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 ext.enableCrashlytics = true
 
+def keystorePropertiesFile = rootProject.file("app.properties")
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     signingConfigs {
         config {
-            keyAlias 'romellfudi'
-            keyPassword 'romellFUDI956824'
-            storeFile file('keystore.jks')
-            storePassword 'romellFUDI956824'
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['password']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['password']
         }
     }
     compileSdkVersion 28
