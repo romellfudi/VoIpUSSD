@@ -1,6 +1,6 @@
 # Firebase
-../app/src/publish/google-services.json filter=git-crypt diff=git-crypt
-../app/keystore.jks filter=git-crypt diff=git-crypt
-../app/app.properties filter=git-crypt diff=git-crypt
+app/src/publish/google-services.json filter=git-crypt diff=git-crypt
+app/keystore.jks filter=git-crypt diff=git-crypt
+app/app.properties filter=git-crypt diff=git-crypt
 # Making sure that .gitattributes is never encrypted. DON'T TOUCH THAT LINE AND ONE BELOW
 .gitattributes !filter !diff
