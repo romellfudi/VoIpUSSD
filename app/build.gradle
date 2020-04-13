@@ -5,16 +5,16 @@ apply plugin: 'io.fabric'
 ext.enableCrashlytics = true
 
 def keystorePropertiesFile = rootProject.file("app/app.properties")
-def keystoreProperties = new Properties()
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+def attrs = new Properties()
+attrs.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     signingConfigs {
         config {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['password']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['password']
+            keyAlias attrs['keyAlias']
+            keyPassword attrs['password']
+            storeFile file(attrs['storeFile'] == null ? "build.gradle" : attrs['storeFile'])
+            storePassword attrs['password']
         }
     }
     compileSdkVersion 28
