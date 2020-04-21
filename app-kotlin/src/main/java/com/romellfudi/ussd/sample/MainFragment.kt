@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.romellfudi.permission.PermissionService
+import com.romellfudi.ussd.App
 import com.romellfudi.ussd.R
 import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.SplashLoadingService
@@ -17,6 +18,7 @@ import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import kotlinx.android.synthetic.main.content_op1.*
 import java.util.*
+import javax.inject.Inject
 
 /**
  * Use Case for Test Windows
@@ -29,7 +31,9 @@ import java.util.*
 class MainFragment : Fragment() {
 
     private lateinit var map: HashMap<String, HashSet<String>>
-    private lateinit var ussdApi: USSDApi
+
+    @Inject
+    lateinit var ussdApi: USSDApi
 
     private val callback = object : PermissionService.Callback() {
         override fun onResponse(refusePermissions: ArrayList<String>?) {
@@ -43,11 +47,13 @@ class MainFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
+        (activity?.application as App).appComponent.uiComponent().create().inject(this)
+
         super.onCreate(savedInstanceState)
         map = HashMap()
         map["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
         map["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
-        ussdApi = USSDController.getInstance(activity!!)
+//        ussdApi = USSDController.getInstance(activity!!)
         PermissionService(activity).request(callback)
     }
 
