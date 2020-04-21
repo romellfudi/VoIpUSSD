@@ -17,6 +17,5 @@ interface UIComponent {
         fun create(): UIComponent
     }
 
-    fun inject(activity: MainActivity)
     fun inject(fragment: MainFragment)
 }
