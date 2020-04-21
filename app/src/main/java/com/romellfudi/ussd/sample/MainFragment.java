@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.romellfudi.permission.PermissionService;
+import com.romellfudi.ussd.App;
 import com.romellfudi.ussd.R;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.SplashLoadingService;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import javax.inject.Inject;
 
 /**
  * Use Case for Test Windows
@@ -40,11 +43,14 @@ public class MainFragment extends Fragment {
     private EditText phone;
     private Button btn1, btn2, btn3, btn4;
     private HashMap<String, HashSet<String>> map;
-    private USSDApi ussdApi;
     private MainActivity menuActivity;
+
+    @Inject
+    USSDApi ussdApi;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        ((App) getActivity().getApplicationContext()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         map = new HashMap<>();
         map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));

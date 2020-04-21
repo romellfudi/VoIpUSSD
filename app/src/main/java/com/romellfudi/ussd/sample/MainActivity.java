@@ -26,8 +26,11 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.rbddevs.splashy.Splashy;
+import com.romellfudi.ussd.App;
 import com.romellfudi.ussd.R;
 import com.romellfudi.ussdlibrary.BuildConfig;
+
+import javax.inject.Inject;
 
 /**
  * Main Activity
@@ -40,18 +43,20 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         InstallStateUpdatedListener {
 
-    private AppUpdateManager appUpdateManager;
+    @Inject
+    AppUpdateManager appUpdateManager;
+
     private Task<AppUpdateInfo> appUpdateInfoTask;
     private static final int REQUEST_CODE_FLEXIBLE_UPDATE = 1234;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ((App)getApplicationContext()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null)
             splashy();
         setContentView(R.layout.activity_main_menu);
 
-        appUpdateManager = AppUpdateManagerFactory.create(this);
         appUpdateManager.registerListener(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
