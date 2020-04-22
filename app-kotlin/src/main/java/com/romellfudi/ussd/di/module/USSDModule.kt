@@ -4,7 +4,7 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.di
+package com.romellfudi.ussd.di.module
 
 import android.content.Context
 import com.romellfudi.ussdlibrary.USSDApi

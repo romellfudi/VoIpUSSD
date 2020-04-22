@@ -4,7 +4,7 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.di
+package com.romellfudi.ussd.di.component
 
 import com.romellfudi.ussd.sample.UIComponent
 import dagger.Module

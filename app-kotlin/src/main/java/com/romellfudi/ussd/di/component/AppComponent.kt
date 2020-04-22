@@ -4,9 +4,10 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.di
+package com.romellfudi.ussd.di.component
 
 import android.content.Context
+import com.romellfudi.ussd.di.module.USSDModule
 import com.romellfudi.ussd.sample.UIComponent
 import dagger.BindsInstance
 import dagger.Component

@@ -12,11 +12,7 @@ import android.content.Context;
 import com.google.android.play.core.appupdate.AppUpdateManager;
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.romellfudi.ussd.di.ActivityContext;
-import com.romellfudi.ussd.di.PerActivity;
-import com.romellfudi.ussdlibrary.USSDApi;
-import com.romellfudi.ussdlibrary.USSDController;
-
-import javax.inject.Singleton;
+import com.romellfudi.ussd.di.ActivityScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -52,7 +48,7 @@ public class ActivityModule {
 //    }
 
     @Provides
-    @PerActivity
+    @ActivityScope
     public AppUpdateManager provideAppUpdateManager() {
         return AppUpdateManagerFactory.create(mActivity);
     }
