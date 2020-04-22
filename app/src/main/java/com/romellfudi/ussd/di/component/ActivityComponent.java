@@ -6,8 +6,7 @@
 
 package com.romellfudi.ussd.di.component;
 
-
-import com.romellfudi.ussd.di.PerActivity;
+import com.romellfudi.ussd.di.ActivityScope;
 import com.romellfudi.ussd.di.module.ActivityModule;
 import com.romellfudi.ussd.sample.MainActivity;
 
@@ -19,7 +18,7 @@ import dagger.Component;
  * @date 2020-04-20
  */
 
-@PerActivity
+@ActivityScope
 @Component(dependencies = AppComponent.class, modules = ActivityModule.class)
 public interface ActivityComponent {
 

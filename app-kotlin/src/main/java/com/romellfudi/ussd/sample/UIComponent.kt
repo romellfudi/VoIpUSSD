@@ -6,7 +6,6 @@
 
 package com.romellfudi.ussd.sample
 
-import com.romellfudi.ussd.di.ActivityScope
 import dagger.Subcomponent
 
 /**
@@ -14,8 +13,8 @@ import dagger.Subcomponent
  * @date 2020-04-20
  * @version 1.0
  */
-@ActivityScope
-@Subcomponent
+@ActivityQualifier
+@Subcomponent(modules = [ActivityModule::class])
 interface UIComponent {
 
     @Subcomponent.Factory
@@ -24,4 +23,5 @@ interface UIComponent {
     }
 
     fun inject(fragment: MainFragment)
+    fun inject(activity: MainActivity)
 }

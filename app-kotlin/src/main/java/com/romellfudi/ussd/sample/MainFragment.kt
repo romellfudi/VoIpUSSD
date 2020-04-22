@@ -53,13 +53,13 @@ class MainFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
-        (activity?.application as App).appComponent.uiComponent().create().inject(this)
-
+        (activity!!.application as App).appComponent.uiComponent().create().inject(this)
         super.onCreate(savedInstanceState)
+
         map = HashMap()
         map["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
         map["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
-//        ussdApi = USSDController.getInstance(activity!!)
+
         PermissionService(activity).request(callback)
     }
 

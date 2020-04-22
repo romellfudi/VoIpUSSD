@@ -8,7 +8,7 @@ package com.romellfudi.ussd
 
 import android.app.Application
 import com.romellfudi.ussd.di.component.AppComponent
-import com.romellfudi.ussd.di.DaggerAppComponent
+import com.romellfudi.ussd.di.component.DaggerAppComponent
 
 /**
  * @autor Romell Domínguez
