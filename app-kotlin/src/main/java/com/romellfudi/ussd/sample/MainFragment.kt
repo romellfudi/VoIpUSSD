@@ -71,7 +71,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
 
-        btn1!!.setOnClickListener {
+        btn1.setOnClickListener {
             val phoneNumber = phone!!.text.toString().trim { it <= ' ' }
             ussdApi = USSDController.getInstance(activity!!)
             result.text = ""
@@ -100,7 +100,7 @@ class MainFragment : Fragment() {
                     })
         }
 
-        btn2!!.setOnClickListener(fun(_: View) {
+        btn2.setOnClickListener {
             if (USSDController.verifyOverLay(activity!!)) {
                 val svc = Intent(activity, OverlayShowingService::class.java)
                 svc.putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
@@ -134,16 +134,16 @@ class MainFragment : Fragment() {
                             }
                         })
             }
-        })
+        }
 
-        btn4!!.setOnClickListener {
+        btn4.setOnClickListener {
             if (USSDController.verifyOverLay(activity!!)) {
                 val svc = Intent(activity, SplashLoadingService::class.java)
                 activity!!.startService(svc)
                 Log.d("APP", "START SPLASH DIALOG")
                 val phoneNumber = phone!!.text.toString().trim { it <= ' ' }
                 result.text = ""
-                ussdApi.callUSSDOverlayInvoke(phoneNumber, map!!,
+                ussdApi.callUSSDOverlayInvoke(phoneNumber, map,
                         object : USSDController.CallbackInvoke {
                             override fun responseInvoke(message: String) {
                                 Log.d("APP", message)
@@ -174,7 +174,9 @@ class MainFragment : Fragment() {
             }
         }
 
-        btn3!!.setOnClickListener { USSDController.verifyAccesibilityAccess(activity!!) }
+        btn3.setOnClickListener(fun(it: View) {
+            USSDController.verifyAccesibilityAccess(activity!!)
+        })
 
     }
 

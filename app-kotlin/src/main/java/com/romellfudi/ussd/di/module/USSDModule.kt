@@ -7,6 +7,7 @@
 package com.romellfudi.ussd.di.module
 
 import android.content.Context
+import com.romellfudi.ussd.di.AppScope
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.Module
@@ -22,7 +23,7 @@ import javax.inject.Singleton
 class USSDModule {
 
     @Provides // drop abstract
-    @Singleton
+    @AppScope
     fun provideUSSDApi(context: Context): USSDApi {
         return USSDController.getInstance(context)
     }
