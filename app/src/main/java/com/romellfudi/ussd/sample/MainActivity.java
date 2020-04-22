@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+ * All rights reserved
+ * porfile.romellfudi.com
+ */
+
 package com.romellfudi.ussd.sample;
 
 import android.content.IntentSender;
@@ -28,6 +34,9 @@ import com.google.android.play.core.tasks.Task;
 import com.rbddevs.splashy.Splashy;
 import com.romellfudi.ussd.App;
 import com.romellfudi.ussd.R;
+import com.romellfudi.ussd.di.component.ActivityComponent;
+import com.romellfudi.ussd.di.component.DaggerActivityComponent;
+import com.romellfudi.ussd.di.module.ActivityModule;
 import com.romellfudi.ussdlibrary.BuildConfig;
 
 import javax.inject.Inject;
@@ -46,12 +55,25 @@ public class MainActivity extends AppCompatActivity
     @Inject
     AppUpdateManager appUpdateManager;
 
+    private ActivityComponent activityComponent;
+
     private Task<AppUpdateInfo> appUpdateInfoTask;
     private static final int REQUEST_CODE_FLEXIBLE_UPDATE = 1234;
 
+    public ActivityComponent getActivityComponent() {
+        if (activityComponent==null){
+            activityComponent = DaggerActivityComponent.builder()
+                    .appComponent(((App)getApplicationContext()).getAppComponent())
+                    .activityModule(new ActivityModule(this))
+                    .build();
+        }
+        return activityComponent;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ((App)getApplicationContext()).getAppComponent().inject(this);
+//        ((App)getApplicationContext()).getAppComponent().inject(this);
+        getActivityComponent().inject(this);
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null)
             splashy();

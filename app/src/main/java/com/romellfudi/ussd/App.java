@@ -1,10 +1,16 @@
+/*
+ * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+ * All rights reserved
+ * porfile.romellfudi.com
+ */
+
 package com.romellfudi.ussd;
 
 import android.app.Application;
 
-import com.romellfudi.ussd.di.AppComponent;
-import com.romellfudi.ussd.di.DaggerAppComponent;
-import com.romellfudi.ussd.di.USSDModule;
+import com.romellfudi.ussd.di.component.AppComponent;
+import com.romellfudi.ussd.di.component.DaggerAppComponent;
+import com.romellfudi.ussd.di.module.USSDModule;
 
 /**
  * @version 1.0
@@ -19,6 +25,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         appComponent = DaggerAppComponent.builder()
+//                .applicationModule(new ApplicationModule(this))
                 .uSSDModule(new USSDModule(this))
                 .build();
     }

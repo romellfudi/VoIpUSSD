@@ -1,3 +1,9 @@
+<!--
+  ~ Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+  ~ All rights reserved
+  ~ porfile.romellfudi.com
+  -->
+
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
     <item name="ic_menu_camera" type="drawable">@android:drawable/ic_menu_camera</item>
     <item name="ic_menu_gallery" type="drawable">@android:drawable/ic_menu_gallery</item>

@@ -1,4 +1,10 @@
-package com.romellfudi.ussd.di;
+/*
+ * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+ * All rights reserved
+ * porfile.romellfudi.com
+ */
+
+package com.romellfudi.ussd.di.module;
 
 import android.content.Context;
 
@@ -30,12 +36,6 @@ public class USSDModule {
     @Singleton
     public USSDApi provideUSSDApi() {
         return USSDController.getInstance(context);
-    }
-
-    @Provides
-    @Singleton
-    public AppUpdateManager provideAppUpdateManager() {
-        return AppUpdateManagerFactory.create(context);
     }
 
 

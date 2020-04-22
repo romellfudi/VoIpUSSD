@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+ * All rights reserved
+ * porfile.romellfudi.com
+ */
+
 package com.romellfudi.ussd.sample;
 
 import android.content.Intent;
@@ -18,6 +24,8 @@ import androidx.fragment.app.Fragment;
 import com.romellfudi.permission.PermissionService;
 import com.romellfudi.ussd.App;
 import com.romellfudi.ussd.R;
+import com.romellfudi.ussd.di.component.DaggerActivityComponent;
+import com.romellfudi.ussd.di.module.ActivityModule;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.SplashLoadingService;
 import com.romellfudi.ussdlibrary.USSDApi;
@@ -55,7 +63,6 @@ public class MainFragment extends Fragment {
         map = new HashMap<>();
         map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
         map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
-        ussdApi = USSDController.getInstance(getActivity());
         menuActivity = (MainActivity) getActivity();
         new PermissionService(getActivity()).request(callback);
     }
