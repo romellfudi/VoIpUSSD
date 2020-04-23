@@ -9,7 +9,6 @@ package com.romellfudi.ussd.di.component
 import android.content.Context
 import com.romellfudi.ussd.di.AppScope
 import com.romellfudi.ussd.di.module.USSDModule
-import com.romellfudi.ussd.sample.UIComponent
 import dagger.BindsInstance
 import dagger.Component
 

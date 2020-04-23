@@ -12,7 +12,6 @@ import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 /**
  * @autor Romell Domínguez

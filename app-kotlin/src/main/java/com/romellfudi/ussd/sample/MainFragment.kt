@@ -16,8 +16,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.romellfudi.permission.PermissionService
-import com.romellfudi.ussd.App
 import com.romellfudi.ussd.R
+import com.romellfudi.ussd.di.component.DaggerMainFragmentComponent
+import com.romellfudi.ussd.di.module.MainFragmentModule
 import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.SplashLoadingService
 import com.romellfudi.ussdlibrary.USSDApi
@@ -41,6 +42,9 @@ class MainFragment : Fragment() {
     @Inject
     lateinit var ussdApi: USSDApi
 
+    @Inject
+    lateinit var permissionService: PermissionService
+
     private val callback = object : PermissionService.Callback() {
         override fun onResponse(refusePermissions: ArrayList<String>?) {
             Toast.makeText(context,
@@ -53,14 +57,19 @@ class MainFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
-        (activity!!.application as App).appComponent.uiComponent().create().inject(this)
+//        (activity!!.application as App).appComponent.uiComponent().create().inject(this)
+        DaggerMainFragmentComponent.builder()
+//                .appComponent((activity!!.application as App).initializeComponent())//appComponent.uiComponent().create())
+                .mainFragmentModule(MainFragmentModule(activity!!))
+                .build().inject(this)
+
         super.onCreate(savedInstanceState)
 
         map = HashMap()
         map["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
         map["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
 
-        PermissionService(activity).request(callback)
+        permissionService.request(callback)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity
     public ActivityComponent getActivityComponent() {
         if (activityComponent==null){
             activityComponent = DaggerActivityComponent.builder()
-                    .appComponent(((App)getApplicationContext()).getAppComponent())
+//                    .appComponent(((App)getApplicationContext()).getAppComponent())
                     .activityModule(new ActivityModule(this))
                     .build();
         }

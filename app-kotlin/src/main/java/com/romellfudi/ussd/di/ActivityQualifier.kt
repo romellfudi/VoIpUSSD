@@ -4,7 +4,7 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.sample
+package com.romellfudi.ussd.di
 import javax.inject.Scope
 
 @Scope

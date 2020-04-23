@@ -41,12 +41,6 @@ public class ActivityModule {
         return mActivity;
     }
 
-//    @Provides
-//    @PerActivity
-//    public USSDApi provideUSSDApi() {
-//        return USSDController.getInstance(mActivity);
-//    }
-
     @Provides
     @ActivityScope
     public AppUpdateManager provideAppUpdateManager() {

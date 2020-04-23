@@ -4,8 +4,11 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.sample
+package com.romellfudi.ussd.di.component
 
+import com.romellfudi.ussd.di.ActivityQualifier
+import com.romellfudi.ussd.di.module.ActivityModule
+import com.romellfudi.ussd.sample.MainActivity
 import dagger.Subcomponent
 
 /**
@@ -22,6 +25,5 @@ interface UIComponent {
         fun create(): UIComponent
     }
 
-    fun inject(fragment: MainFragment)
     fun inject(activity: MainActivity)
 }

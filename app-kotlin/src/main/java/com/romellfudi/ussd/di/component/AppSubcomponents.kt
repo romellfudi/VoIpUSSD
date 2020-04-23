@@ -6,7 +6,6 @@
 
 package com.romellfudi.ussd.di.component
 
-import com.romellfudi.ussd.sample.UIComponent
 import dagger.Module
 
 @Module(

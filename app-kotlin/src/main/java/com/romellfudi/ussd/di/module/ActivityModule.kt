@@ -4,11 +4,12 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.sample
+package com.romellfudi.ussd.di.module
 
 import android.content.Context
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.romellfudi.ussd.di.ActivityQualifier
 import dagger.Module
 import dagger.Provides
 
