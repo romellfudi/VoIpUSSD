@@ -5,9 +5,11 @@
  */
 package com.romellfudi.ussd.di.module
 
-import android.app.Activity
+import androidx.fragment.app.Fragment
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.di.FragmentScope
+import com.romellfudi.ussd.sample.mvp.MainContract
+import com.romellfudi.ussd.sample.mvp.MainPresenter
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.Module
@@ -19,17 +21,23 @@ import dagger.Provides
  * @date 2020-04-22
  */
 @Module
-class MainFragmentModule(var activity: Activity) {
+class MainFragmentModule(var fragment: Fragment) {
 
     @Provides
     @FragmentScope
     fun providePermissionService(): PermissionService {
-        return PermissionService(activity)
+        return PermissionService(fragment.activity)
     }
 
     @Provides
     @FragmentScope
     fun provideUSSDApi(): USSDApi {
-        return USSDController.getInstance(activity.applicationContext)
+        return USSDController.getInstance(fragment.activity!!.applicationContext)
+    }
+
+    @Provides
+    @FragmentScope
+    fun providePresenter(): MainPresenter {
+        return MainPresenter(fragment as MainContract.MainView)
     }
 }

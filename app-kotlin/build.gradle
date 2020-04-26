@@ -28,6 +28,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.romellfudi.permission:fudi-permission:2.0.a'
+    implementation 'com.rbddevs.splashy:splashy:1.2.0'
     implementation project(':ussd-library-kotlin')
 //    implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:1.1.k'
     implementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"

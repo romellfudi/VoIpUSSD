@@ -8,12 +8,9 @@ package com.romellfudi.ussd.sample
 
 import android.content.IntentSender.SendIntentException
 import android.os.Bundle
-import android.view.MenuItem
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -22,9 +19,11 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
+import com.rbddevs.splashy.Splashy
 import com.romellfudi.ussd.App
 import com.romellfudi.ussd.R
-import kotlinx.android.synthetic.main.activity_main_menu.*
+import com.romellfudi.ussd.sample.mvp.MainFragment
+import com.romellfudi.ussdlibrary.BuildConfig
 import kotlinx.android.synthetic.main.app_bar_main_menu.*
 import javax.inject.Inject
 
@@ -37,8 +36,7 @@ import javax.inject.Inject
  */
 const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
-        InstallStateUpdatedListener {
+class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
 
     @Inject
     lateinit var appUpdateManager: AppUpdateManager
@@ -47,8 +45,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         (application as App).appComponent.uiComponent().create().inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
+        if (savedInstanceState == null) splashy()
         setSupportActionBar(toolbar)
-        nav_view.setNavigationItemSelectedListener(this)
+        supportActionBar!!.title = getString(R.string.app_name)
 
         with(supportFragmentManager.beginTransaction()) {
             replace(R.id.fragment_layout, MainFragment()) // f1_container is your FrameLayout container
@@ -56,38 +55,27 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             addToBackStack(null)
             commit()
         }
-        supportActionBar?.title = getString(R.string.title_activity_cp1)
-
         appUpdateManager.registerListener(this)
-
-        checkUpdate()
     }
 
-    override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
-            drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            finish()
-        }
-    }
-
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        val id = item.itemId
-        var newFragment: Fragment? = null
-        var tittle: String? = null
-        if (id == R.id.op1) {
-            newFragment = MainFragment()
-            tittle = resources.getString(R.string.title_activity_cp1)
-        }
-        supportActionBar?.title = tittle
-        with(supportFragmentManager.beginTransaction()) {
-            replace(R.id.fragment_layout, newFragment!!)
-            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            addToBackStack(null)
-            commit()
-        }
-        drawer_layout.closeDrawer(GravityCompat.START)
-        return true
+    private fun splashy() {
+        Splashy(this@MainActivity)
+                .setLogo(R.drawable.combine)
+                .setLogoScaleType(ImageView.ScaleType.FIT_CENTER)
+                .setAnimation(Splashy.Animation.GROW_LOGO_FROM_CENTER, 500)
+                .setTitle(R.string.app_name)
+                .setTitleColor(R.color.black)
+                .setSubTitle("Version  " + BuildConfig.VERSION_NAME)
+                .setProgressColor(R.color.black)
+                .setBackgroundResource(R.color.splash)
+                .setFullScreen(true)
+                .setTime(2000)
+                .show()
+        Splashy.onComplete(object : Splashy.OnComplete {
+            override fun onComplete() {
+                checkUpdate()
+            }
+        })
     }
 
     override fun onStateUpdate(state: InstallState?) {
@@ -108,9 +96,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun showMessage(message: String) {
-        Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
-    }
+    private fun showMessage(message: String) =
+            Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
 
     private fun requestUpdate(appUpdateInfo: AppUpdateInfo) {
         try {
@@ -124,13 +111,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }
     }
 
-    private fun notifyUser() {
-        Snackbar.make(findViewById(android.R.id.content), "Restart to update", Snackbar.LENGTH_INDEFINITE)
-                .setAction("Restart to update") {
-                    appUpdateManager.completeUpdate()
-                    appUpdateManager.unregisterListener(this@MainActivity)
-                }.show()
-    }
+    private fun notifyUser() =
+            Snackbar.make(findViewById(android.R.id.content), "Restart to update", Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Restart to update") {
+                        appUpdateManager.completeUpdate()
+                        appUpdateManager.unregisterListener(this@MainActivity)
+                    }.show()
 
     override fun onDestroy() {
         super.onDestroy()
@@ -145,5 +131,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
         }
     }
+
+    override fun onBackPressed() = finish()
 
 }

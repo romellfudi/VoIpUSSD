@@ -7,7 +7,7 @@ package com.romellfudi.ussd.di.component
 
 import com.romellfudi.ussd.di.FragmentScope
 import com.romellfudi.ussd.di.module.MainFragmentModule
-import com.romellfudi.ussd.sample.MainFragment
+import com.romellfudi.ussd.sample.mvp.MainFragment
 import dagger.Component
 
 /**

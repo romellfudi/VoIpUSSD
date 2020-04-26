@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+  ~ All rights reserved
+  ~ porfile.romellfudi.com
+  -->
+
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:height="1dp">
+        <bitmap
+            android:gravity="bottom"
+            android:src="@drawable/boost_tag" />
+    </item>
+    <item android:height="1dp">
+        <bitmap
+            android:gravity="top"
+            android:src="@drawable/romellfudi" />
+    </item>
+</layer-list>

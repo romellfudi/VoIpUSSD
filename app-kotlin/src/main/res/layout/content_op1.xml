@@ -33,7 +33,7 @@
         android:singleLine="true" />
 
     <Button
-        android:id="@+id/btn1"
+        android:id="@+id/call"
         android:textSize="16sp"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
@@ -42,37 +42,37 @@
         android:text="CALL" />
 
     <Button
-        android:id="@+id/btn2"
+        android:id="@+id/call_overlay"
         android:textSize="16sp"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn1"
+        android:layout_below="@+id/call"
         android:text="CALL/OVERLAY(M)" />
 
     <Button
-        android:id="@+id/btn4"
+        android:id="@+id/call_overlay_splash"
         android:textSize="16sp"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn2"
+        android:layout_below="@+id/call_overlay"
         android:text="CALL/SPLASH(M)" />
 
     <Button
-        android:id="@+id/btn3"
+        android:id="@+id/accessibility"
         android:textSize="16sp"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btn4"
+        android:layout_below="@+id/call_overlay_splash"
         android:text="ACCESSIBILITY IS ACTIVE?" />
 
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@+id/btn3">
+        android:layout_below="@+id/accessibility">
 
         <TextView
             android:id="@+id/result"
