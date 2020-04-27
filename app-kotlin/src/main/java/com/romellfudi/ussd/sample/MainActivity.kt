@@ -42,9 +42,8 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
     @Inject
     lateinit var appUpdateManager: AppUpdateManager
 
-    private val uiComponent: UIComponent by lazy {
-        (application as App).appComponent.uiComponent().create()
-    }
+    private val uiComponent: UIComponent
+            by lazy((application as App).appComponent.uiComponent()::create)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         if (savedInstanceState == null) splashy()

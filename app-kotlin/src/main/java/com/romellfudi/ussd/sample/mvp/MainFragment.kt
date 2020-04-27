@@ -56,11 +56,9 @@ class MainFragment : Fragment(), MainContract.MainView {
     @Inject
     lateinit var permissionService: PermissionService
 
-    private val mainFragmentComponent: MainFragmentComponent by lazy {
-        DaggerMainFragmentComponent.builder()
-                .mainFragmentModule(MainFragmentModule(this))
-                .build()
-    }
+    private val mainFragmentComponent: MainFragmentComponent
+            by lazy(DaggerMainFragmentComponent.builder()
+            .mainFragmentModule(MainFragmentModule(this))::build)
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
