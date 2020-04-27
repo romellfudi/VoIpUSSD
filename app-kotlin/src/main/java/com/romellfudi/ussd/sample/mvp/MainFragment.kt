@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.di.component.DaggerMainFragmentComponent
+import com.romellfudi.ussd.di.component.MainFragmentComponent
 import com.romellfudi.ussd.di.module.MainFragmentModule
 import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.USSDApi
@@ -55,11 +56,15 @@ class MainFragment : Fragment(), MainContract.MainView {
     @Inject
     lateinit var permissionService: PermissionService
 
-    @SuppressLint("MissingPermission")
-    override fun onCreate(savedInstanceState: Bundle?) {
+    private val mainFragmentComponent: MainFragmentComponent by lazy {
         DaggerMainFragmentComponent.builder()
                 .mainFragmentModule(MainFragmentModule(this))
-                .build().inject(this)
+                .build()
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onCreate(savedInstanceState: Bundle?) {
+        mainFragmentComponent.inject(this)
         super.onCreate(savedInstanceState)
         permissionService.request(callback)
     }

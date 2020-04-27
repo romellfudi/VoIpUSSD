@@ -22,6 +22,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.rbddevs.splashy.Splashy
 import com.romellfudi.ussd.App
 import com.romellfudi.ussd.R
+import com.romellfudi.ussd.di.component.UIComponent
 import com.romellfudi.ussd.sample.mvp.MainFragment
 import com.romellfudi.ussdlibrary.BuildConfig
 import kotlinx.android.synthetic.main.app_bar_main_menu.*
@@ -41,16 +42,19 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
     @Inject
     lateinit var appUpdateManager: AppUpdateManager
 
+    private val uiComponent: UIComponent by lazy {
+        (application as App).appComponent.uiComponent().create()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        (application as App).appComponent.uiComponent().create().inject(this)
+        if (savedInstanceState == null) splashy()
+        uiComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
-        if (savedInstanceState == null) splashy()
         setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(R.string.app_name)
-
         with(supportFragmentManager.beginTransaction()) {
-            replace(R.id.fragment_layout, MainFragment()) // f1_container is your FrameLayout container
+            replace(R.id.fragment_layout, MainFragment())
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             addToBackStack(null)
             commit()
@@ -63,13 +67,15 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
                 .setLogo(R.drawable.combine)
                 .setLogoScaleType(ImageView.ScaleType.FIT_CENTER)
                 .setAnimation(Splashy.Animation.GROW_LOGO_FROM_CENTER, 500)
-                .setTitle(R.string.app_name)
+                .setTitle(R.string.app_tittle)
                 .setTitleColor(R.color.black)
                 .setSubTitle("Version  " + BuildConfig.VERSION_NAME)
                 .setProgressColor(R.color.black)
                 .setBackgroundResource(R.color.splash)
+                .setClickToHide(false)
                 .setFullScreen(true)
-                .setTime(2000)
+                .setTime(1000)
+                .showProgress(true)
                 .show()
         Splashy.onComplete(object : Splashy.OnComplete {
             override fun onComplete() {
@@ -102,10 +108,8 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
     private fun requestUpdate(appUpdateInfo: AppUpdateInfo) {
         try {
             appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo,
-                    AppUpdateType.IMMEDIATE,
-                    this@MainActivity,
-                    REQUEST_CODE_FLEXIBLE_UPDATE)
+                    appUpdateInfo, AppUpdateType.IMMEDIATE,
+                    this@MainActivity, REQUEST_CODE_FLEXIBLE_UPDATE)
         } catch (e: SendIntentException) {
             showMessage("Request update error")
         }
