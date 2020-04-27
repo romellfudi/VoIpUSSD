@@ -7,21 +7,28 @@
 package com.romellfudi.ussd
 
 import android.app.Application
-import com.romellfudi.ussd.di.component.AppComponent
 import com.romellfudi.ussd.di.component.DaggerAppComponent
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
+import javax.inject.Inject
 
 /**
  * @autor Romell Domínguez
  * @date 2020-04-20
  * @version 1.0
  */
-open class App : Application() {
+class App : Application(), HasAndroidInjector {
 
-    val appComponent: AppComponent by lazy {
-        initializeComponent()
+    @Inject
+    internal lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+
+    override fun onCreate() {
+        super.onCreate()
+        DaggerAppComponent.factory()
+                .create(this)
+                .inject(this)
     }
 
-    open fun initializeComponent(): AppComponent {
-        return DaggerAppComponent.factory().create(applicationContext)
-    }
+    override fun androidInjector() = activityDispatchingAndroidInjector
 }

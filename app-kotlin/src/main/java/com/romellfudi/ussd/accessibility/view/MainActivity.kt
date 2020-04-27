@@ -4,7 +4,7 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.main
+package com.romellfudi.ussd.accessibility.view
 
 import android.content.IntentSender.SendIntentException
 import android.os.Bundle
@@ -20,13 +20,16 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.rbddevs.splashy.Splashy
-import com.romellfudi.ussd.App
 import com.romellfudi.ussd.R
-import com.romellfudi.ussd.di.component.UIComponent
-import com.romellfudi.ussd.main.view.MainMVPFragment
+import com.romellfudi.ussd.main.view.MainFragmentView
 import com.romellfudi.ussdlibrary.BuildConfig
+import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.app_bar_main_menu.*
 import javax.inject.Inject
+
 
 /**
  * Main Activity
@@ -37,23 +40,26 @@ import javax.inject.Inject
  */
 const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
 
-class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
+class MainActivity : AppCompatActivity(), HasAndroidInjector,
+        InstallStateUpdatedListener, MainMVPView {
+
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> = androidInjector
 
     @Inject
     lateinit var appUpdateManager: AppUpdateManager
 
-    private val uiComponent: UIComponent
-            by lazy((application as App).appComponent.uiComponent()::create)
-
     override fun onCreate(savedInstanceState: Bundle?) {
+        AndroidInjection.inject(this)
         if (savedInstanceState == null) splashy()
-        uiComponent.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(R.string.app_name)
         with(supportFragmentManager.beginTransaction()) {
-            replace(R.id.fragment_layout, MainMVPFragment())
+            replace(R.id.fragment_layout, MainFragmentView())
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             addToBackStack(null)
             commit()
@@ -90,7 +96,7 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
         }
     }
 
-    private fun checkUpdate() {
+    override fun checkUpdate() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
             showMessage("updateAvailability: " + appUpdateInfo.updateAvailability() +
                     " isUpdateTypeAllowed: " + appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE))
@@ -101,7 +107,7 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
         }
     }
 
-    private fun showMessage(message: String) =
+    override fun showMessage(message: String) =
             Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
 
     private fun requestUpdate(appUpdateInfo: AppUpdateInfo) {
@@ -114,7 +120,7 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
         }
     }
 
-    private fun notifyUser() =
+    override fun notifyUser() =
             Snackbar.make(findViewById(android.R.id.content), "Restart to update", Snackbar.LENGTH_INDEFINITE)
                     .setAction("Restart to update") {
                         appUpdateManager.completeUpdate()
@@ -136,5 +142,6 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
     }
 
     override fun onBackPressed() = finish()
+
 
 }

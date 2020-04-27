@@ -17,13 +17,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
-import com.romellfudi.ussd.di.component.DaggerMainFragmentComponent
-import com.romellfudi.ussd.di.component.MainFragmentComponent
-import com.romellfudi.ussd.di.module.MainFragmentModule
-import com.romellfudi.ussd.main.presenter.MainPresenter
+import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
+import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
 import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.content_op1.*
 import java.util.*
 import javax.inject.Inject
@@ -36,10 +35,10 @@ import javax.inject.Inject
  * @since 1.0.a
  */
 
-class MainMVPFragment : Fragment(), MainMVPView {
+class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override var ussdNumber: String
-        get() = phone.text.toString().trim { it <= ' ' }
+        get() = phone?.text.toString().trim { it <= ' ' }
         set(_) = Unit
 
     override var accessability: Boolean
@@ -52,20 +51,20 @@ class MainMVPFragment : Fragment(), MainMVPView {
     override lateinit var ussdApi: USSDApi
 
     @Inject
-    lateinit var mainPresenter: MainPresenter
-
-    @Inject
     lateinit var permissionService: PermissionService
 
-    private val mainFragmentComponent: MainFragmentComponent
-            by lazy(DaggerMainFragmentComponent.builder()
-                    .mainFragmentModule(MainFragmentModule(this))::build)
+    @Inject
+    lateinit var mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
 
-    @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
-        mainFragmentComponent.inject(this)
+        AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
         permissionService.request(callback)
+    }
+
+    override fun onDestroyView() {
+        mainFragmentMVPPresenter.onDetach()
+        super.onDestroyView()
     }
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -74,11 +73,12 @@ class MainMVPFragment : Fragment(), MainMVPView {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        mainFragmentMVPPresenter.onAttach(this)
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
-        call.setOnClickListener { mainPresenter.call() }
-        call_overlay.setOnClickListener { mainPresenter.callOverlay() }
-        call_overlay_splash.setOnClickListener { mainPresenter.callSplashOverlay() }
+        call.setOnClickListener { mainFragmentMVPPresenter.call() }
+        call_overlay.setOnClickListener { mainFragmentMVPPresenter.callOverlay() }
+        call_overlay_splash.setOnClickListener { mainFragmentMVPPresenter.callSplashOverlay() }
         accessibility.setOnClickListener { accessability }
     }
 

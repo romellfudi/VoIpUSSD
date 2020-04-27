@@ -1,9 +1,11 @@
 package com.romellfudi.ussd.main.presenter
 
 import android.util.Log
-import com.romellfudi.ussd.main.view.MainMVPView
+import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
+import com.romellfudi.ussd.main.view.MainFragmentMVPView
 import com.romellfudi.ussdlibrary.USSDController
 import java.util.*
+import javax.inject.Inject
 
 /**
  * @autor Romell Domínguez
@@ -15,11 +17,17 @@ var map = HashMap<String, HashSet<String>>().apply {
     this["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
 }
 
-class MainPresenter(var mainMVPView: MainMVPView) : MainMVPPresenter {
+class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor>
+@Inject internal constructor(var interator: I?) : MainFragmentMVPPresenter<V, I> {
+
+    private var view: V? = null
+
+    val mainMVPView: V
+        get() = getView()
 
     override fun call() {
         mainMVPView.setResult("")
-        mainMVPView.ussdApi.callUSSDInvoke(mainMVPView.ussdNumber, map,
+        mainMVPView.ussdApi!!.callUSSDInvoke(getView().ussdNumber, map,
                 object : USSDController.CallbackInvoke {
                     override fun responseInvoke(message: String) {
                         Log.d("APP", message)
@@ -106,6 +114,17 @@ class MainPresenter(var mainMVPView: MainMVPView) : MainMVPPresenter {
                         }
                     })
         }
+    }
+
+    override fun getView(): V = view!!
+
+    override fun onAttach(view: V?) {
+        this.view = view
+    }
+
+    override fun onDetach() {
+        view = null
+        interator = null
     }
 
 }

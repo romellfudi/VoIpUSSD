@@ -6,20 +6,27 @@
 
 package com.romellfudi.ussd.di.component
 
-import android.content.Context
-import com.romellfudi.ussd.di.AppScope
-import com.romellfudi.ussd.di.module.USSDModule
+import android.app.Application
+import com.romellfudi.ussd.App
+import com.romellfudi.ussd.di.AppModule
+import com.romellfudi.ussd.di.ActivityFactory
 import dagger.BindsInstance
 import dagger.Component
-
-@AppScope
-@Component(modules = [USSDModule::class, AppSubcomponents::class])
+import dagger.android.AndroidInjectionModule
+import javax.inject.Singleton
+/**
+ * @autor Romell Domínguez
+ * @date 2020-04-27
+ * @version 1.0
+ */
+@Singleton
+@Component(modules = [AndroidInjectionModule::class, AppModule::class, ActivityFactory::class])
 interface AppComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(@BindsInstance context: Context): AppComponent
+        fun create(@BindsInstance context: Application): AppComponent
     }
 
-    fun uiComponent(): UIComponent.Factory
+    fun inject(app: App)
 }
