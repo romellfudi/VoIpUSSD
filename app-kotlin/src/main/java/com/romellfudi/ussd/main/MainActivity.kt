@@ -4,7 +4,7 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.sample
+package com.romellfudi.ussd.main
 
 import android.content.IntentSender.SendIntentException
 import android.os.Bundle
@@ -23,7 +23,7 @@ import com.rbddevs.splashy.Splashy
 import com.romellfudi.ussd.App
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.di.component.UIComponent
-import com.romellfudi.ussd.sample.mvp.MainFragment
+import com.romellfudi.ussd.main.view.MainMVPFragment
 import com.romellfudi.ussdlibrary.BuildConfig
 import kotlinx.android.synthetic.main.app_bar_main_menu.*
 import javax.inject.Inject
@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity(), InstallStateUpdatedListener {
         setSupportActionBar(toolbar)
         supportActionBar!!.title = getString(R.string.app_name)
         with(supportFragmentManager.beginTransaction()) {
-            replace(R.id.fragment_layout, MainFragment())
+            replace(R.id.fragment_layout, MainMVPFragment())
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
             addToBackStack(null)
             commit()

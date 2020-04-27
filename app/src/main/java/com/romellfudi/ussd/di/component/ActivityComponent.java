@@ -8,7 +8,7 @@ package com.romellfudi.ussd.di.component;
 
 import com.romellfudi.ussd.di.ActivityScope;
 import com.romellfudi.ussd.di.module.ActivityModule;
-import com.romellfudi.ussd.sample.MainActivity;
+import com.romellfudi.ussd.main.MainActivity;
 
 import dagger.Component;
 

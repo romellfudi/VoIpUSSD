@@ -9,7 +9,7 @@ package com.romellfudi.ussd.di.component;
 
 import com.romellfudi.ussd.di.module.ApplicationModule;
 import com.romellfudi.ussd.di.module.USSDModule;
-import com.romellfudi.ussd.sample.MainFragment;
+import com.romellfudi.ussd.main.MainFragment;
 
 import javax.inject.Singleton;
 

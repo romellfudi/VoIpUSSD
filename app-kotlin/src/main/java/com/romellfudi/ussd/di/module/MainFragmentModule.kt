@@ -8,8 +8,8 @@ package com.romellfudi.ussd.di.module
 import androidx.fragment.app.Fragment
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.di.FragmentScope
-import com.romellfudi.ussd.sample.mvp.MainContract
-import com.romellfudi.ussd.sample.mvp.MainPresenter
+import com.romellfudi.ussd.main.mvp.MainContract
+import com.romellfudi.ussd.main.presenter.MainPresenter
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.Module

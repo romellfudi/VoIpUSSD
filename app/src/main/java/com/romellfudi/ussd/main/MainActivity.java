@@ -4,7 +4,7 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.sample;
+package com.romellfudi.ussd.main;
 
 import android.content.IntentSender;
 import android.os.Bundle;
@@ -23,7 +23,6 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.play.core.appupdate.AppUpdateInfo;
 import com.google.android.play.core.appupdate.AppUpdateManager;
-import com.google.android.play.core.appupdate.AppUpdateManagerFactory;
 import com.google.android.play.core.install.InstallState;
 import com.google.android.play.core.install.InstallStateUpdatedListener;
 import com.google.android.play.core.install.model.AppUpdateType;
@@ -32,7 +31,6 @@ import com.google.android.play.core.install.model.UpdateAvailability;
 import com.google.android.play.core.tasks.OnSuccessListener;
 import com.google.android.play.core.tasks.Task;
 import com.rbddevs.splashy.Splashy;
-import com.romellfudi.ussd.App;
 import com.romellfudi.ussd.R;
 import com.romellfudi.ussd.di.component.ActivityComponent;
 import com.romellfudi.ussd.di.component.DaggerActivityComponent;

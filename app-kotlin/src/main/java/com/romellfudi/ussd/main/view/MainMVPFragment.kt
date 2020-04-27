@@ -4,7 +4,7 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.sample.mvp
+package com.romellfudi.ussd.main.view
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -20,6 +20,7 @@ import com.romellfudi.ussd.R
 import com.romellfudi.ussd.di.component.DaggerMainFragmentComponent
 import com.romellfudi.ussd.di.component.MainFragmentComponent
 import com.romellfudi.ussd.di.module.MainFragmentModule
+import com.romellfudi.ussd.main.presenter.MainPresenter
 import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
@@ -35,7 +36,7 @@ import javax.inject.Inject
  * @since 1.0.a
  */
 
-class MainFragment : Fragment(), MainContract.MainView {
+class MainMVPFragment : Fragment(), MainMVPView {
 
     override var ussdNumber: String
         get() = phone.text.toString().trim { it <= ' ' }
@@ -58,7 +59,7 @@ class MainFragment : Fragment(), MainContract.MainView {
 
     private val mainFragmentComponent: MainFragmentComponent
             by lazy(DaggerMainFragmentComponent.builder()
-            .mainFragmentModule(MainFragmentModule(this))::build)
+                    .mainFragmentModule(MainFragmentModule(this))::build)
 
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -7,7 +7,7 @@ package com.romellfudi.ussd.di.component
 
 import com.romellfudi.ussd.di.FragmentScope
 import com.romellfudi.ussd.di.module.MainFragmentModule
-import com.romellfudi.ussd.sample.mvp.MainFragment
+import com.romellfudi.ussd.main.view.MainMVPFragment
 import dagger.Component
 
 /**
@@ -19,5 +19,5 @@ import dagger.Component
 @Component(modules = [MainFragmentModule::class])
 interface MainFragmentComponent {
 
-    fun inject(fragment: MainFragment)
+    fun inject(fragment: MainMVPFragment)
 }

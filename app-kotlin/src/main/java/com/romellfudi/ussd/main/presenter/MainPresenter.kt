@@ -1,6 +1,7 @@
-package com.romellfudi.ussd.sample.mvp
+package com.romellfudi.ussd.main.presenter
 
 import android.util.Log
+import com.romellfudi.ussd.main.view.MainMVPView
 import com.romellfudi.ussdlibrary.USSDController
 import java.util.*
 
@@ -14,23 +15,23 @@ var map = HashMap<String, HashSet<String>>().apply {
     this["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
 }
 
-class MainPresenter(var mainView: MainContract.MainView) : MainContract.MainActions {
+class MainPresenter(var mainMVPView: MainMVPView) : MainMVPPresenter {
 
     override fun call() {
-        mainView.setResult("")
-        mainView.ussdApi.callUSSDInvoke(mainView.ussdNumber, map,
+        mainMVPView.setResult("")
+        mainMVPView.ussdApi.callUSSDInvoke(mainMVPView.ussdNumber, map,
                 object : USSDController.CallbackInvoke {
                     override fun responseInvoke(message: String) {
                         Log.d("APP", message)
-                        mainView.appendResult("\n-\n$message")
+                        mainMVPView.appendResult("\n-\n$message")
                         // first option list - select option 1
-                        mainView.ussdApi.send("1") {
+                        mainMVPView.ussdApi.send("1") {
                             Log.d("APP", it)
-                            mainView.appendResult("\n-\n$it")
+                            mainMVPView.appendResult("\n-\n$it")
                             // second option list - select option 1
-                            mainView.ussdApi.send("1") {
+                            mainMVPView.ussdApi.send("1") {
                                 Log.d("APP", it)
-                                mainView.appendResult("\n-\n$it")
+                                mainMVPView.appendResult("\n-\n$it")
                             }
                         }
 //                            mainView.ussdApi.cancel()
@@ -38,28 +39,28 @@ class MainPresenter(var mainView: MainContract.MainView) : MainContract.MainActi
 
                     override fun over(message: String) {
                         Log.d("APP", message)
-                        mainView.appendResult("\n-\n$message")
+                        mainMVPView.appendResult("\n-\n$message")
                     }
                 })
     }
 
     override fun callOverlay() {
-        if (mainView.accessability) {
-            mainView.showOverlay()
-            mainView.setResult("")
-            mainView.ussdApi.callUSSDOverlayInvoke(mainView.ussdNumber, map,
+        if (mainMVPView.accessability) {
+            mainMVPView.showOverlay()
+            mainMVPView.setResult("")
+            mainMVPView.ussdApi.callUSSDOverlayInvoke(mainMVPView.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
                             Log.d("APP", message)
-                            mainView.appendResult("\n-\n$message")
+                            mainMVPView.appendResult("\n-\n$message")
                             // first option list - select option 1
-                            mainView.ussdApi.send("1") {
+                            mainMVPView.ussdApi.send("1") {
                                 Log.d("APP", it)
-                                mainView.appendResult("\n-\n$it")
+                                mainMVPView.appendResult("\n-\n$it")
                                 // second option list - select option 1
-                                mainView.ussdApi.send("1") {
+                                mainMVPView.ussdApi.send("1") {
                                     Log.d("APP", it)
-                                    mainView.dismissOverlay()
+                                    mainMVPView.dismissOverlay()
                                 }
                             }
 //                                mainView.ussdApi.cancel()
@@ -67,8 +68,8 @@ class MainPresenter(var mainView: MainContract.MainView) : MainContract.MainActi
 
                         override fun over(message: String) {
                             Log.d("APP", message)
-                            mainView.appendResult("\n-\n$message")
-                            mainView.dismissOverlay()
+                            mainMVPView.appendResult("\n-\n$message")
+                            mainMVPView.dismissOverlay()
                         }
                     })
         }
@@ -76,23 +77,23 @@ class MainPresenter(var mainView: MainContract.MainView) : MainContract.MainActi
     }
 
     override fun callSplashOverlay() {
-        if (mainView.accessability ) {
-            mainView.showOverlay()
-            mainView.setResult("")
-            mainView.ussdApi.callUSSDOverlayInvoke(mainView.ussdNumber, map,
+        if (mainMVPView.accessability) {
+            mainMVPView.showOverlay()
+            mainMVPView.setResult("")
+            mainMVPView.ussdApi.callUSSDOverlayInvoke(mainMVPView.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
                             Log.d("APP", message)
-                            mainView.appendResult("\n-\n$message")
+                            mainMVPView.appendResult("\n-\n$message")
                             // first option list - select option 1
-                            mainView.ussdApi.send("1") {
+                            mainMVPView.ussdApi.send("1") {
                                 Log.d("APP", it)
-                                mainView.appendResult("\n-\n$message")
+                                mainMVPView.appendResult("\n-\n$message")
                                 // second option list - select option 1
-                                mainView.ussdApi.send("1") {
+                                mainMVPView.ussdApi.send("1") {
                                     Log.d("APP", it)
-                                    mainView.appendResult("\n-\n$it")
-                                    mainView.dismissOverlay()
+                                    mainMVPView.appendResult("\n-\n$it")
+                                    mainMVPView.dismissOverlay()
                                 }
                             }
 //                                ussdApi.cancel()
@@ -100,8 +101,8 @@ class MainPresenter(var mainView: MainContract.MainView) : MainContract.MainActi
 
                         override fun over(message: String) {
                             Log.d("APP", message)
-                            mainView.appendResult("\n-\n$message")
-                            mainView.dismissOverlay()
+                            mainMVPView.appendResult("\n-\n$message")
+                            mainMVPView.dismissOverlay()
                         }
                     })
         }

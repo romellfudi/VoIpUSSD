@@ -4,7 +4,7 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.sample;
+package com.romellfudi.ussd.main;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,8 +24,6 @@ import androidx.fragment.app.Fragment;
 import com.romellfudi.permission.PermissionService;
 import com.romellfudi.ussd.App;
 import com.romellfudi.ussd.R;
-import com.romellfudi.ussd.di.component.DaggerActivityComponent;
-import com.romellfudi.ussd.di.module.ActivityModule;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.SplashLoadingService;
 import com.romellfudi.ussdlibrary.USSDApi;
