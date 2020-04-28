@@ -12,6 +12,7 @@ import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
 import com.romellfudi.ussd.main.presenter.MainFragmentPresenter
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 import com.romellfudi.ussd.main.view.MainFragmentView
+import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.Module
 import dagger.Provides
@@ -29,7 +30,7 @@ class MainFragmentModule {
             PermissionService(fragment.activity)
 
     @Provides
-    fun provideUSSDApi(fragment: MainFragmentView) =
+    fun provideUSSDApi(fragment: MainFragmentView): USSDApi =
             USSDController.getInstance(fragment.activity!!.applicationContext)
 
     @Provides

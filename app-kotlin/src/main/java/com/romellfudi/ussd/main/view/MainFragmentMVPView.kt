@@ -12,7 +12,8 @@ interface MainFragmentMVPView {
     fun setResult(data: String)
     fun appendResult(string: String)
     var ussdApi: USSDApi
-    var accessability: Boolean
+    var hasAllowOverlay: Boolean
     fun showOverlay()
+    fun showSplashOverlay()
     fun dismissOverlay()
 }

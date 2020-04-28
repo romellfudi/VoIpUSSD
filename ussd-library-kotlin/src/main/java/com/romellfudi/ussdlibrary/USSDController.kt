@@ -203,10 +203,10 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
          * @param context An activity that could call
          * @return An instance of USSDController
          */
-        fun getInstance(context: Context): USSDController {
+        fun getInstance(context: Context): USSDApi {
             if (instance == null)
                 instance = USSDController(context)
-            return instance as USSDController
+            return instance as USSDApi
         }
 
         fun verifyAccesibilityAccess(context: Context): Boolean {

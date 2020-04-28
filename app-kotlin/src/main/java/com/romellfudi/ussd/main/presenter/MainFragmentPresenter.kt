@@ -48,7 +48,7 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
     }
 
     override fun callOverlay() {
-        if (view!!.accessability) {
+        if (view!!.hasAllowOverlay) {
             view?.showOverlay()
             view?.setResult("")
             view!!.ussdApi.callUSSDOverlayInvoke(view!!.ussdNumber, map,
@@ -63,6 +63,7 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                                 // second option list - select option 1
                                 view!!.ussdApi.send("1") {
                                     Log.d("APP", it)
+                                    view?.appendResult("\n-\n$it")
                                     view?.dismissOverlay()
                                 }
                             }
@@ -80,8 +81,8 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
     }
 
     override fun callSplashOverlay() {
-        if (view?.accessability!!) {
-            view?.showOverlay()
+        if (view?.hasAllowOverlay!!) {
+            view?.showSplashOverlay()
             view?.setResult("")
             view!!.ussdApi.callUSSDOverlayInvoke(view!!.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
@@ -91,7 +92,7 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                             // first option list - select option 1
                             view!!.ussdApi.send("1") {
                                 Log.d("APP", it)
-                                view?.appendResult("\n-\n$message")
+                                view?.appendResult("\n-\n$it")
                                 // second option list - select option 1
                                 view!!.ussdApi.send("1") {
                                     Log.d("APP", it)

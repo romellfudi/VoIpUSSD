@@ -6,7 +6,6 @@
 
 package com.romellfudi.ussd.main.view
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -20,6 +19,7 @@ import com.romellfudi.ussd.R
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
 import com.romellfudi.ussdlibrary.OverlayShowingService
+import com.romellfudi.ussdlibrary.SplashLoadingService
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.android.support.AndroidSupportInjection
@@ -41,8 +41,8 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         get() = phone?.text.toString().trim { it <= ' ' }
         set(_) = Unit
 
-    override var accessability: Boolean
-        get() = USSDController.verifyAccesibilityAccess(activity!!)
+    override var hasAllowOverlay: Boolean
+        get() = USSDController.verifyOverLay(activity!!)
         set(_) = Unit
 
     private var svc: Intent? = null
@@ -77,7 +77,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         call.setOnClickListener { mainFragmentMVPPresenter.call() }
         call_overlay.setOnClickListener { mainFragmentMVPPresenter.callOverlay() }
         call_overlay_splash.setOnClickListener { mainFragmentMVPPresenter.callSplashOverlay() }
-        accessibility.setOnClickListener { accessability }
+        accessibility.setOnClickListener { USSDController.verifyAccesibilityAccess(activity!!) }
         permissionService.request(callback)
     }
 
@@ -91,6 +91,12 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         Log.d("APP", "START OVERLAY DIALOG")
         svc = Intent(activity, OverlayShowingService::class.java)
         svc!!.putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
+        activity!!.startService(svc)
+    }
+
+    override fun showSplashOverlay() {
+        Log.d("APP", "START OVERLAY DIALOG")
+        svc = Intent(activity, SplashLoadingService::class.java)
         activity!!.startService(svc)
     }
 
