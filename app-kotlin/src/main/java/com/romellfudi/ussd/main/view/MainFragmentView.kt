@@ -59,11 +59,10 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onCreate(savedInstanceState)
-        permissionService.request(callback)
     }
 
     override fun onDestroyView() {
-        mainFragmentMVPPresenter.onDetach()
+//        mainFragmentMVPPresenter.onDetach()
         super.onDestroyView()
     }
 
@@ -71,15 +70,15 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
                               container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.content_op1, container, false)
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        mainFragmentMVPPresenter.onAttach(this)
+//        mainFragmentMVPPresenter.onAttach(this)
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
         call.setOnClickListener { mainFragmentMVPPresenter.call() }
         call_overlay.setOnClickListener { mainFragmentMVPPresenter.callOverlay() }
         call_overlay_splash.setOnClickListener { mainFragmentMVPPresenter.callSplashOverlay() }
         accessibility.setOnClickListener { accessability }
+        permissionService.request(callback)
     }
 
     override fun appendResult(string: String) = result.append(string)

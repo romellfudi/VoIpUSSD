@@ -18,28 +18,23 @@ var map = HashMap<String, HashSet<String>>().apply {
 }
 
 class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor>
-@Inject internal constructor(var interator: I?) : MainFragmentMVPPresenter<V, I> {
-
-    private var view: V? = null
-
-    val mainMVPView: V
-        get() = getView()
+@Inject internal constructor(var view: V?, var interator: I?) : MainFragmentMVPPresenter<V, I> {
 
     override fun call() {
-        mainMVPView.setResult("")
-        mainMVPView.ussdApi!!.callUSSDInvoke(getView().ussdNumber, map,
+        view?.setResult("")
+        view!!.ussdApi.callUSSDInvoke(view!!.ussdNumber, map,
                 object : USSDController.CallbackInvoke {
                     override fun responseInvoke(message: String) {
                         Log.d("APP", message)
-                        mainMVPView.appendResult("\n-\n$message")
+                        view?.appendResult("\n-\n$message")
                         // first option list - select option 1
-                        mainMVPView.ussdApi.send("1") {
+                        view!!.ussdApi.send("1") {
                             Log.d("APP", it)
-                            mainMVPView.appendResult("\n-\n$it")
+                            view?.appendResult("\n-\n$it")
                             // second option list - select option 1
-                            mainMVPView.ussdApi.send("1") {
+                            view!!.ussdApi.send("1") {
                                 Log.d("APP", it)
-                                mainMVPView.appendResult("\n-\n$it")
+                                view?.appendResult("\n-\n$it")
                             }
                         }
 //                            mainView.ussdApi.cancel()
@@ -47,37 +42,37 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
 
                     override fun over(message: String) {
                         Log.d("APP", message)
-                        mainMVPView.appendResult("\n-\n$message")
+                        view?.appendResult("\n-\n$message")
                     }
                 })
     }
 
     override fun callOverlay() {
-        if (mainMVPView.accessability) {
-            mainMVPView.showOverlay()
-            mainMVPView.setResult("")
-            mainMVPView.ussdApi.callUSSDOverlayInvoke(mainMVPView.ussdNumber, map,
+        if (view!!.accessability) {
+            view?.showOverlay()
+            view?.setResult("")
+            view!!.ussdApi.callUSSDOverlayInvoke(view!!.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
                             Log.d("APP", message)
-                            mainMVPView.appendResult("\n-\n$message")
+                            view?.appendResult("\n-\n$message")
                             // first option list - select option 1
-                            mainMVPView.ussdApi.send("1") {
+                            view!!.ussdApi.send("1") {
                                 Log.d("APP", it)
-                                mainMVPView.appendResult("\n-\n$it")
+                                view?.appendResult("\n-\n$it")
                                 // second option list - select option 1
-                                mainMVPView.ussdApi.send("1") {
+                                view!!.ussdApi.send("1") {
                                     Log.d("APP", it)
-                                    mainMVPView.dismissOverlay()
+                                    view?.dismissOverlay()
                                 }
                             }
-//                                mainView.ussdApi.cancel()
+//                                view?.ussdApi.cancel()
                         }
 
                         override fun over(message: String) {
                             Log.d("APP", message)
-                            mainMVPView.appendResult("\n-\n$message")
-                            mainMVPView.dismissOverlay()
+                            view?.appendResult("\n-\n$message")
+                            view?.dismissOverlay()
                         }
                     })
         }
@@ -85,46 +80,44 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
     }
 
     override fun callSplashOverlay() {
-        if (mainMVPView.accessability) {
-            mainMVPView.showOverlay()
-            mainMVPView.setResult("")
-            mainMVPView.ussdApi.callUSSDOverlayInvoke(mainMVPView.ussdNumber, map,
+        if (view?.accessability!!) {
+            view?.showOverlay()
+            view?.setResult("")
+            view!!.ussdApi.callUSSDOverlayInvoke(view!!.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
                             Log.d("APP", message)
-                            mainMVPView.appendResult("\n-\n$message")
+                            view?.appendResult("\n-\n$message")
                             // first option list - select option 1
-                            mainMVPView.ussdApi.send("1") {
+                            view!!.ussdApi.send("1") {
                                 Log.d("APP", it)
-                                mainMVPView.appendResult("\n-\n$message")
+                                view?.appendResult("\n-\n$message")
                                 // second option list - select option 1
-                                mainMVPView.ussdApi.send("1") {
+                                view!!.ussdApi.send("1") {
                                     Log.d("APP", it)
-                                    mainMVPView.appendResult("\n-\n$it")
-                                    mainMVPView.dismissOverlay()
+                                    view?.appendResult("\n-\n$it")
+                                    view?.dismissOverlay()
                                 }
                             }
-//                                ussdApi.cancel()
+//                                view?.ussdApi.cancel()
                         }
 
                         override fun over(message: String) {
                             Log.d("APP", message)
-                            mainMVPView.appendResult("\n-\n$message")
-                            mainMVPView.dismissOverlay()
+                            view?.appendResult("\n-\n$message")
+                            view?.dismissOverlay()
                         }
                     })
         }
     }
 
-    override fun getView(): V = view!!
+//    override fun onAttach(view: V?) {
+//        this.view = view
+//    }
 
-    override fun onAttach(view: V?) {
-        this.view = view
-    }
-
-    override fun onDetach() {
-        view = null
-        interator = null
-    }
+//    override fun onDetach() {
+//        view = null
+//        interator = null
+//    }
 
 }

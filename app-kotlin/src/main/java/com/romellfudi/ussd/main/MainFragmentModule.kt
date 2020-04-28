@@ -12,7 +12,6 @@ import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
 import com.romellfudi.ussd.main.presenter.MainFragmentPresenter
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 import com.romellfudi.ussd.main.view.MainFragmentView
-import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.Module
 import dagger.Provides
@@ -26,19 +25,18 @@ import dagger.Provides
 class MainFragmentModule {
 
     @Provides
-//    @FragmentScope
-    fun providePermissionService(fragment: MainFragmentView): PermissionService {
-        return PermissionService(fragment.activity)
-    }
+    fun providePermissionService(fragment: MainFragmentView) =
+            PermissionService(fragment.activity)
 
     @Provides
-//    @FragmentScope
-    fun provideUSSDApi(fragment: MainFragmentView): USSDApi {
-        return USSDController.getInstance(fragment.activity!!.applicationContext)
-    }
+    fun provideUSSDApi(fragment: MainFragmentView) =
+            USSDController.getInstance(fragment.activity!!.applicationContext)
 
     @Provides
-    internal fun provideRateUsInteractor(interactor: MainFragmentInteractor): MainFragmentMVPInteractor = interactor
+    internal fun provideMainFragmentView(view: MainFragmentView): MainFragmentMVPView = view
+
+    @Provides
+    internal fun provideMainFragmentInteractor(interactor: MainFragmentInteractor): MainFragmentMVPInteractor = interactor
 
     @Provides
     internal fun provideMainFragmentPresenter(presenter: MainFragmentPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>)
