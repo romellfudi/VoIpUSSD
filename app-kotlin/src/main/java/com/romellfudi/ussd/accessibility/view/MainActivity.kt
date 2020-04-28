@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var appUpdateManager: AppUpdateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         if (savedInstanceState == null) splashy()
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         setSupportActionBar(toolbar)

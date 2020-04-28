@@ -296,7 +296,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
                         context.applicationContext.contentResolver,
                         Settings.Secure.ACCESSIBILITY_ENABLED)
             } catch (e: Settings.SettingNotFoundException) {
-                //
+                return false
             }
 
             if (accessibilityEnabled == 1) {
