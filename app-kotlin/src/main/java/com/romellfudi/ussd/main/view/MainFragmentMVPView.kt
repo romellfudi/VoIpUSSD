@@ -8,11 +8,11 @@ import com.romellfudi.ussdlibrary.USSDApi
  * @date 2020-04-26
  */
 interface MainFragmentMVPView {
-    var ussdNumber: String
+    val ussdNumber: String
     fun setResult(data: String)
     fun appendResult(string: String)
     var ussdApi: USSDApi
-    var hasAllowOverlay: Boolean
+    val hasAllowOverlay: Boolean
     fun showOverlay()
     fun showSplashOverlay()
     fun dismissOverlay()

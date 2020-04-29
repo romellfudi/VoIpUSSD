@@ -31,7 +31,7 @@ class MainFragmentModule {
 
     @Provides
     fun provideUSSDApi(fragment: MainFragmentView): USSDApi =
-            USSDController.getInstance(fragment.activity!!.applicationContext)
+            USSDController.getInstance(fragment.activity!!)
 
     @Provides
     internal fun provideMainFragmentView(view: MainFragmentView): MainFragmentMVPView = view

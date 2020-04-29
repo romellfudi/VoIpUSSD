@@ -37,13 +37,11 @@ import javax.inject.Inject
 
 class MainFragmentView : Fragment(), MainFragmentMVPView {
 
-    override var ussdNumber: String
+    override val ussdNumber: String
         get() = phone?.text.toString().trim { it <= ' ' }
-        set(_) = Unit
 
-    override var hasAllowOverlay: Boolean
+    override val hasAllowOverlay: Boolean
         get() = USSDController.verifyOverLay(activity!!)
-        set(_) = Unit
 
     private var svc: Intent? = null
 
