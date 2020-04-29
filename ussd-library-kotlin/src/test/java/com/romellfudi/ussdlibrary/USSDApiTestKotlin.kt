@@ -29,7 +29,6 @@ import org.junit.Test
 import org.junit.runners.MethodSorters
 import org.mockito.Mock
 import org.mockito.Mockito.`when`
-import   org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import java.util.*
 
@@ -85,14 +84,8 @@ class USSDApiTestKotlin {
         MockKAnnotations.init(this, relaxUnitFun = true)
         val texts = object : ArrayList<CharSequence>() {}
         i = -1
-        whenever(activity.startActivity(any()))
-                .thenAnswer {
-                    load(texts)
-                }
-        whenever(ussdInterface.sendData(any()))
-                .thenAnswer {
-                    load(texts)
-                }
+        whenever(activity.startActivity(any())).thenAnswer { load(texts) }
+        whenever(ussdInterface.sendData(any())).thenAnswer { load(texts) }
         eventDummy()
     }
 
@@ -124,29 +117,30 @@ class USSDApiTestKotlin {
     fun callUSSDInvokeTest() {
         j = 0
         val map = prepareTest()
-        var MESSAGE = "waiting"
         every { accessibilityEvent.source } returns null
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke!!)
-        verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo(MESSAGE)))
 
-        MESSAGE = "problem UUID"
+        var response = "waiting"
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke!!)
         verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo(MESSAGE)))
+        assertThat(stringSlot.captured, `is`(equalTo(response)))
+
+        response = "problem UUID"
+        ussdController.callUSSDInvoke("*1#", map, callbackInvoke!!)
+        verify { callbackInvoke.over(capture(stringSlot)) }
+        assertThat(stringSlot.captured, `is`(equalTo(response)))
     }
 
     @Test
     fun callUSSDLoginWithNotInputText() {
         j = 1
         val map = prepareTest()
-        var MESSAGE = "loading"
-
         every { USSDServiceKT.notInputText(accessibilityEvent) } returns true
         every { accessibilityEvent.source } returns null
+
+        var response = "loading"
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo(MESSAGE)))
+        assertThat(stringSlot.captured, `is`(equalTo(response)))
     }
 
     private fun prepareTest(): HashMap<String, HashSet<String>> {
@@ -155,7 +149,6 @@ class USSDApiTestKotlin {
         map["KEY_ERROR"] = HashSet(Arrays.asList("problema", "problem", "error", "null"))
         mockkObject(USSDController)
         mockkStatic(Uri::class)
-
         every { USSDController.verifyAccesibilityAccess(any()) } returns true
         every { USSDController.verifyOverLay(any()) } returns true
         every { Uri.decode(any()) } returns ""
