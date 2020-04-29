@@ -43,7 +43,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     override val hasAllowOverlay: Boolean
         get() = USSDController.verifyOverLay(activity!!)
 
-    private var svc: Intent? = null
+    private var overlay: Intent? = null
 
     @Inject
     override lateinit var ussdApi: USSDApi
@@ -81,19 +81,20 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun showOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
-        svc = Intent(activity, OverlayShowingService::class.java)
-        svc!!.putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
-        activity!!.startService(svc)
+        overlay = Intent(activity, OverlayShowingService::class.java)
+        overlay!!.putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
+        activity!!.startService(overlay)
     }
 
     override fun showSplashOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
-        svc = Intent(activity, SplashLoadingService::class.java)
-        activity!!.startService(svc)
+        overlay = Intent(activity, SplashLoadingService::class.java)
+        activity!!.startService(overlay)
     }
 
     override fun dismissOverlay() {
-        activity!!.stopService(svc)
+        activity!!.stopService(overlay)
+        overlay = null
         Log.d("APP", "STOP OVERLAY DIALOG")
         Log.d("APP", "successful")
     }
