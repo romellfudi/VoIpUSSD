@@ -65,20 +65,19 @@ class USSDApiTestKotlin {
 
     val stringSlot = slot<String>()
 
-    val map = HashMap<String, HashSet<String>>().apply {
-        this["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
-        this["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
-    }
-
     @Mock
     internal val ussdInterface: USSDInterface = mock()
 
     companion object {
         var i = -1
         var j = 0
-        var MESSAGE = listOf(listOf("waiting", "problem UUID"),
+        val MESSAGE = listOf(listOf("waiting", "problem UUID"),
                 listOf("loading"),
                 listOf("waiting", "message", "message", "message", "message", "Final Close dialog"))
+        val map = HashMap<String, HashSet<String>>().apply {
+            this["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
+            this["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
+        }
     }
 
     @Before
