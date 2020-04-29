@@ -58,9 +58,6 @@ class USSDApiTestKotlin {
     lateinit var callbackInvoke: USSDController.CallbackInvoke
 
     @MockK
-    lateinit var callbackMessage: (String) -> Unit
-
-    @MockK
     lateinit var uri: Uri
 
     @MockK
@@ -117,7 +114,7 @@ class USSDApiTestKotlin {
         j = -1
         `when`(activity.applicationInfo).thenReturn(applicationInfo)
         `when`(activity.getSystemService(any())).thenReturn(null)
-        applicationInfo!!.nonLocalizedLabel = javaClass.getPackage()!!.toString()
+        applicationInfo.nonLocalizedLabel = javaClass.getPackage().toString()
         USSDController.verifyAccesibilityAccess(activity)
     }
 
@@ -126,15 +123,13 @@ class USSDApiTestKotlin {
         j = 0
         every { accessibilityEvent.source } returns null
 
-        var response = "waiting"
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke!!)
+        ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo(response)))
+        assertThat(stringSlot.captured, `is`(equalTo("waiting")))
 
-        response = "problem UUID"
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke!!)
+        ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo(response)))
+        assertThat(stringSlot.captured, `is`(equalTo("problem UUID")))
     }
 
     @Test
@@ -143,10 +138,9 @@ class USSDApiTestKotlin {
         every { USSDServiceKT.notInputText(accessibilityEvent) } returns true
         every { accessibilityEvent.source } returns null
 
-        var response = "loading"
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo(response)))
+        assertThat(stringSlot.captured, `is`(equalTo("loading")))
     }
 
 }
