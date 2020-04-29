@@ -68,6 +68,11 @@ class USSDApiTestKotlin {
 
     val stringSlot = slot<String>()
 
+    val map = HashMap<String, HashSet<String>>().apply {
+        this["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
+        this["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
+    }
+
     @Mock
     internal val ussdInterface: USSDInterface = mock()
 
@@ -86,13 +91,16 @@ class USSDApiTestKotlin {
         i = -1
         whenever(activity.startActivity(any())).thenAnswer { load(texts) }
         whenever(ussdInterface.sendData(any())).thenAnswer { load(texts) }
-        eventDummy()
-    }
-
-    private fun eventDummy() {
         every { accessibilityEvent.eventType } returns 0
         every { accessibilityEvent.packageName } returns "ussd.test"
         every { accessibilityEvent.eventTime } returns 1L
+        every { accessibilityEvent.className } returns "amigo.app.AmigoAlertDialog"
+        mockkObject(USSDController)
+        mockkStatic(Uri::class)
+        every { USSDController.verifyAccesibilityAccess(any()) } returns true
+        every { USSDController.verifyOverLay(any()) } returns true
+        every { Uri.decode(any()) } returns ""
+        every { Uri.parse(any()) } returns uri
     }
 
     private fun load(texts: ArrayList<CharSequence>) {
@@ -116,7 +124,6 @@ class USSDApiTestKotlin {
     @Test
     fun callUSSDInvokeTest() {
         j = 0
-        val map = prepareTest()
         every { accessibilityEvent.source } returns null
 
         var response = "waiting"
@@ -133,7 +140,6 @@ class USSDApiTestKotlin {
     @Test
     fun callUSSDLoginWithNotInputText() {
         j = 1
-        val map = prepareTest()
         every { USSDServiceKT.notInputText(accessibilityEvent) } returns true
         every { accessibilityEvent.source } returns null
 
@@ -141,21 +147,6 @@ class USSDApiTestKotlin {
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
         assertThat(stringSlot.captured, `is`(equalTo(response)))
-    }
-
-    private fun prepareTest(): HashMap<String, HashSet<String>> {
-        val map = HashMap<String, HashSet<String>>()
-        map["KEY_LOGIN"] = HashSet(Arrays.asList("espere", "waiting", "loading", "esperando"))
-        map["KEY_ERROR"] = HashSet(Arrays.asList("problema", "problem", "error", "null"))
-        mockkObject(USSDController)
-        mockkStatic(Uri::class)
-        every { USSDController.verifyAccesibilityAccess(any()) } returns true
-        every { USSDController.verifyOverLay(any()) } returns true
-        every { Uri.decode(any()) } returns ""
-        every { Uri.parse(any()) } returns uri
-
-        every { accessibilityEvent.className } returns "amigo.app.AmigoAlertDialog"
-        return map
     }
 
 }
