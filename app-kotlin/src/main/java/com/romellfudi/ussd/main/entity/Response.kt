@@ -4,14 +4,13 @@
  * porfile.romellfudi.com
  */
 
-package com.romellfudi.ussd.accessibility.interactor
+package com.romellfudi.ussd.main.entity
 
+import androidx.lifecycle.ViewModel
 
 /**
  * @autor Romell Domínguez
  * @date 2020-04-27
  * @version 1.0
  */
-interface MainMVPInteractor {
-
-}
+data class Response(var result: String = "") : ViewModel()

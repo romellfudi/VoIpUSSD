@@ -1,3 +1,9 @@
+/*
+ * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+ * All rights reserved
+ * porfile.romellfudi.com
+ */
+
 package com.romellfudi.ussd.main.view
 
 import com.romellfudi.ussdlibrary.USSDApi
@@ -10,7 +16,6 @@ import com.romellfudi.ussdlibrary.USSDApi
 interface MainFragmentMVPView {
     val ussdNumber: String
     fun setResult(data: String)
-    fun appendResult(string: String)
     var ussdApi: USSDApi
     val hasAllowOverlay: Boolean
     fun showOverlay()

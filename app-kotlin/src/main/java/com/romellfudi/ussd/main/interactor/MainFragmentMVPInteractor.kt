@@ -1,5 +1,13 @@
+/*
+ * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+ * All rights reserved
+ * porfile.romellfudi.com
+ */
+
 package com.romellfudi.ussd.main.interactor
 
+import androidx.lifecycle.MutableLiveData
+import com.romellfudi.ussd.main.entity.Response
 import io.reactivex.Observable
 
 
@@ -9,7 +17,5 @@ import io.reactivex.Observable
  * @version 1.0
  */
 interface MainFragmentMVPInteractor {
-
-    fun seedQuestions(): Observable<Boolean>
-    fun getQuestion(): Observable<List<Boolean>>
+    fun getResponse(): MutableLiveData<Response>
 }

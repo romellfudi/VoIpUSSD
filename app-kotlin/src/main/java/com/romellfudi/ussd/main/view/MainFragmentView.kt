@@ -59,11 +59,6 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         super.onCreate(savedInstanceState)
     }
 
-    override fun onDestroyView() {
-//        mainFragmentMVPPresenter.onDetach()
-        super.onDestroyView()
-    }
-
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.content_op1, container, false)
@@ -72,14 +67,13 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 //        mainFragmentMVPPresenter.onAttach(this)
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
+        mainFragmentMVPPresenter.attachObserves(this)
         call.setOnClickListener { mainFragmentMVPPresenter.call() }
         call_overlay.setOnClickListener { mainFragmentMVPPresenter.callOverlay() }
         call_overlay_splash.setOnClickListener { mainFragmentMVPPresenter.callSplashOverlay() }
         accessibility.setOnClickListener { USSDController.verifyAccesibilityAccess(activity!!) }
         permissionService.request(callback)
     }
-
-    override fun appendResult(string: String) = result.append(string)
 
     override fun setResult(data: String) {
         result.text = data
@@ -114,4 +108,10 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
                                             grantResults: IntArray) =
             callback.handler(permissions, grantResults)
+
+
+//    override fun onDestroyView() {
+//        mainFragmentMVPPresenter.onDetach()
+//        super.onDestroyView()
+//    }
 }

@@ -1,10 +1,17 @@
+/*
+ * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+ * All rights reserved
+ * porfile.romellfudi.com
+ */
+
 package com.romellfudi.ussd.main.presenter
 
-import android.util.Log
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import com.romellfudi.ussd.main.entity.Response
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 import com.romellfudi.ussdlibrary.USSDController
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -20,59 +27,53 @@ var map = HashMap<String, HashSet<String>>().apply {
 class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor>
 @Inject internal constructor(var view: V?, var interator: I?) : MainFragmentMVPPresenter<V, I> {
 
+    override fun attachObserves(lifecycleOwner: LifecycleOwner) {
+        interator!!.getResponse().observe(lifecycleOwner, Observer {
+            view?.setResult(it.result)
+        })
+    }
+
     override fun call() {
-        view?.setResult("")
+        val value = Response()
         view!!.ussdApi.callUSSDInvoke(view!!.ussdNumber, map,
                 object : USSDController.CallbackInvoke {
                     override fun responseInvoke(message: String) {
-                        Log.d("APP", message)
-                        view?.appendResult("\n-\n$message")
-                        // first option list - select option 1
+                        value.result += "\n-\n$message"
                         view!!.ussdApi.send("1") {
-                            Log.d("APP", it)
-                            view?.appendResult("\n-\n$it")
-                            // second option list - select option 1
+                            value.result += "\n-\n$it"
                             view!!.ussdApi.send("1") {
-                                Log.d("APP", it)
-                                view?.appendResult("\n-\n$it")
+                                value.result += "\n-\n$it"
                             }
                         }
-//                            mainView.ussdApi.cancel()
                     }
 
                     override fun over(message: String) {
-                        Log.d("APP", message)
-                        view?.appendResult("\n-\n$message")
+                        value.result += "\n-\n$message"
+                        interator!!.getResponse().postValue(value)
                     }
                 })
     }
 
     override fun callOverlay() {
+        val value = Response()
         if (view!!.hasAllowOverlay) {
             view?.showOverlay()
-            view?.setResult("")
             view!!.ussdApi.callUSSDOverlayInvoke(view!!.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
-                            Log.d("APP", message)
-                            view?.appendResult("\n-\n$message")
-                            // first option list - select option 1
+                            value.result += "\n-\n$message"
                             view!!.ussdApi.send("1") {
-                                Log.d("APP", it)
-                                view?.appendResult("\n-\n$it")
-                                // second option list - select option 1
+                                value.result += "\n-\n$it"
                                 view!!.ussdApi.send("1") {
-                                    Log.d("APP", it)
-                                    view?.appendResult("\n-\n$it")
+                                    value.result += "\n-\n$it"
                                     view?.dismissOverlay()
                                 }
                             }
-//                                view?.ussdApi.cancel()
                         }
 
                         override fun over(message: String) {
-                            Log.d("APP", message)
-                            view?.appendResult("\n-\n$message")
+                            value.result += "\n-\n$message"
+                            interator!!.getResponse().postValue(value)
                             view?.dismissOverlay()
                         }
                     })
@@ -81,31 +82,25 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
     }
 
     override fun callSplashOverlay() {
+        val value = Response()
         if (view?.hasAllowOverlay!!) {
             view?.showSplashOverlay()
-            view?.setResult("")
             view!!.ussdApi.callUSSDOverlayInvoke(view!!.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
-                            Log.d("APP", message)
-                            view?.appendResult("\n-\n$message")
-                            // first option list - select option 1
+                            value.result += "\n-\n$message"
                             view!!.ussdApi.send("1") {
-                                Log.d("APP", it)
-                                view?.appendResult("\n-\n$it")
-                                // second option list - select option 1
+                                value.result += "\n-\n$it"
                                 view!!.ussdApi.send("1") {
-                                    Log.d("APP", it)
-                                    view?.appendResult("\n-\n$it")
+                                    value.result += "\n-\n$it"
                                     view?.dismissOverlay()
                                 }
                             }
-//                                view?.ussdApi.cancel()
                         }
 
                         override fun over(message: String) {
-                            Log.d("APP", message)
-                            view?.appendResult("\n-\n$message")
+                            value.result += "\n-\n$message"
+                            interator!!.getResponse().postValue(value)
                             view?.dismissOverlay()
                         }
                     })

@@ -1,7 +1,14 @@
+/*
+ * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+ * All rights reserved
+ * porfile.romellfudi.com
+ */
+
 package com.romellfudi.ussd.main.interactor
 
 import android.content.Context
-import io.reactivex.Observable
+import androidx.lifecycle.MutableLiveData
+import com.romellfudi.ussd.main.entity.Response
 import javax.inject.Inject
 
 /**
@@ -9,19 +16,14 @@ import javax.inject.Inject
  * @date 2020-04-27
  * @version 1.0
  */
+private val objectResponse = Response("TODO")
+private val response = MutableLiveData<Response>()
+        .apply { postValue(objectResponse) }
+
 class MainFragmentInteractor @Inject constructor(private val mContext: Context) : MainFragmentMVPInteractor {
 
-    override fun seedQuestions(): Observable<Boolean> {
-        return Observable.fromCallable { Data().boolean }
-    }
-
-    override fun getQuestion(): Observable<List<Boolean>> {
-        return Observable.fromCallable { listOf(Data().boolean, Data().boolean) }
-    }
-
-    class Data {
-        var boolean: Boolean = false
-
+    override fun getResponse(): MutableLiveData<Response> {
+        return response
     }
 
 }
