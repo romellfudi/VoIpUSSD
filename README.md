@@ -34,13 +34,14 @@ Add the following in your app's `build.gradle` file:
 ```groovy
 repositories {
     jcenter()
+    maven { url 'https://jitpack.io' }// (jetpacking)
 }
 dependencies {
     // java
     implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
     // kotlin
     implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{kotlinLatestVersion}'
-    // alternative SNAPSHOT
+    // alternative SNAPSHOT (jetpacking)
     implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:alternative-SNAPSHOT'
     implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:alternative-SNAPSHOT'
 }
