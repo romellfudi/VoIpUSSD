@@ -93,7 +93,7 @@ kotlin
         </intent-filter>
         <meta-data
             android:name="android.accessibilityservice"
-            android:resource="@xml/ussd_service_kt" />
+            android:resource="@xml/ussd_service" />
     </service>
 ```
 
