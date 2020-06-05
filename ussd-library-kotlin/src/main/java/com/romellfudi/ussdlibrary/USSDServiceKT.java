@@ -78,7 +78,7 @@ public class USSDServiceKT extends AccessibilityService {
                     USSDController.Companion.getInstance().callbackInvoke.responseInvoke(response);
                 else {
                     USSDController.Companion.getInstance().getCallbackMessage().invoke(response);
-                    USSDController.Companion.getInstance().setCallbackMessage(null);
+                    //USSDController.Companion.getInstance().setCallbackMessage(null);
                 }
             }
         }
