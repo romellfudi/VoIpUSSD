@@ -309,7 +309,7 @@ Una vez inicializado la llamada el servidor telcom comenzará a enviar las *famo
 
 ### License
 ```
-Copyright 2018 Romell D.Z.
+Copyright 2017 Romell D.Z.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
