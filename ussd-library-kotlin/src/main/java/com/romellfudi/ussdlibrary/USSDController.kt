@@ -52,9 +52,9 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      * @param map             Map of Login and problem messages
      * @param callbackInvoke  a callback object from return answer
      */
-    override fun callUSSDInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>, callbackInvoke: CallbackInvoke) {
-        callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
-    }
+    override fun callUSSDInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
+                                callbackInvoke: CallbackInvoke) =
+            callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
 
     /**
      * Invoke a dial-up calling a ussd number and
@@ -64,9 +64,9 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      * @param map             Map of Login and problem messages
      * @param callbackInvoke  a callback object from return answer
      */
-    override fun callUSSDOverlayInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>, callbackInvoke: CallbackInvoke) {
-        callUSSDOverlayInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
-    }
+    override fun callUSSDOverlayInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
+                                       callbackInvoke: CallbackInvoke) =
+            callUSSDOverlayInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
 
     /**
      * Invoke a dial-up calling a ussd number
@@ -77,8 +77,9 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      * @param callbackInvoke  a callback object from return answer
      */
     @SuppressLint("MissingPermission")
-    override fun callUSSDInvoke(ussdPhoneNumber: String, simSlot: Int, map: HashMap<String, HashSet<String>>, callbackInvoke: CallbackInvoke) {
-        this.callbackInvoke = callbackInvoke
+    override fun callUSSDInvoke(ussdPhoneNumber: String, simSlot: Int,
+                                map: HashMap<String, HashSet<String>>, callback: CallbackInvoke) {
+        this.callbackInvoke = callback
         this.map = map
         if (verifyAccesibilityAccess(context)) {
             dialUp(ussdPhoneNumber, simSlot)
@@ -97,8 +98,9 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      * @param callbackInvoke  a callback object from return answer
      */
     @SuppressLint("MissingPermission")
-    override fun callUSSDOverlayInvoke(ussdPhoneNumber: String, simSlot: Int, map: HashMap<String, HashSet<String>>, callbackInvoke: CallbackInvoke) {
-        this.callbackInvoke = callbackInvoke
+    override fun callUSSDOverlayInvoke(ussdPhoneNumber: String, simSlot: Int,
+                                       map: HashMap<String, HashSet<String>>, callback: CallbackInvoke) {
+        this.callbackInvoke = callback
         this.map = map
         if (verifyAccesibilityAccess(context) && verifyOverLay(context)) {
             dialUp(ussdPhoneNumber, simSlot)
@@ -125,14 +127,11 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
             this.callbackInvoke.over("Bad ussd number")
             return
         }
-        val uri = Uri.encode("#")
-        if (uri != null) {
-            ussdPhoneNumber = ussdPhoneNumber.replace("#", uri)
-        }
-        val uriPhone = Uri.parse("tel:$ussdPhoneNumber")
-        if (uriPhone != null)
+        Uri.encode("#")?.let { ussdPhoneNumber = ussdPhoneNumber.replace("#", it) }
+        Uri.parse("tel:$ussdPhoneNumber")?.let {
             isRunning = true
-        this.context.startActivity(getActionCallIntent(uriPhone, simSlot))
+            this.context.startActivity(getActionCallIntent(it, simSlot))
+        }
     }
 
     /**
@@ -144,24 +143,20 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
     @SuppressLint("MissingPermission")
     private fun getActionCallIntent(uri: Uri?, simSlot: Int): Intent {
         // https://stackoverflow.com/questions/25524476/make-call-using-a-specified-sim-in-a-dual-sim-device
-        val simSlotName = arrayOf("extra_asus_dial_use_dualsim", "com.android.phone.extra.slot", "slot", "simslot", "sim_slot", "subscription", "Subscription", "phone", "com.android.phone.DialingMode", "simSlot", "slot_id", "simId", "simnum", "phone_type", "slotId", "slotIdx")
-
+        val simSlotName = arrayOf("extra_asus_dial_use_dualsim",
+                "com.android.phone.extra.slot", "slot", "simslot", "sim_slot", "subscription",
+                "Subscription", "phone", "com.android.phone.DialingMode", "simSlot", "slot_id",
+                "simId", "simnum", "phone_type", "slotId", "slotIdx")
         val intent = Intent(Intent.ACTION_CALL, uri)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         intent.putExtra("com.android.phone.force.slot", true)
         intent.putExtra("Cdma_Supp", true)
-
-        for (s in simSlotName)
-            intent.putExtra(s, simSlot)
-
-        val telecomManager = context.getSystemService(Context.TELECOM_SERVICE)
-        if (telecomManager != null) {
-            val telecomManager = telecomManager as TelecomManager
-            val phoneAccountHandleList = telecomManager.callCapablePhoneAccounts
-            if (phoneAccountHandleList != null && phoneAccountHandleList.size > simSlot)
-                intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", phoneAccountHandleList[simSlot])
+        simSlotName.map { intent.putExtra(it, simSlot) }
+        (context.getSystemService(Context.TELECOM_SERVICE) as? TelecomManager)
+                ?.callCapablePhoneAccounts?.let {
+            if (it.size > simSlot)
+                intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", it[simSlot])
         }
-
         return intent
     }
 
@@ -179,22 +174,14 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      */
     interface CallbackInvoke {
         fun responseInvoke(message: String)
-
         fun over(message: String)
-    }
-
-    // Unit Kotlin instead of Interface with just one message
-    interface CallbackMessage {
-        fun responseMessage(message: String)
     }
 
     companion object {
 
         // singleton reference
         var instance: USSDController? = null
-
         val KEY_LOGIN = "KEY_LOGIN"
-
         val KEY_ERROR = "KEY_ERROR"
 
         /**
@@ -236,54 +223,46 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
         }
 
         private fun openSettingsAccessibility(activity: Activity) {
-            val alertDialogBuilder = AlertDialog.Builder(activity)
-            alertDialogBuilder.setTitle("USSD Accessibility permission")
             val name = getNameApp(activity)
-            alertDialogBuilder
-                    .setMessage("You must enable accessibility permissions for the app '$name'")
-            alertDialogBuilder.setCancelable(true)
-            alertDialogBuilder.setNeutralButton("ok") { _, _ ->
-                activity.startActivityForResult(
-                        Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1)
+            with(AlertDialog.Builder(activity)) {
+                setTitle("USSD Accessibility permission")
+                setMessage("You must enable accessibility permissions for the app '$name'")
+                setCancelable(true)
+                setNeutralButton("ok") { _, _ ->
+                    activity.startActivityForResult(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1)
+                }
+                create()?.show()
             }
-            val alertDialog = alertDialogBuilder.create()
-            alertDialog?.show()
         }
 
         private fun openSettingsOverlay(activity: Activity) {
-            val alertDialogBuilder = AlertDialog.Builder(activity)
-            alertDialogBuilder.setTitle("USSD Overlay permission")
             val name = getNameApp(activity)
-            alertDialogBuilder
-                    .setMessage("You must allow for the app to appear '$name' on top of other apps.")
-            alertDialogBuilder.setCancelable(true)
-            alertDialogBuilder.setNeutralButton("ok") { _, _ ->
-                val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                        Uri.parse("package:" + activity.packageName))
-                activity.startActivity(intent)
+            with(AlertDialog.Builder(activity)) {
+                setTitle("USSD Overlay permission")
+                setMessage("You must allow for the app to appear '$name' on top of other apps.")
+                setCancelable(true)
+                setNeutralButton("ok") { _, _ ->
+                    activity.apply {
+                        startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                Uri.parse("package:$packageName")))
+                    }
+                }
+                create()?.show()
             }
-            val alertDialog = alertDialogBuilder.create()
-            alertDialog?.show()
         }
 
-        private fun getNameApp(activity: Activity): String {
-            val applicationInfo = activity.applicationInfo
-            val stringId = applicationInfo.labelRes
-            return if (applicationInfo.labelRes == 0)
-                applicationInfo.nonLocalizedLabel.toString()
+        private fun getNameApp(activity: Activity): String = with(activity.applicationInfo) {
+            return if (labelRes == 0)
+                nonLocalizedLabel.toString()
             else
-                activity.getString(stringId)
+                activity.getString(labelRes)
         }
-
 
         private fun isAccessiblityServicesEnable(context: Context): Boolean {
-            val am = context.getSystemService(Context.ACCESSIBILITY_SERVICE)
-            if (am != null) {
-                val am = am as AccessibilityManager
-                for (service in am.installedAccessibilityServiceList) {
-                    if (service.id.contains(context.packageName)) {
+            (context.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager)?.let {
+                it.installedAccessibilityServiceList.forEach { service ->
+                    if (service.id.contains(context.packageName))
                         return isAccessibilitySettingsOn(context, service.id)
-                    }
                 }
             }
             return false
@@ -298,12 +277,11 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
             } catch (e: Settings.SettingNotFoundException) {
                 return false
             }
-
             if (accessibilityEnabled == 1) {
                 val settingValue = Settings.Secure.getString(
                         context.applicationContext.contentResolver,
                         Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
-                if (settingValue != null) {
+                settingValue?.let {
                     val splitter = TextUtils.SimpleStringSplitter(':')
                     splitter.setString(settingValue)
                     while (splitter.hasNext()) {

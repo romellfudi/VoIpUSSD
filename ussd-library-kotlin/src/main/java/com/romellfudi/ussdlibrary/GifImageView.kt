@@ -42,7 +42,6 @@ class GifImageView : View {
         this.mContext = context
     }
 
-    //    @JvmOverloads
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int = 0) : super(context, attrs, defStyleAttr) {
         this.mContext = context
         if (attrs.getAttributeName(1) == "background") {
@@ -56,7 +55,6 @@ class GifImageView : View {
         mMovie = Movie.decodeStream(mInputStream)
         mWidth = mMovie!!.width()
         mHeight = mMovie!!.height()
-
         requestLayout()
     }
 
@@ -65,24 +63,17 @@ class GifImageView : View {
     }
 
     override fun onDraw(canvas: Canvas) {
-
         val now = SystemClock.uptimeMillis()
-
         if (mStart == 0L) {
             mStart = now
         }
-
-        if (mMovie != null) {
-
+        mMovie?.let {
             var duration = mMovie!!.duration()
             if (duration == 0) {
                 duration = 1000
             }
-
             val relTime = ((now - mStart) % duration).toInt()
-
             mMovie!!.setTime(relTime)
-
             mMovie!!.draw(canvas, 0f, 0f)
             invalidate()
         }

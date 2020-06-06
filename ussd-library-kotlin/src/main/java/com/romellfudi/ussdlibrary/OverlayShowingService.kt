@@ -48,7 +48,7 @@ class OverlayShowingService : Service() {
         wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val size = Point()
         wm!!.defaultDisplay.getSize(size)
-        val LAYOUT_FLAG: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val flagLayout: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
             WindowManager.LayoutParams.TYPE_PHONE
@@ -58,12 +58,9 @@ class OverlayShowingService : Service() {
         overlayedButton!!.alpha = 0.7f
         overlayedButton!!.setBackgroundColor(-0x1)
         overlayedButton!!.setTextSize(TypedValue.COMPLEX_UNIT_SP, 26f)
-
-        val params = WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT,
-                size.y - 200,
-                LAYOUT_FLAG, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
-                PixelFormat.TRANSLUCENT)
-
+        var operation = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+        val params = WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, size.y - 200,
+                flagLayout, operation, PixelFormat.TRANSLUCENT)
         params.gravity = Gravity.CENTER or Gravity.CENTER
         wm!!.addView(overlayedButton, params)
         return START_STICKY
@@ -72,7 +69,7 @@ class OverlayShowingService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         Handler().postDelayed({
-            if (overlayedButton != null) {
+            overlayedButton?.let {
                 wm!!.removeView(overlayedButton)
                 overlayedButton = null
             }
@@ -80,7 +77,6 @@ class OverlayShowingService : Service() {
     }
 
     companion object {
-
         val EXTRA = "TITTLE"
     }
 

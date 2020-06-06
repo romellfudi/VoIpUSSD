@@ -99,8 +99,8 @@ class SplashLoadingService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         Handler().postDelayed({
-            if (layout != null) {
-                wm!!.removeView(layout)
+            layout?.let {
+                wm.removeView(layout)
                 layout = null
             }
         }, 500)
