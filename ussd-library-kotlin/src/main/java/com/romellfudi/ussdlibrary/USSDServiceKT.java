@@ -37,20 +37,15 @@ public class USSDServiceKT extends AccessibilityService {
      */
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        this.event = event;
-
-        Log.d(TAG, "onAccessibilityEvent");
-
+        USSDServiceKT.event = event;
         Log.d(TAG, String.format(
                 "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
                 event.getEventType(), event.getClassName(), event.getPackageName(),
                 event.getEventTime(), event.getText()));
-
         if (USSDController.Companion.getInstance() == null
                 || !USSDController.Companion.getInstance().isRunning()) {
             return;
         }
-
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, 0);
@@ -97,10 +92,9 @@ public class USSDServiceKT extends AccessibilityService {
 
     /**
      * Cancel USSD
-     *
      */
     public static void cancel() {
-        clickOnButton(event,0);
+        clickOnButton(event, 0);
     }
 
     /**
@@ -112,9 +106,7 @@ public class USSDServiceKT extends AccessibilityService {
     private static void setTextIntoField(AccessibilityEvent event, String data) {
         USSDController ussdController = USSDController.Companion.getInstance();
         Bundle arguments = new Bundle();
-        arguments.putCharSequence(
-                AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
-
+        arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
         for (AccessibilityNodeInfo leaf : getLeaves(event)) {
             if (leaf.getClassName().equals("android.widget.EditText")
                     && !leaf.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
@@ -123,7 +115,6 @@ public class USSDServiceKT extends AccessibilityService {
                 if (clipboardManager != null) {
                     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", data));
                 }
-
                 leaf.performAction(AccessibilityNodeInfo.ACTION_PASTE);
             }
         }
@@ -201,7 +192,6 @@ public class USSDServiceKT extends AccessibilityService {
         if (event.getSource() != null) {
             getLeaves(leaves, event.getSource());
         }
-
         return leaves;
     }
 
@@ -210,7 +200,6 @@ public class USSDServiceKT extends AccessibilityService {
             leaves.add(node);
             return;
         }
-
         for (int i = 0; i < node.getChildCount(); i++) {
             getLeaves(leaves, node.getChild(i));
         }
