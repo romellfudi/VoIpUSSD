@@ -26,10 +26,6 @@ import dagger.Provides
 class MainFragmentModule {
 
     @Provides
-    fun providePermissionService(fragment: MainFragmentView) =
-            PermissionService(fragment.activity)
-
-    @Provides
     fun provideUSSDApi(fragment: MainFragmentView): USSDApi =
             USSDController.getInstance(fragment.activity!!)
 

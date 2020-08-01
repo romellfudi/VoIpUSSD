@@ -49,9 +49,6 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     override lateinit var ussdApi: USSDApi
 
     @Inject
-    lateinit var permissionService: PermissionService
-
-    @Inject
     lateinit var mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,7 +69,6 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         call_overlay.setOnClickListener { mainFragmentMVPPresenter.callOverlay() }
         call_overlay_splash.setOnClickListener { mainFragmentMVPPresenter.callSplashOverlay() }
         accessibility.setOnClickListener { USSDController.verifyAccesibilityAccess(activity!!) }
-        permissionService.request(callback)
     }
 
     override fun setResult(data: String) {
@@ -98,18 +94,6 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         Log.d("APP", "STOP OVERLAY DIALOG")
         Log.d("APP", "successful")
     }
-
-    private val callback = object : PermissionService.Callback() {
-        override fun onResponse(refusePermissions: ArrayList<String>?) {
-            Toast.makeText(context, getString(R.string.refuse_permissions), Toast.LENGTH_SHORT).show()
-            activity!!.finish()
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) =
-            callback.handler(permissions, grantResults)
-
 
 //    override fun onDestroyView() {
 //        mainFragmentMVPPresenter.onDetach()

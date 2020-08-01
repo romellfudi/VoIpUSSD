@@ -8,6 +8,7 @@ package com.romellfudi.ussd.accessibility.view
 
 import android.content.IntentSender.SendIntentException
 import android.os.Bundle
+import android.os.Handler
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentTransaction
@@ -20,6 +21,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.rbddevs.splashy.Splashy
+import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.main.view.MainFragmentView
 import com.romellfudi.ussdlibrary.BuildConfig
@@ -28,6 +30,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import kotlinx.android.synthetic.main.app_bar_main_menu.*
+import java.util.*
 import javax.inject.Inject
 
 
@@ -42,6 +45,9 @@ const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
 
 class MainActivity : AppCompatActivity(), HasAndroidInjector,
         InstallStateUpdatedListener, MainMVPView {
+
+    @Inject
+    lateinit var permissionService: PermissionService
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -64,7 +70,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
             addToBackStack(null)
             commit()
         }
-        appUpdateManager.registerListener(this)
+        permissionService.request(callback)
     }
 
     private fun splashy() {
@@ -143,5 +149,22 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
 
     override fun onBackPressed() = finish()
 
+    private val callback = object : PermissionService.Callback() {
+        override fun onResponse(refusePermissions: ArrayList<String>?) {
+            // EXCEPTIONAL EVENT
+            if (refusePermissions!!.contains("android.permission.SYSTEM_ALERT_WINDOW"))
+                refusePermissions.remove("android.permission.SYSTEM_ALERT_WINDOW")
+            // EXCEPTIONAL EVENT
+            if (refusePermissions.contains("android.permission.ACTION_MANAGE_OVERLAY_PERMISSION"))
+                refusePermissions.remove("android.permission.ACTION_MANAGE_OVERLAY_PERMISSION")
+            if (!refusePermissions.isNullOrEmpty()) {
+                showMessage(getString(R.string.refuse_permissions))
+                Handler().postDelayed({ finish() }, 2000)
+            } else appUpdateManager.registerListener(this@MainActivity)
+        }
+    }
 
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
+                                            grantResults: IntArray) =
+            PermissionService.handler(callback, grantResults, permissions)
 }
