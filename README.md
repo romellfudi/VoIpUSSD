@@ -34,7 +34,7 @@ Interactive with ussd windoows, It is necessary to have present that the interfa
 
 `latestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg?style=flat-square&logo=jfrog)](https://bintray.com/romllz489/maven/ussd-library)
 
-`kotlinLatestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg?&logo=jfrog)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
+`kotlinLatestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg?&style=flat-square&logo=jfrog)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
 
 Add the following in your app's `build.gradle` file:
 
