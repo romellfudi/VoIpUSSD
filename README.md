@@ -25,9 +25,9 @@ Interactive with ussd windoows, It is necessary to have present that the interfa
 
 ## USSD LIBRARY
 
-`latestVersion` is [![Bintray](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)](https://bintray.com/romllz489/maven/ussd-library)
+`latestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)](https://bintray.com/romllz489/maven/ussd-library)
 
-`kotlinLatestVersion` is [![Bintray Kotlin](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
+`kotlinLatestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
 
 Add the following in your app's `build.gradle` file:
 
