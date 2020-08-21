@@ -1,4 +1,4 @@
-name: Android CI
+name: Firebase CI
 on: [push]
 
 jobs:
