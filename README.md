@@ -1,4 +1,4 @@
-# Handler USSD API
+# Voip USSD API
 
 <!--- https://b64.io/ --->
 <!--- https://meyerweb.com/eric/tools/dencoder/ --->
@@ -32,9 +32,9 @@ Interactive with ussd windoows, It is necessary to have present that the interfa
 
 ## USSD LIBRARY
 
-`latestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)](https://bintray.com/romllz489/maven/ussd-library)
+`latestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg?style=flat-square&logo=jfrog)](https://bintray.com/romllz489/maven/ussd-library)
 
-`kotlinLatestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
+`kotlinLatestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg?&logo=jfrog)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
 
 Add the following in your app's `build.gradle` file:
 
@@ -53,8 +53,6 @@ dependencies {
     implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:alternative-SNAPSHOT'
 }
 ```
-
-if you use Kotlin please check my other project (kotlin branch is deprecated): [`Kotlin Void USSD`](https://github.com/romellfudi/KotlinVoIpUSSD)
 
 * Writing xml config file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
 
