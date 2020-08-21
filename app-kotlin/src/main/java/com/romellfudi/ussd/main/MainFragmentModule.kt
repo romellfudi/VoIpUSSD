@@ -5,7 +5,6 @@
  */
 package com.romellfudi.ussd.main
 
-import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.main.interactor.MainFragmentInteractor
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter

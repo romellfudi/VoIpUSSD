@@ -8,12 +8,13 @@ package com.romellfudi.ussd.di.component
 
 import android.app.Application
 import com.romellfudi.ussd.App
-import com.romellfudi.ussd.di.AppModule
 import com.romellfudi.ussd.di.ActivityFactory
+import com.romellfudi.ussd.di.AppModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 import javax.inject.Singleton
+
 /**
  * @autor Romell Domínguez
  * @date 2020-04-27

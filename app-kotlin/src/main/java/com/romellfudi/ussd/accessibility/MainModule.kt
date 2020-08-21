@@ -16,7 +16,6 @@ import com.romellfudi.ussd.accessibility.presenter.MainMVPPresenter
 import com.romellfudi.ussd.accessibility.presenter.MainPresenter
 import com.romellfudi.ussd.accessibility.view.MainActivity
 import com.romellfudi.ussd.accessibility.view.MainMVPView
-import com.romellfudi.ussd.main.view.MainFragmentView
 import dagger.Module
 import dagger.Provides
 

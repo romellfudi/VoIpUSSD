@@ -7,8 +7,8 @@
 package com.romellfudi.ussd.main.interactor
 
 import androidx.lifecycle.MutableLiveData
+import com.romellfudi.ussd.main.entity.PhoneNumber
 import com.romellfudi.ussd.main.entity.Response
-import io.reactivex.Observable
 
 
 /**
@@ -18,4 +18,5 @@ import io.reactivex.Observable
  */
 interface MainFragmentMVPInteractor {
     fun getResponse(): MutableLiveData<Response>
+    fun getPhoneNumber(): MutableLiveData<PhoneNumber>
 }

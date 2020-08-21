@@ -16,6 +16,7 @@ import com.romellfudi.ussdlibrary.USSDApi
 interface MainFragmentMVPView {
     val ussdNumber: String
     fun setResult(data: String)
+    fun setPhone(data: String)
     var ussdApi: USSDApi
     val hasAllowOverlay: Boolean
     fun showOverlay()

@@ -12,9 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
@@ -24,7 +22,6 @@ import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.content_op1.*
-import java.util.*
 import javax.inject.Inject
 
 /**
@@ -75,6 +72,10 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         result.text = data
     }
 
+    override fun setPhone(data: String) {
+        phone.setText(data)
+    }
+
     override fun showOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
         overlay = Intent(activity, OverlayShowingService::class.java)
@@ -93,6 +94,12 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         overlay = null
         Log.d("APP", "STOP OVERLAY DIALOG")
         Log.d("APP", "successful")
+    }
+
+    override fun onPause() {
+        Log.d("APP", "SAVE::$ussdNumber")
+        mainFragmentMVPPresenter.pause(ussdNumber,ussdNumber,ussdNumber )
+        super.onPause()
     }
 
 //    override fun onDestroyView() {
