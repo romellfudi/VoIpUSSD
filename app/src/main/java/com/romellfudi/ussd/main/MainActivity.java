@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
  * All rights reserved
- * porfile.romellfudi.com
+ * portfolio.romellfudi.com
  */
 
 package com.romellfudi.ussd.main;
