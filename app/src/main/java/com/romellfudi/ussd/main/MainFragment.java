@@ -12,27 +12,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.romellfudi.permission.PermissionService;
 import com.romellfudi.ussd.App;
 import com.romellfudi.ussd.R;
+import com.romellfudi.ussd.databinding.ContentOp1Binding;
 import com.romellfudi.ussdlibrary.OverlayShowingService;
 import com.romellfudi.ussdlibrary.SplashLoadingService;
 import com.romellfudi.ussdlibrary.USSDApi;
 import com.romellfudi.ussdlibrary.USSDController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -45,60 +46,66 @@ import javax.inject.Inject;
  */
 public class MainFragment extends Fragment {
 
-    private TextView result;
-    private EditText phone;
-    private Button btn1, btn2, btn3, btn4;
-    private HashMap<String, HashSet<String>> map;
     private MainActivity menuActivity;
 
     @Inject
     USSDApi ussdApi;
 
+    @Inject
+    HashMap<String, HashSet<String>> map;
+
+    DaoViewModel mViewModel;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         ((App) getActivity().getApplicationContext()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
-        map = new HashMap<>();
-        map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
-        map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
         menuActivity = (MainActivity) getActivity();
         new PermissionService(getActivity()).request(callback);
+        mViewModel = ViewModelProviders.of(getActivity()).get(DaoViewModel.class);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.content_op1, container, false);
-        result = (TextView) view.findViewById(R.id.result);
-        phone = (EditText) view.findViewById(R.id.phone);
-        btn1 = (Button) view.findViewById(R.id.btn1);
-        btn2 = (Button) view.findViewById(R.id.btn2);
-        btn3 = (Button) view.findViewById(R.id.btn3);
-        btn4 = (Button) view.findViewById(R.id.btn4);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
+//        ContentOp1Binding binding = ContentOp1Binding.inflate(inflater, container, false);
+        final ContentOp1Binding binding = DataBindingUtil.inflate(inflater, R.layout.content_op1, container, false);
+        Objects.requireNonNull(getActivity());
+        binding.setViewModel(mViewModel);
+        binding.setLifecycleOwner(getActivity());
+        mViewModel.getDao().observe(getActivity(), new Observer<Dao>() {
+            @Override
+            public void onChanged(Dao dao) {
+                binding.phone.setText(dao.getPhoneNumber());
+                binding.result.setText(dao.getResult());
+            }
+        });
+
         setHasOptionsMenu(false);
 
-        btn1.setOnClickListener(new View.OnClickListener() {
+        binding.btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String phoneNumber = phone.getText().toString().trim();
+                String phone = binding.phone.getText().toString().trim();
+                binding.phone.setText(phone);
+                binding.result.setText("");
                 ussdApi = USSDController.getInstance(getActivity());
-                result.setText("");
-                ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
+                ussdApi.callUSSDInvoke(phone, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
                         Log.d("APP", message);
-                        result.append("\n-\n" + message);
+                        binding.result.append("\n-\n" + message);
                         // first option list - select option 1
                         ussdApi.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
                                 Log.d("APP", message);
-                                result.append("\n-\n" + message);
+                                binding.result.append("\n-\n" + message);
                                 // second option list - select option 1
                                 ussdApi.send("1", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
                                         Log.d("APP", message);
-                                        result.append("\n-\n" + message);
+                                        binding.result.append("\n-\n" + message);
                                     }
                                 });
                             }
@@ -109,13 +116,15 @@ public class MainFragment extends Fragment {
                     @Override
                     public void over(String message) {
                         Log.d("APP", message);
-                        result.append("\n-\n" + message);
+                        binding.result.append("\n-\n" + message);
+//                        mViewModel.setResult(dao);
+//                        mViewModel.update();
                     }
                 });
             }
         });
 
-        btn2.setOnClickListener(new View.OnClickListener() {
+        binding.btn2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (USSDController.verifyOverLay(getActivity())) {
@@ -123,26 +132,26 @@ public class MainFragment extends Fragment {
                     svc.putExtra(OverlayShowingService.EXTRA, "PROCESANDO");
                     getActivity().startService(svc);
                     Log.d("APP", "START OVERLAY DIALOG");
-                    String phoneNumber = phone.getText().toString().trim();
+                    String phoneNumber = binding.phone.getText().toString().trim();
                     ussdApi = USSDController.getInstance(getActivity());
-                    result.setText("");
+                    binding.result.setText("");
                     ussdApi.callUSSDOverlayInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                         @Override
                         public void responseInvoke(String message) {
                             Log.d("APP", message);
-                            result.append("\n-\n" + message);
+                            binding.result.append("\n-\n" + message);
                             // first option list - select option 1
                             ussdApi.send("1", new USSDController.CallbackMessage() {
                                 @Override
                                 public void responseMessage(String message) {
                                     Log.d("APP", message);
-                                    result.append("\n-\n" + message);
+                                    binding.result.append("\n-\n" + message);
                                     // second option list - select option 1
                                     ussdApi.send("1", new USSDController.CallbackMessage() {
                                         @Override
                                         public void responseMessage(String message) {
                                             Log.d("APP", message);
-                                            result.append("\n-\n" + message);
+                                            binding.result.append("\n-\n" + message);
                                             getActivity().stopService(svc);
                                             Log.d("APP", "STOP OVERLAY DIALOG");
                                             Log.d("APP", "successful");
@@ -156,7 +165,7 @@ public class MainFragment extends Fragment {
                         @Override
                         public void over(String message) {
                             Log.d("APP", message);
-                            result.append("\n-\n" + message);
+                            binding.result.append("\n-\n" + message);
                             getActivity().stopService(svc);
                             Log.d("APP", "STOP OVERLAY DIALOG");
                         }
@@ -165,32 +174,32 @@ public class MainFragment extends Fragment {
             }
         });
 
-        btn4.setOnClickListener(new View.OnClickListener() {
+        binding.btn4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (USSDController.verifyOverLay(getActivity())) {
                     final Intent svc = new Intent(getActivity(), SplashLoadingService.class);
                     getActivity().startService(svc);
                     Log.d("APP", "START SPLASH DIALOG");
-                    String phoneNumber = phone.getText().toString().trim();
-                    result.setText("");
+                    String phoneNumber = binding.phone.getText().toString().trim();
+                    binding.result.setText("");
                     ussdApi.callUSSDOverlayInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                         @Override
                         public void responseInvoke(String message) {
                             Log.d("APP", message);
-                            result.append("\n-\n" + message);
+                            binding.result.append("\n-\n" + message);
                             // first option list - select option 1
                             ussdApi.send("1", new USSDController.CallbackMessage() {
                                 @Override
                                 public void responseMessage(String message) {
                                     Log.d("APP", message);
-                                    result.append("\n-\n" + message);
+                                    binding.result.append("\n-\n" + message);
                                     // second option list - select option 1
                                     ussdApi.send("1", new USSDController.CallbackMessage() {
                                         @Override
                                         public void responseMessage(String message) {
                                             Log.d("APP", message);
-                                            result.append("\n-\n" + message);
+                                            binding.result.append("\n-\n" + message);
                                             getActivity().stopService(svc);
                                             Log.d("APP", "STOP SPLASH DIALOG");
                                             Log.d("APP", "successful");
@@ -204,7 +213,7 @@ public class MainFragment extends Fragment {
                         @Override
                         public void over(String message) {
                             Log.d("APP", message);
-                            result.append("\n-\n" + message);
+                            binding.result.append("\n-\n" + message);
                             getActivity().stopService(svc);
                             Log.d("APP", "STOP OVERLAY DIALOG");
                         }
@@ -213,14 +222,14 @@ public class MainFragment extends Fragment {
             }
         });
 
-        btn3.setOnClickListener(new View.OnClickListener() {
+        binding.btn3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 USSDController.verifyAccesibilityAccess(getActivity());
             }
         });
 
-        return view;
+        return binding.getRoot();
     }
 
     private PermissionService.Callback callback = new PermissionService.Callback() {
@@ -228,8 +237,7 @@ public class MainFragment extends Fragment {
         public void onResponse(ArrayList<String> refusePermissions) {
             if (refusePermissions != null) {
                 Toast.makeText(getContext(),
-                        getString(R.string.refuse_permissions),
-                        Toast.LENGTH_SHORT).show();
+                        getString(R.string.refuse_permissions), Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
         }
