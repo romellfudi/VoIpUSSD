@@ -60,8 +60,10 @@ dependencies {
     // africa SNAPSHOT (jetpacking)
     // java
     implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:africa-SNAPSHOT'
+    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:alternative-SNAPSHOT'
     // kotlin
     implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:africa-SNAPSHOT'
+    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:alternative-SNAPSHOT'
 }
 ```
 
