@@ -40,6 +40,9 @@ Add the following in your app's `build.gradle` file:
 
 ### From American Telcoms
 ```groovy
+repositories {
+    jcenter()
+}
 dependencies {
     // java
     implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
@@ -51,7 +54,6 @@ dependencies {
 ### From African Telcoms
 ```groovy
 repositories {
-    jcenter()
     maven { url 'https://jitpack.io' }// (jetpacking)
 }
 dependencies {
