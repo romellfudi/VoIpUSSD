@@ -38,19 +38,28 @@ Interactive with ussd windoows, It is necessary to have present that the interfa
 
 Add the following in your app's `build.gradle` file:
 
+### From American Telcoms
+```groovy
+dependencies {
+    // java
+    implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+    // kotlin
+    implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{kotlinLatestVersion}'
+}
+```
+
+### From African Telcoms
 ```groovy
 repositories {
     jcenter()
     maven { url 'https://jitpack.io' }// (jetpacking)
 }
 dependencies {
+    // africa SNAPSHOT (jetpacking)
     // java
-    implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
+    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:africa-SNAPSHOT'
     // kotlin
-    implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{kotlinLatestVersion}'
-    // alternative SNAPSHOT (jetpacking)
-    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:alternative-SNAPSHOT'
-    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:alternative-SNAPSHOT'
+    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:africa-SNAPSHOT'
 }
 ```
 
