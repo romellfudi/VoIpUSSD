@@ -1,26 +1,32 @@
-# Voip USSD API
+<h1 align="center">
+  VOIP USSD ANDROID
+</h1>   
 
-<!--- https://b64.io/ --->
-<!--- https://meyerweb.com/eric/tools/dencoder/ --->
-<!--- https://simpleicons.org/ --->
-[![Platform](https://img.shields.io/badge/platform-android-brightgreen.svg?&logo=android)](https://developer.android.com/index.html)
-[![API](https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat&logo=android)](https://android-arsenal.com/api?level=23)
-[![License](https://img.shields.io/badge/license-Apache%202.0-blue.svg?&logo=apache)](https://github.com/romellfudi/VoIpUSSDSample/blob/master/LICENSE)
-[![Workflow](https://github.com/romellfudi/VoIpUSSD/workflows/Android%20CI/badge.svg)](https://github.com/romellfudi/VoIpUSSD/actions)
-[![Gitter](https://img.shields.io/badge/gitter-join%20us-%23753a89.svg?&style=flat&logo=gitter&labelColor=ee1a67)](https://gitter.im/romellfudi/VoIpUSSD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-[![Bintray](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg?&logo=jfrog-bintray)](https://bintray.com/romllz489/maven/ussd-library)
-[![Bintray Kotlin](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg?&logo=jfrog-bintray)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
-[![Data Studio](https://img.shields.io/badge/Data%20Studio-Downloads-%23000000.svg?&style=flat&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDcuNDcgMTAwIj48ZGVmcz48c3R5bGU%2BLmNscy0xe2ZpbGw6IzY2OWRmMzt9LmNscy0ye2ZpbGw6IzFhNzNlODt9PC9zdHlsZT48L2RlZnM%2BPHBhdGggY2xhc3M9ImNscy0xIiBkPSJNOTQuMDcsNzIuNzVINTVjLTkuNDYsMC0xNC43Myw2LjU5LTE0LjczLDEzLjYyQzQwLjIyLDkyLjc1LDQ0LjYyLDEwMCw1NSwxMDBoMzguOVY3Mi43NVoiLz48ZWxsaXBzZSBjbGFzcz0iY2xzLTIiIGN4PSI5NC4wNyIgY3k9Ijg2LjE1IiByeD0iMTMuNDEiIHJ5PSIxMy42MyIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTUzLjYzLDM2LjI2SDE0LjczQzUuMjcsMzYuMjYsMCw0Mi44NiwwLDQ5Ljg5YzAsNi4zNyw0LjQsMTMuNjMsMTQuNzMsMTMuNjNoMzguOVoiLz48ZWxsaXBzZSBjbGFzcz0iY2xzLTIiIGN4PSI1My42MyIgY3k9IjQ5Ljg5IiByeD0iMTMuNDEiIHJ5PSIxMy42MyIvPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTk0LjA3LDBINTVDNDUuNDksMCw0MC4yMiw2LjU5LDQwLjIyLDEzLjYzYzAsNi4zNyw0LjQsMTMuNjIsMTQuNzMsMTMuNjJoMzguOVYwWiIvPjxlbGxpcHNlIGNsYXNzPSJjbHMtMiIgY3g9Ijk0LjA3IiBjeT0iMTMuNjMiIHJ4PSIxMy40MSIgcnk9IjEzLjYzIi8%2BPC9zdmc%2B)](https://datastudio.google.com/reporting/3328e603-449b-4635-81a5-38e0abebafa4)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Void%20USSD%20Library-green.svg?style=flat?&logo=android-studio)]( https://android-arsenal.com/details/1/7151 )
-[![Jitpack](https://jitpack.io/v/romellfudi/VoIpUSSD.svg)](https://jitpack.io/#romellfudi/VoIpUSSD)
-[![](https://img.shields.io/badge/anguage-ES-blue.svg?&logo=librarything)](./README.es)
+<p align="center"> 
+    <a href="https://developer.android.com/index.html"><img src="https://img.shields.io/badge/platform-android-brightgreen.svg?&amp;logo=android" alt="Platform"></a>
+<a href="https://android-arsenal.com/api?level=23"><img src="https://img.shields.io/badge/API-23%2B-brightgreen.svg?style=flat&amp;logo=android" alt="API"></a>
+<a href="https://github.com/romellfudi/VoIpUSSDSample/blob/master/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?&amp;logo=apache" alt="License"></a>
+<a href="https://github.com/romellfudi/VoIpUSSD/actions"><img src="https://github.com/romellfudi/VoIpUSSD/workflows/Android%20CI/badge.svg" alt="Workflow"></a>
+<a href="https://gitter.im/romellfudi/VoIpUSSD?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge"><img src="https://img.shields.io/badge/gitter-join%20us-%23753a89.svg?&amp;style=flat&amp;logo=gitter&amp;labelColor=ee1a67" alt="Gitter"></a>
+<a href="https://bintray.com/romllz489/maven/ussd-library"><img src="https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg?&amp;logo=jfrog-bintray" alt="Bintray"></a>
+<a href="https://bintray.com/romllz489/maven/kotlin-ussd-library"><img src="https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg?&amp;logo=jfrog-bintray" alt="Bintray Kotlin"></a>
+<a href="https://android-arsenal.com/details/1/7151"><img src="https://img.shields.io/badge/Android%20Arsenal-Void%20USSD%20Library-green.svg?style=flat?&amp;logo=android-studio" alt="Android Arsenal"></a>
+<a href="https://jitpack.io/#romellfudi/VoIpUSSD"><img src="https://jitpack.io/v/romellfudi/VoIpUSSD.svg" alt="Jitpack"></a> 
+</p>
+
+<p align="center">
+<i>Loved the tool? Please consider <a href="https://paypal.me/romellfudi/15">donating</a>  💸 to help it improve!</i>
+</p>
+
+<p align="center">
+<a href="https://www.paypal.me/romellfudi"><img src="https://img.shields.io/badge/support-PayPal-blue?logo=PayPal&style=flat-square&label=Donate" alt="sponsor voip android library"/>
+</a>
 
 ### by Romell Dominguez
 [![](https://raw.githubusercontent.com/romellfudi/assets/master/favicon.ico)](https://www.romellfudi.com/)
 
 ## Target Development [High Quality](https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif):
-
-![](snapshot/device_recored.gif#gif)
+<p align="center"> <a href="https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif"><img src="/snapshot/device_recored.gif" alt="Jitpack"></a> </p>
 
 Interactive with ussd windoows, It is necessary to have present that the interface depends on the SO and on the manufacturer of Android device.
 
@@ -300,7 +306,7 @@ ussdApi.callUSSDOverlayInvoke(phoneNumber, map, object : USSDController.Callback
 }
 ```
 
-![](snapshot/device_splash.gif#gif)
+<p align="center"> <img src="/snapshot/device_splash.gif" alt="Jitpack">  </p>
 
 ## Cordova Plugin
 
@@ -324,32 +330,29 @@ context.startActivity(Intent(Intent.ACTION_CALL, uri))
 
 Once initialized the call will begin to receive and send the **famous USSD windows**
 
+## Contributors ✨
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/romellfudi"><img src="https://avatars2.githubusercontent.com/u/1668017?v=4" width="100px;" alt=""/><br /><sub><b>Romell D.Z. 福迪</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=romellfudi" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/abdullahicyc"><img src="https://avatars3.githubusercontent.com/u/15052571?v=4" width="100px;" alt=""/><br /><sub><b>Abdullahi Yusuf</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=abdullahicyc" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/IMoHaMeDHaMdYI"><img src="https://avatars3.githubusercontent.com/u/36090360?v=4" width="100px;" alt=""/><br /><sub><b>Mohamed Hamdy Hasan</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=IMoHaMeDHaMdYI" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/ducaale"><img src="https://avatars3.githubusercontent.com/u/16341131?v=4" width="100px;" alt=""/><br /><sub><b>Mohamed Daahir</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=ducaale" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/rmxakalogistik"><img src="https://avatars3.githubusercontent.com/u/263449?v=4" width="100px;" alt=""/><br /><sub><b>Ramy Mokako</b></sub></a><br /><a href="https://github.com/rmxakalogistik/cordova-plugin-VoIpUSSD" title="Plugin">🔌</a></td>
+  </tr>
+</table>
+
+<!-- markdownlint-enable -->
+<!-- prettier-ignore-end -->
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 ### License
-```
-Copyright 2017 Romell D.Z.
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-```
-
-<style>
-img[src*='#center'] { 
-    width:390px;
-    display: block;
-    margin: auto;
-}
-img[src*='#gif'] { 
-    width:200px;
-    display: block;
-    margin: auto;
-}
-</style>
+MIT. See the LICENSE file for the copyright notice.
+2017, January
