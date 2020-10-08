@@ -119,18 +119,17 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      */
     private fun dialUp(ussdPhoneNumber: String, simSlot: Int) {
         var ussdPhoneNumber = ussdPhoneNumber
-        if (map == null || !map!!.containsKey(KEY_ERROR) || !map!!.containsKey(KEY_LOGIN)) {
-            this.callbackInvoke.over("Bad Mapping structure")
-            return
-        }
-        if (ussdPhoneNumber.isEmpty()) {
-            this.callbackInvoke.over("Bad ussd number")
-            return
-        }
-        Uri.encode("#")?.let { ussdPhoneNumber = ussdPhoneNumber.replace("#", it) }
-        Uri.parse("tel:$ussdPhoneNumber")?.let {
-            isRunning = true
-            this.context.startActivity(getActionCallIntent(it, simSlot))
+        when {
+            map == null || !map!!.containsKey(KEY_ERROR) || !map!!.containsKey(KEY_LOGIN)
+            -> this.callbackInvoke.over("Bad Mapping structure")
+            ussdPhoneNumber.isEmpty() -> this.callbackInvoke.over("Bad ussd number")
+            else -> {
+                Uri.encode("#")?.let { ussdPhoneNumber = ussdPhoneNumber.replace("#", it) }
+                Uri.parse("tel:$ussdPhoneNumber")?.let {
+                    isRunning = true
+                    this.context.startActivity(getActionCallIntent(it, simSlot))
+                }
+            }
         }
     }
 
@@ -154,9 +153,9 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
         simSlotName.map { intent.putExtra(it, simSlot) }
         (context.getSystemService(Context.TELECOM_SERVICE) as? TelecomManager)
                 ?.callCapablePhoneAccounts?.let {
-            if (it.size > simSlot)
-                intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", it[simSlot])
-        }
+                    if (it.size > simSlot)
+                        intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", it[simSlot])
+                }
         return intent
     }
 
@@ -190,21 +189,14 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
          * @param context An activity that could call
          * @return An instance of USSDController
          */
-        fun getInstance(context: Context): USSDApi {
-            if (instance == null)
-                instance = USSDController(context)
-            return instance as USSDApi
-        }
+        fun getInstance(context: Context): USSDApi =
+                instance ?: USSDController(context).also { instance =it }
 
         fun verifyAccesibilityAccess(context: Context): Boolean {
             val isEnabled = isAccessiblityServicesEnable(context)
             if (!isEnabled) {
                 if (context is Activity) {
                     openSettingsAccessibility(context)
-                } else {
-                    Toast.makeText(
-                            context, "voipUSSD accessibility service is not enabled",
-                            Toast.LENGTH_LONG).show()
                 }
             }
             return isEnabled
@@ -215,8 +207,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
                     && !Settings.canDrawOverlays(context)
             return if (notGrant) {
                 if (context is Activity)
-                    openSettingsOverlay(context) else Toast.makeText(context,
-                        "Overlay permission have not grant permission.", Toast.LENGTH_LONG).show()
+                    openSettingsOverlay(context)
                 false
             } else
                 true

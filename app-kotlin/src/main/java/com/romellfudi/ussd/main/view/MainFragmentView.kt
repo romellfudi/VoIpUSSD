@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
@@ -65,7 +66,12 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         call.setOnClickListener { mainFragmentMVPPresenter.call() }
         call_overlay.setOnClickListener { mainFragmentMVPPresenter.callOverlay() }
         call_overlay_splash.setOnClickListener { mainFragmentMVPPresenter.callSplashOverlay() }
-        accessibility.setOnClickListener { USSDController.verifyAccesibilityAccess(activity!!) }
+        accessibility.setOnClickListener {
+            val msg: String = if (!USSDController.verifyAccesibilityAccess(activity!!))
+                "voipUSSD accessibility service is not enabled" else
+                "voipUSSD accessibility has already been enabled"
+            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun setResult(data: String) {
@@ -98,7 +104,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun onPause() {
         Log.d("APP", "SAVE::$ussdNumber")
-        mainFragmentMVPPresenter.pause(ussdNumber,ussdNumber,ussdNumber )
+        mainFragmentMVPPresenter.pause(ussdNumber, ussdNumber, ussdNumber)
         super.onPause()
     }
 
