@@ -21,6 +21,17 @@
 <p align="center">
 <a href="https://www.paypal.me/romellfudi"><img src="https://img.shields.io/badge/support-PayPal-blue?logo=PayPal&style=flat-square&label=Donate" alt="sponsor voip android library"/>
 </a>
+  
+<p align="center">
+  <a href="#ussd-library">Usage</a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#static-methods">Extra Features</a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#cordova-plugin">Cordova Plugin</a>
+  &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#contributors-">Contributors</a>
+</p>
+
 
 ### by Romell Dominguez
 [![](https://raw.githubusercontent.com/romellfudi/assets/master/favicon.ico)](https://www.romellfudi.com/)
@@ -308,10 +319,6 @@ ussdApi.callUSSDOverlayInvoke(phoneNumber, map, object : USSDController.Callback
 
 <p align="center"> <img src="/snapshot/device_splash.gif" alt="Jitpack">  </p>
 
-## Cordova Plugin
-
-* **cordova-plugin-VoIpUSSD** - [Ramy Mokako](https://github.com/rmxakalogistik/cordova-plugin-VoIpUSSD#cordova-plugin-voipussd)
-
 ### EXTRA: Use Voip line
 
 In this section leave the lines to call to Telcom (ussd number) for connected it:
@@ -329,6 +336,10 @@ context.startActivity(Intent(Intent.ACTION_CALL, uri))
 ```
 
 Once initialized the call will begin to receive and send the **famous USSD windows**
+
+## Cordova Plugin
+
+* **cordova-plugin-VoIpUSSD** - [Ramy Mokako](https://github.com/rmxakalogistik/cordova-plugin-VoIpUSSD#cordova-plugin-voipussd)
 
 ## Contributors ✨
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
