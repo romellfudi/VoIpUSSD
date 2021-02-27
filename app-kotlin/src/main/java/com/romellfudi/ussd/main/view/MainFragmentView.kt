@@ -103,8 +103,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     }
 
     override fun onPause() {
-        Log.d("APP", "SAVE::$ussdNumber")
-        mainFragmentMVPPresenter.pause(ussdNumber, ussdNumber, ussdNumber)
+        mainFragmentMVPPresenter.pause(ussdNumber)
         super.onPause()
     }
 

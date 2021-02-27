@@ -49,6 +49,7 @@ public class USSDController implements USSDInterface, USSDApi {
     protected static final String KEY_ERROR = "KEY_ERROR";
 
     protected Boolean isRunning = false;
+    protected Boolean send = false;
 
     private USSDInterface ussdInterface;
 
@@ -77,6 +78,7 @@ public class USSDController implements USSDInterface, USSDApi {
      * @param callbackInvoke  a callback object from return answer
      */
     public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
+        send=false;
         callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke);
     }
 
@@ -89,6 +91,7 @@ public class USSDController implements USSDInterface, USSDApi {
      * @param callbackInvoke  a callback object from return answer
      */
     public void callUSSDOverlayInvoke(String ussdPhoneNumber, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
+        send=false;
         callUSSDOverlayInvoke(ussdPhoneNumber, 0, map, callbackInvoke);
     }
 
@@ -201,6 +204,7 @@ public class USSDController implements USSDInterface, USSDApi {
 
     public void send(String text, CallbackMessage callbackMessage) {
         this.callbackMessage = callbackMessage;
+        this.send = true;
         ussdInterface.sendData(text);
     }
 

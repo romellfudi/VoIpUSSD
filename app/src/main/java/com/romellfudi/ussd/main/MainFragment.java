@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.romellfudi.permission.PermissionService;
@@ -46,8 +45,6 @@ import javax.inject.Inject;
  */
 public class MainFragment extends Fragment {
 
-    private MainActivity menuActivity;
-
     @Inject
     USSDApi ussdApi;
 
@@ -60,26 +57,16 @@ public class MainFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         ((App) getActivity().getApplicationContext()).getAppComponent().inject(this);
         super.onCreate(savedInstanceState);
-        menuActivity = (MainActivity) getActivity();
         new PermissionService(getActivity()).request(callback);
         mViewModel = ViewModelProviders.of(getActivity()).get(DaoViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-//        ContentOp1Binding binding = ContentOp1Binding.inflate(inflater, container, false);
         final ContentOp1Binding binding = DataBindingUtil.inflate(inflater, R.layout.content_op1, container, false);
         Objects.requireNonNull(getActivity());
         binding.setViewModel(mViewModel);
         binding.setLifecycleOwner(getActivity());
-        mViewModel.getDao().observe(getActivity(), new Observer<Dao>() {
-            @Override
-            public void onChanged(Dao dao) {
-                binding.phone.setText(dao.getPhoneNumber());
-                binding.result.setText(dao.getResult());
-            }
-        });
-
         setHasOptionsMenu(false);
 
         binding.btn1.setOnClickListener(new View.OnClickListener() {
@@ -100,12 +87,20 @@ public class MainFragment extends Fragment {
                             public void responseMessage(String message) {
                                 Log.d("APP", message);
                                 binding.result.append("\n-\n" + message);
-                                // second option list - select option 1
-                                ussdApi.send("1", new USSDController.CallbackMessage() {
+                                // second option list - select option 2
+                                ussdApi.send("2", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
                                         Log.d("APP", message);
                                         binding.result.append("\n-\n" + message);
+                                        // second option list - select option 1
+                                        ussdApi.send("1", new USSDController.CallbackMessage() {
+                                            @Override
+                                            public void responseMessage(String message) {
+                                                Log.d("APP", message);
+                                                binding.result.append("\n-\n" + message);
+                                            }
+                                        });
                                     }
                                 });
                             }
@@ -146,15 +141,23 @@ public class MainFragment extends Fragment {
                                 public void responseMessage(String message) {
                                     Log.d("APP", message);
                                     binding.result.append("\n-\n" + message);
-                                    // second option list - select option 1
-                                    ussdApi.send("1", new USSDController.CallbackMessage() {
+                                    // second option list - select option 2
+                                    ussdApi.send("2", new USSDController.CallbackMessage() {
                                         @Override
                                         public void responseMessage(String message) {
                                             Log.d("APP", message);
                                             binding.result.append("\n-\n" + message);
-                                            getActivity().stopService(svc);
-                                            Log.d("APP", "STOP OVERLAY DIALOG");
-                                            Log.d("APP", "successful");
+                                            // second option list - select option 1
+                                            ussdApi.send("1", new USSDController.CallbackMessage() {
+                                                @Override
+                                                public void responseMessage(String message) {
+                                                    Log.d("APP", message);
+                                                    binding.result.append("\n-\n" + message);
+                                                    getActivity().stopService(svc);
+                                                    Log.d("APP", "STOP OVERLAY DIALOG");
+                                                    Log.d("APP", "successful");
+                                                }
+                                            });
                                         }
                                     });
                                 }
@@ -194,20 +197,28 @@ public class MainFragment extends Fragment {
                                 public void responseMessage(String message) {
                                     Log.d("APP", message);
                                     binding.result.append("\n-\n" + message);
-                                    // second option list - select option 1
-                                    ussdApi.send("1", new USSDController.CallbackMessage() {
+                                    // second option list - select option 2
+                                    ussdApi.send("2", new USSDController.CallbackMessage() {
                                         @Override
                                         public void responseMessage(String message) {
                                             Log.d("APP", message);
                                             binding.result.append("\n-\n" + message);
-                                            getActivity().stopService(svc);
-                                            Log.d("APP", "STOP SPLASH DIALOG");
-                                            Log.d("APP", "successful");
+                                            // second option list - select option 1
+                                            ussdApi.send("1", new USSDController.CallbackMessage() {
+                                                @Override
+                                                public void responseMessage(String message) {
+                                                    Log.d("APP", message);
+                                                    binding.result.append("\n-\n" + message);
+                                                    getActivity().stopService(svc);
+                                                    Log.d("APP", "STOP OVERLAY DIALOG");
+                                                    Log.d("APP", "successful");
+                                                }
+                                            });
                                         }
                                     });
                                 }
                             });
-                            ussdApi.cancel();
+//                            ussdApi.cancel();
                         }
 
                         @Override
