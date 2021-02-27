@@ -1,6 +1,24 @@
 # Changelog
 
-## Release USSD Library 1.1.i Interface for usage (06/03/2019)
+## Release 1.2.a (19/05/2020)
+- versions
+latestJavaVersion : ![Bintray](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)
+latestKotlinVersion : ![Bintray Kotlin](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)
+
+```gradle
+repositories {
+    jcenter()
+}
+dependencies {
+    // java
+    implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestJavaVersion}'
+    // kotlin
+    implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{latestKotlinVersion}'
+}
+```
+---
+
+## Release USSD Library 1.1.i Ask Permission Requests (06/03/2019)
 - Overlay permissions moves into library and have static methods
 ---
 
@@ -8,7 +26,7 @@
 - Avoid issues when uses the reference: use USSDApi instead USSDController
 ---
 
-## Release USSD Library 1.1.g Support multi-slot (23/01/2019)
+## Release USSD Library 1.1.g Support multi-slot (30/01/2019)
 - Release support multiple sim slots & increase minSDK to 23
 ---
 
