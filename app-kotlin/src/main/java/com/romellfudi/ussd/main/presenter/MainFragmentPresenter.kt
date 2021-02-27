@@ -26,7 +26,7 @@ var map = HashMap<String, HashSet<String>>().apply {
 }
 
 class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor>
-@Inject internal constructor(var view: V , var interator: I ) : MainFragmentMVPPresenter<V, I> {
+@Inject internal constructor(var view: V, var interator: I) : MainFragmentMVPPresenter<V, I> {
 
     override fun attachObserves(lifecycleOwner: LifecycleOwner) {
         interator.getResponse().observe(lifecycleOwner, Observer {
@@ -45,8 +45,11 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                         value.result += "\n-\n$message"
                         view.ussdApi.send("1") {
                             value.result += "\n-\n$it"
-                            view.ussdApi.send("1") {
+                            view.ussdApi.send("2") {
                                 value.result += "\n-\n$it"
+                                view.ussdApi.send("1") {
+                                    value.result += "\n-\n$it"
+                                }
                             }
                         }
                     }
@@ -68,9 +71,12 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                             value.result += "\n-\n$message"
                             view.ussdApi.send("1") {
                                 value.result += "\n-\n$it"
-                                view.ussdApi.send("1") {
+                                view.ussdApi.send("2") {
                                     value.result += "\n-\n$it"
-                                    view.dismissOverlay()
+                                    view.ussdApi.send("1") {
+                                        value.result += "\n-\n$it"
+                                        view.dismissOverlay()
+                                    }
                                 }
                             }
                         }
@@ -95,9 +101,12 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                             value.result += "\n-\n$message"
                             view.ussdApi.send("1") {
                                 value.result += "\n-\n$it"
-                                view.ussdApi.send("1") {
+                                view.ussdApi.send("2") {
                                     value.result += "\n-\n$it"
-                                    view.dismissOverlay()
+                                    view.ussdApi.send("1") {
+                                        value.result += "\n-\n$it"
+                                        view.dismissOverlay()
+                                    }
                                 }
                             }
                         }

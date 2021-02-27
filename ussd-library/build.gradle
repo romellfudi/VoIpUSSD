@@ -14,7 +14,7 @@ ext {
     siteUrl = 'https://romellfudi.github.io/VoIpUSSDSample'
     gitUrl = 'https://romellfudi.github.io/VoIpUSSDSample.git'
 
-    libraryVersion = '1.1.i'
+    libraryVersion = '1.2.a'
 
     developerId = 'romellfudi'
     developerName = 'Romell Dominguez'
@@ -43,6 +43,10 @@ android {
     }
     testOptions{
         unitTests.returnDefaultValues = true
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

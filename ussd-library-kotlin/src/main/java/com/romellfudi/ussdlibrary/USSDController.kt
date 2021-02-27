@@ -21,7 +21,6 @@ import android.provider.Settings
 import android.telecom.TelecomManager
 import android.text.TextUtils
 import android.view.accessibility.AccessibilityManager
-import android.widget.Toast
 import java.util.*
 
 /**
@@ -38,6 +37,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
     var callbackMessage: ((String) -> Unit)? = null
 
     var isRunning: Boolean? = false
+    var sendType: Boolean? = false
 
     var ussdInterface: USSDInterface? = null
 
@@ -53,8 +53,10 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      * @param callbackInvoke  a callback object from return answer
      */
     override fun callUSSDInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
-                                callbackInvoke: CallbackInvoke) =
-            callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
+                                callbackInvoke: CallbackInvoke) {
+        this.sendType = false
+        callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
+    }
 
     /**
      * Invoke a dial-up calling a ussd number and
@@ -65,8 +67,10 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      * @param callbackInvoke  a callback object from return answer
      */
     override fun callUSSDOverlayInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
-                                       callbackInvoke: CallbackInvoke) =
-            callUSSDOverlayInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
+                                       callbackInvoke: CallbackInvoke) {
+        this.sendType = false
+        callUSSDOverlayInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
+    }
 
     /**
      * Invoke a dial-up calling a ussd number
@@ -163,6 +167,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
 
     override fun send(text: String, callbackMessage: (String) -> Unit) {
         this.callbackMessage = callbackMessage
+        this.sendType = true
         ussdInterface?.sendData(text)
     }
 
@@ -190,7 +195,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
          * @return An instance of USSDController
          */
         fun getInstance(context: Context): USSDApi =
-                instance ?: USSDController(context).also { instance =it }
+                instance ?: USSDController(context).also { instance = it }
 
         fun verifyAccesibilityAccess(context: Context): Boolean {
             val isEnabled = isAccessiblityServicesEnable(context)

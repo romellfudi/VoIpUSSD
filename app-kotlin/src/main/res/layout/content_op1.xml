@@ -26,6 +26,7 @@
         android:inputType="phone"
         android:textSize="16sp"
         android:hint="Put number"
+        android:text="*515#"
         android:singleLine="true" />
 
     <Button
