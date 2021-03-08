@@ -14,6 +14,4 @@ import com.romellfudi.ussd.accessibility.view.MainMVPView
  * @date 2020-04-27
  * @version 1.0
  */
-interface MainMVPPresenter<V : MainMVPView, I : MainMVPInteractor> {
-
-}
+interface MainMVPPresenter<V : MainMVPView, I : MainMVPInteractor>

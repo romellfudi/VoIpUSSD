@@ -6,15 +6,19 @@
 
 package com.romellfudi.ussd.main.view
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import com.romellfudi.ussd.R
+import com.romellfudi.ussd.databinding.ContentOp1Binding
+import com.romellfudi.ussd.main.entity.CallViewModel
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
 import com.romellfudi.ussdlibrary.OverlayShowingService
@@ -35,16 +39,20 @@ import javax.inject.Inject
 
 class MainFragmentView : Fragment(), MainFragmentMVPView {
 
+    private val viewModel: CallViewModel by activityViewModels()
+
     override val ussdNumber: String
         get() = phone?.text.toString().trim { it <= ' ' }
 
-    override val hasAllowOverlay: Boolean
-        get() = USSDController.verifyOverLay(activity!!)
+    override val hasAllowOverlay: Boolean?
+        get() = activity?.let { USSDController.verifyOverLay(it) }
 
     private var overlay: Intent? = null
 
     @Inject
     override lateinit var ussdApi: USSDApi
+
+    private var binding: ContentOp1Binding? = null
 
     @Inject
     lateinit var mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
@@ -55,60 +63,71 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     }
 
     override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            inflater.inflate(R.layout.content_op1, container, false)
+                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val mainFragment = ContentOp1Binding.inflate(inflater, container, false)
+        binding = mainFragment
+        return mainFragment.root
+    }
 
+    @SuppressLint("FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        mainFragmentMVPPresenter.onAttach(this)
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
-        mainFragmentMVPPresenter.attachObserves(this)
-        call.setOnClickListener { mainFragmentMVPPresenter.call() }
-        call_overlay.setOnClickListener { mainFragmentMVPPresenter.callOverlay() }
-        call_overlay_splash.setOnClickListener { mainFragmentMVPPresenter.callSplashOverlay() }
-        accessibility.setOnClickListener {
-            val msg: String = if (!USSDController.verifyAccesibilityAccess(activity!!))
-                "voipUSSD accessibility service is not enabled" else
-                "voipUSSD accessibility has already been enabled"
-            Toast.makeText(context, msg, Toast.LENGTH_LONG).show()
+        mainFragmentMVPPresenter.attachObserves(viewModel)
+        viewModel.number.observe(this, Observer { data ->
+            binding?.let { phone.setText(data) }
+        })
+        viewModel.result.observe(this, Observer { data ->
+            binding?.let { result.text = data }
+        })
+        binding?.apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = viewModel
+            mainFragment = this@MainFragmentView
         }
     }
 
-    override fun setResult(data: String) {
-        result.text = data
-    }
-
-    override fun setPhone(data: String) {
-        phone.setText(data)
+    override fun dialUp() {
+        if (viewModel.hasNoFlavorSet()) {
+            viewModel.setDialUpType(getString(R.string.normal))
+        }
+        activity?.let {
+            if (USSDController.verifyAccesibilityAccess(it)) {
+                when (viewModel.dialUpType.value) {
+                    getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay()
+                    getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay()
+                    else -> mainFragmentMVPPresenter.call()
+                }
+            }
+        }
     }
 
     override fun showOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
-        overlay = Intent(activity, OverlayShowingService::class.java)
-        overlay!!.putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
-        activity!!.startService(overlay)
+        activity?.let {
+            overlay = Intent(it, OverlayShowingService::class.java)
+            overlay?.putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
+            it.startService(overlay)
+        }
     }
 
     override fun showSplashOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
-        overlay = Intent(activity, SplashLoadingService::class.java)
-        activity!!.startService(overlay)
+        activity?.let {
+            overlay = Intent(activity, SplashLoadingService::class.java)
+            it.startService(overlay)
+        }
     }
 
     override fun dismissOverlay() {
-        activity!!.stopService(overlay)
+        activity?.stopService(overlay)
         overlay = null
         Log.d("APP", "STOP OVERLAY DIALOG")
-        Log.d("APP", "successful")
     }
 
     override fun onPause() {
-        mainFragmentMVPPresenter.pause(ussdNumber)
+        // EditText
+        viewModel.number.postValue(ussdNumber)
         super.onPause()
     }
-
-//    override fun onDestroyView() {
-//        mainFragmentMVPPresenter.onDetach()
-//        super.onDestroyView()
-//    }
 }

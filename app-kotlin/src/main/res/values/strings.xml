@@ -15,5 +15,8 @@
     <string name="refuse_permissions">Please allow call permission</string>
     <string name="usss_input">Introduce # ussd</string>
     <string name="copyright">RomellFudi</string>
+    <string name="normal">Normal Dial-Up</string>
+    <string name="custom">Custom Dial-Up</string>
+    <string name="splash">Splash Dial-Up</string>
 
 </resources>
