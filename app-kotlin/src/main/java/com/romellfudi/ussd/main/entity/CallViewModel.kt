@@ -22,8 +22,8 @@ class CallViewModel : ViewModel() {
         result.value = "Empty"
     }
 
-    fun setDialUpType(dialUpType:String){
-        _dialUpType.value = dialUpType
+    fun setDialUpType(value:String){
+        _dialUpType.value = value
     }
 
     fun hasNoFlavorSet(): Boolean {

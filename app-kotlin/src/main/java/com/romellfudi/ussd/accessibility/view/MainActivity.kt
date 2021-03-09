@@ -98,7 +98,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     }
 
     override fun onStateUpdate(state: InstallState?) {
-        if (state!!.installStatus() == InstallStatus.DOWNLOADED) {
+        if (state?.installStatus() == InstallStatus.DOWNLOADED) {
             showMessage("Has been Downloaded!!!")
             notifyUser()
         }

@@ -39,7 +39,7 @@ import javax.inject.Inject
 
 class MainFragmentView : Fragment(), MainFragmentMVPView {
 
-    private val viewModel: CallViewModel by activityViewModels()
+    private val callViewModel: CallViewModel by activityViewModels()
 
     override val ussdNumber: String
         get() = phone?.text.toString().trim { it <= ' ' }
@@ -73,27 +73,27 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
-        mainFragmentMVPPresenter.attachObserves(viewModel)
-        viewModel.number.observe(this, Observer { data ->
+        mainFragmentMVPPresenter.attachObserves(callViewModel)
+        callViewModel.number.observe(this, Observer { data ->
             binding?.let { phone.setText(data) }
         })
-        viewModel.result.observe(this, Observer { data ->
+        callViewModel.result.observe(this, Observer { data ->
             binding?.let { result.text = data }
         })
         binding?.apply {
             lifecycleOwner = viewLifecycleOwner
-            viewModel = viewModel
+            viewModel = callViewModel
             mainFragment = this@MainFragmentView
         }
     }
 
     override fun dialUp() {
-        if (viewModel.hasNoFlavorSet()) {
-            viewModel.setDialUpType(getString(R.string.normal))
+        if (callViewModel.hasNoFlavorSet()) {
+            callViewModel.setDialUpType(getString(R.string.normal))
         }
         activity?.let {
             if (USSDController.verifyAccesibilityAccess(it)) {
-                when (viewModel.dialUpType.value) {
+                when (callViewModel.dialUpType.value) {
                     getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay()
                     getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay()
                     else -> mainFragmentMVPPresenter.call()
@@ -104,18 +104,18 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun showOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
-        activity?.let {
-            overlay = Intent(it, OverlayShowingService::class.java)
+        activity?.run {
+            overlay = Intent(this, OverlayShowingService::class.java)
             overlay?.putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
-            it.startService(overlay)
+            startService(overlay)
         }
     }
 
     override fun showSplashOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
-        activity?.let {
+        activity?.run {
             overlay = Intent(activity, SplashLoadingService::class.java)
-            it.startService(overlay)
+            startService(overlay)
         }
     }
 
@@ -127,7 +127,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun onPause() {
         // EditText
-        viewModel.number.postValue(ussdNumber)
+        callViewModel.number.postValue(ussdNumber)
         super.onPause()
     }
 }
