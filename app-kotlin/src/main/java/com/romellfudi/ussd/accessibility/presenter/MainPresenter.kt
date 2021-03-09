@@ -17,7 +17,4 @@ import javax.inject.Inject
  */
 
 class MainPresenter<V : MainMVPView, I : MainMVPInteractor>
-        @Inject internal constructor(var interator: I?) : MainMVPPresenter<V, I> {
-
-
-}
+        @Inject internal constructor(var interator: I?) : MainMVPPresenter<V, I>

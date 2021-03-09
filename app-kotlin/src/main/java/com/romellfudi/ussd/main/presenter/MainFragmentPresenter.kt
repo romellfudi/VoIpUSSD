@@ -6,10 +6,7 @@
 
 package com.romellfudi.ussd.main.presenter
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.Observer
-import com.romellfudi.ussd.main.entity.PhoneNumber
-import com.romellfudi.ussd.main.entity.Response
+import com.romellfudi.ussd.main.entity.CallViewModel
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 import com.romellfudi.ussdlibrary.USSDController
@@ -28,53 +25,50 @@ var map = HashMap<String, HashSet<String>>().apply {
 class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor>
 @Inject internal constructor(var view: V, var interator: I) : MainFragmentMVPPresenter<V, I> {
 
-    override fun attachObserves(lifecycleOwner: LifecycleOwner) {
-        interator.getResponse().observe(lifecycleOwner, Observer {
-            view.setResult(it.result)
-        })
-        interator.getPhoneNumber().observe(lifecycleOwner, Observer {
-            view.setPhone(it.num)
-        })
+    lateinit var viewModel: CallViewModel
+
+    override fun attachObserves(callViewModel: CallViewModel) {
+        viewModel = callViewModel
     }
 
     override fun call() {
-        val value = Response()
+        var result = ""
         view.ussdApi.callUSSDInvoke(view.ussdNumber, map,
                 object : USSDController.CallbackInvoke {
                     override fun responseInvoke(message: String) {
-                        value.result += "\n-\n$message"
+                        result += "\n-\n$message"
                         view.ussdApi.send("1") {
-                            value.result += "\n-\n$it"
+                            result += "\n-\n$it"
                             view.ussdApi.send("2") {
-                                value.result += "\n-\n$it"
+                                result += "\n-\n$it"
                                 view.ussdApi.send("1") {
-                                    value.result += "\n-\n$it"
+                                    result += "\n-\n$it"
                                 }
                             }
                         }
                     }
 
                     override fun over(message: String) {
-                        value.result += "\n-\n$message"
-                        interator.getResponse().postValue(value)
+                        result += "\n-\n$message"
+                        viewModel.result.postValue(result)
                     }
                 })
     }
 
     override fun callOverlay() {
-        val value = Response()
-        if (view.hasAllowOverlay) {
+        var result = ""
+        if (view.hasAllowOverlay!!) {
             view.showOverlay()
             view.ussdApi.callUSSDOverlayInvoke(view.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
-                            value.result += "\n-\n$message"
+                            result += "\n-\n$message"
                             view.ussdApi.send("1") {
-                                value.result += "\n-\n$it"
+                                result += "\n-\n$it"
                                 view.ussdApi.send("2") {
-                                    value.result += "\n-\n$it"
+                                    result += "\n-\n$it"
                                     view.ussdApi.send("1") {
-                                        value.result += "\n-\n$it"
+                                        result += "\n-\n$it"
                                         view.dismissOverlay()
                                     }
                                 }
@@ -82,8 +76,8 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                         }
 
                         override fun over(message: String) {
-                            value.result += "\n-\n$message"
-                            interator.getResponse().postValue(value)
+                            result += "\n-\n$message"
+                            viewModel.result.postValue(result)
                             view.dismissOverlay()
                         }
                     })
@@ -92,19 +86,19 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
     }
 
     override fun callSplashOverlay() {
-        val value = Response()
-        if (view.hasAllowOverlay) {
+        var result = ""
+        if (view.hasAllowOverlay!!) {
             view.showSplashOverlay()
             view.ussdApi.callUSSDOverlayInvoke(view.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
-                            value.result += "\n-\n$message"
+                            result += "\n-\n$message"
                             view.ussdApi.send("1") {
-                                value.result += "\n-\n$it"
+                                result += "\n-\n$it"
                                 view.ussdApi.send("2") {
-                                    value.result += "\n-\n$it"
+                                    result += "\n-\n$it"
                                     view.ussdApi.send("1") {
-                                        value.result += "\n-\n$it"
+                                        result += "\n-\n$it"
                                         view.dismissOverlay()
                                     }
                                 }
@@ -112,25 +106,12 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                         }
 
                         override fun over(message: String) {
-                            value.result += "\n-\n$message"
-                            interator.getResponse().postValue(value)
+                            result += "\n-\n$message"
+                            viewModel.result.postValue(result)
                             view.dismissOverlay()
                         }
                     })
         }
     }
-
-    override fun pause(vararg data: String) {
-        interator.getPhoneNumber().postValue(PhoneNumber(data[0]) )
-    }
-
-//    override fun onAttach(view: V?) {
-//        this.view = view
-//    }
-
-//    override fun onDetach() {
-//        view = null
-//        interator = null
-//    }
 
 }

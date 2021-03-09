@@ -6,16 +6,13 @@
 
 package com.romellfudi.ussd.main.presenter
 
-import androidx.lifecycle.LifecycleOwner
+import com.romellfudi.ussd.main.entity.CallViewModel
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 
 interface MainFragmentMVPPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor> {
-    fun attachObserves(lifecycleOwner: LifecycleOwner)
+    fun attachObserves(callViewModel: CallViewModel)
     fun call()
     fun callOverlay()
     fun callSplashOverlay()
-    fun pause(vararg data: String)
-//    fun onDetach()
-//    fun onAttach(view: V?)
 }

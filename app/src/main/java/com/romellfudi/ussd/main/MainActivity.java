@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity
     public ActivityComponent getActivityComponent() {
         if (activityComponent==null){
             activityComponent = DaggerActivityComponent.builder()
-//                    .appComponent(((App)getApplicationContext()).getAppComponent())
                     .activityModule(new ActivityModule(this))
                     .build();
         }
@@ -70,7 +69,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-//        ((App)getApplicationContext()).getAppComponent().inject(this);
         getActivityComponent().inject(this);
         super.onCreate(savedInstanceState);
         if (savedInstanceState == null)

@@ -1,81 +1,128 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
   ~ All rights reserved
   ~ porfile.romellfudi.com
   -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.romellfudi.ussd.main.view.MainFragmentView">
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin" >
-
-    <TextView
-        android:id="@+id/txt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:text="@string/usss_input" />
-
-
-    <EditText
-        android:id="@+id/phone"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/txt"
-        android:inputType="phone"
-        android:textSize="16sp"
-        android:hint="Put number"
-        android:text="*515#"
-        android:singleLine="true" />
-
-    <Button
-        android:id="@+id/call"
-        android:textSize="16sp"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/phone"
-        android:text="CALL" />
-
-    <Button
-        android:id="@+id/call_overlay"
-        android:textSize="16sp"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/call"
-        android:text="CALL/OVERLAY(M)" />
-
-    <Button
-        android:id="@+id/call_overlay_splash"
-        android:textSize="16sp"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/call_overlay"
-        android:text="CALL/SPLASH(M)" />
-
-    <Button
-        android:id="@+id/accessibility"
-        android:textSize="16sp"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/call_overlay_splash"
-        android:text="ACCESSIBILITY IS ACTIVE?" />
+    <data>
+        <variable
+            name="viewModel"
+            type="com.romellfudi.ussd.main.entity.CallViewModel" />
+        <variable
+            name="mainFragment"
+            type="com.romellfudi.ussd.main.view.MainFragmentView" />
+    </data>
 
     <ScrollView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_below="@+id/accessibility">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/result"
-            android:textSize="16sp"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/side_margin">
+
+            <TextView
+                android:id="@+id/txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/usss_input"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <EditText
+                android:id="@+id/phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Put number"
+                android:inputType="phone"
+                android:singleLine="true"
+                android:text="*#"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt" />
+
+            <View
+                android:id="@+id/divider_p"
+                style="@style/Widget.USSD.divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/phone" />
+            <RadioGroup
+                android:id="@+id/flavor_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_p">
+
+                <RadioButton
+                    android:id="@+id/normal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{viewModel.dialUpType.equals(@string/normal)}"
+                    android:onClick="@{() -> viewModel.setDialUpType(@string/normal)}"
+                    android:text="@string/normal" />
+
+                <RadioButton
+                    android:id="@+id/custom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{viewModel.dialUpType.equals(@string/custom)}"
+                    android:onClick="@{() -> viewModel.setDialUpType(@string/custom)}"
+                    android:text="@string/custom" />
+
+                <RadioButton
+                    android:id="@+id/splash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="@{viewModel.dialUpType.equals(@string/splash)}"
+                    android:onClick="@{() -> viewModel.setDialUpType(@string/splash)}"
+                    android:text="@string/splash" />
+
+            </RadioGroup>
+
+            <Button
+                android:id="@+id/accessibility"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/side_margin"
+                android:onClick="@{() -> mainFragment.dialUp()}"
+                android:text="Dial UP"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/flavor_options" />
+
+
+            <View
+                android:id="@+id/divider_f"
+                style="@style/Widget.USSD.divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/accessibility" />
+            <TextView
+                android:id="@+id/result"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                android:textSize="16sp"
+                android:text="-------"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/divider_f" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
-</RelativeLayout>
+</layout>

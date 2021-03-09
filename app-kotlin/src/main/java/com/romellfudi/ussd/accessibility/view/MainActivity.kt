@@ -63,7 +63,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         setSupportActionBar(toolbar)
-        supportActionBar!!.title = getString(R.string.app_name)
+        supportActionBar?.let {
+            title = getString(R.string.app_name)
+        }
         with(supportFragmentManager.beginTransaction()) {
             replace(R.id.fragment_layout, MainFragmentView())
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
@@ -96,7 +98,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     }
 
     override fun onStateUpdate(state: InstallState?) {
-        if (state!!.installStatus() == InstallStatus.DOWNLOADED) {
+        if (state?.installStatus() == InstallStatus.DOWNLOADED) {
             showMessage("Has been Downloaded!!!")
             notifyUser()
         }

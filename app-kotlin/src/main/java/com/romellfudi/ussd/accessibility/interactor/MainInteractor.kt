@@ -14,7 +14,4 @@ import javax.inject.Inject
  * @date 2020-04-27
  * @version 1.0
  */
-class MainInteractor @Inject constructor(private val mContext: Context) : MainMVPInteractor {
-
-
-}
+class MainInteractor @Inject constructor(private val mContext: Context) : MainMVPInteractor
