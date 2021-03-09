@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.databinding.ContentOp1Binding
 import com.romellfudi.ussd.main.entity.CallViewModel
