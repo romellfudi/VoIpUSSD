@@ -25,12 +25,6 @@ var map = HashMap<String, HashSet<String>>().apply {
 class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor>
 @Inject internal constructor(var view: V, var interator: I) : MainFragmentMVPPresenter<V, I> {
 
-    lateinit var viewModel: CallViewModel
-
-    override fun attachObserves(callViewModel: CallViewModel) {
-        viewModel = callViewModel
-    }
-
     override fun call() {
         var result = ""
         view.ussdApi.callUSSDInvoke(view.ussdNumber, map,
@@ -50,7 +44,7 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
 
                     override fun over(message: String) {
                         result += "\n-\n$message"
-                        viewModel.result.postValue(result)
+                        view.showResult(result)
                     }
                 })
     }
@@ -77,7 +71,7 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
 
                         override fun over(message: String) {
                             result += "\n-\n$message"
-                            viewModel.result.postValue(result)
+                            view.showResult(result)
                             view.dismissOverlay()
                         }
                     })
@@ -107,7 +101,7 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
 
                         override fun over(message: String) {
                             result += "\n-\n$message"
-                            viewModel.result.postValue(result)
+                            view.showResult(result)
                             view.dismissOverlay()
                         }
                     })

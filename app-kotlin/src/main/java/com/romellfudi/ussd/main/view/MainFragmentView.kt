@@ -73,13 +73,6 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
-        mainFragmentMVPPresenter.attachObserves(callViewModel)
-        callViewModel.number.observe(this, Observer { data ->
-            binding?.let { phone.setText(data) }
-        })
-        callViewModel.result.observe(this, Observer { data ->
-            binding?.let { result.text = data }
-        })
         binding?.apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = callViewModel
@@ -88,9 +81,8 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     }
 
     override fun dialUp() {
-        if (callViewModel.hasNoFlavorSet()) {
+        if (callViewModel.hasNoFlavorSet())
             callViewModel.setDialUpType(getString(R.string.normal))
-        }
         activity?.let {
             if (USSDController.verifyAccesibilityAccess(it)) {
                 when (callViewModel.dialUpType.value) {
@@ -118,6 +110,9 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
             startService(overlay)
         }
     }
+
+    override fun showResult(result: String) =
+        callViewModel.result.postValue(result)
 
     override fun dismissOverlay() {
         activity?.stopService(overlay)

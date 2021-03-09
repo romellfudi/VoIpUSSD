@@ -11,7 +11,6 @@ import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 
 interface MainFragmentMVPPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor> {
-    fun attachObserves(callViewModel: CallViewModel)
     fun call()
     fun callOverlay()
     fun callSplashOverlay()

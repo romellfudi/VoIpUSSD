@@ -19,6 +19,7 @@ interface MainFragmentMVPView {
     val hasAllowOverlay: Boolean?
     fun showOverlay()
     fun showSplashOverlay()
+    fun showResult(result:String)
     fun dismissOverlay()
     fun dialUp()
 }
