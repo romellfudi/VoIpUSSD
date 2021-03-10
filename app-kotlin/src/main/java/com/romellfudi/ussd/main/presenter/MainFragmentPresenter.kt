@@ -62,7 +62,7 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                                     result += "\n-\n$it"
                                     view.ussdApi.send("1") {
                                         result += "\n-\n$it"
-                                        view.dismissOverlay()
+//                                        view.dismissOverlay()
                                     }
                                 }
                             }
@@ -92,7 +92,7 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                                     result += "\n-\n$it"
                                     view.ussdApi.send("1") {
                                         result += "\n-\n$it"
-                                        view.dismissOverlay()
+//                                        view.dismissOverlay()
                                     }
                                 }
                             }

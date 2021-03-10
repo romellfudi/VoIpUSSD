@@ -95,23 +95,19 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun showOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
-        activity?.run {
-            overlay = Intent(this, OverlayShowingService::class.java)
-            overlay?.putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
-            startService(overlay)
-        }
+        overlay = Intent(activity, OverlayShowingService::class.java).apply {
+            putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
+        }.also { activity?.startService(it)  }
     }
 
     override fun showSplashOverlay() {
         Log.d("APP", "START OVERLAY DIALOG")
-        activity?.run {
-            overlay = Intent(activity, SplashLoadingService::class.java)
-            startService(overlay)
-        }
+        overlay = Intent(activity, SplashLoadingService::class.java)
+                .also { activity?.startService(it) }
     }
 
     override fun showResult(result: String) =
-        callViewModel.result.postValue(result)
+            callViewModel.result.postValue(result)
 
     override fun dismissOverlay() {
         activity?.stopService(overlay)
