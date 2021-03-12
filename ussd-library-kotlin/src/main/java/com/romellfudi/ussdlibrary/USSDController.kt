@@ -33,6 +33,11 @@ object USSDController : USSDInterface, USSDApi {
     const val KEY_LOGIN = "KEY_LOGIN"
     const val KEY_ERROR = "KEY_ERROR"
 
+    private val simSlotName = arrayOf("extra_asus_dial_use_dualsim",
+            "com.android.phone.extra.slot", "slot", "simslot", "sim_slot", "subscription",
+            "Subscription", "phone", "com.android.phone.DialingMode", "simSlot", "slot_id",
+            "simId", "simnum", "phone_type", "slotId", "slotIdx")
+
     lateinit var context: Context
         private set
 
@@ -136,7 +141,10 @@ object USSDController : USSDInterface, USSDApi {
                 callbackInvoke.over("Bad Mapping structure")
             ussdPhoneNumber.isEmpty() -> callbackInvoke.over("Bad ussd number")
             else -> {
-                val phone = ussdPhoneNumber.replace("#", Uri.encode("#"))
+                var phone =
+                Uri.encode("#")?.let {
+                    ussdPhoneNumber.replace("#", it)
+                }
                 isRunning = true
                 context.startActivity(getActionCallIntent(Uri.parse("tel:$phone"), simSlot))
             }
@@ -145,24 +153,20 @@ object USSDController : USSDInterface, USSDApi {
 
     /**
      * get action call Intent
+     * url: https://stackoverflow.com/questions/25524476/make-call-using-a-specified-sim-in-a-dual-sim-device
      *
      * @param uri     parsed uri to call
      * @param simSlot simSlot number to use
      */
     @SuppressLint("MissingPermission")
     private fun getActionCallIntent(uri: Uri?, simSlot: Int): Intent {
-        // https://stackoverflow.com/questions/25524476/make-call-using-a-specified-sim-in-a-dual-sim-device
-        val simSlotName = arrayOf("extra_asus_dial_use_dualsim",
-                "com.android.phone.extra.slot", "slot", "simslot", "sim_slot", "subscription",
-                "Subscription", "phone", "com.android.phone.DialingMode", "simSlot", "slot_id",
-                "simId", "simnum", "phone_type", "slotId", "slotIdx")
-        val telcomManager = (context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager)
+        val telcomManager = context.getSystemService(Context.TELECOM_SERVICE) as? TelecomManager
         return Intent(Intent.ACTION_CALL, uri).apply {
             simSlotName.map { sim -> putExtra(sim, simSlot) }
             flags = Intent.FLAG_ACTIVITY_NEW_TASK
             putExtra("com.android.phone.force.slot", true)
             putExtra("Cdma_Supp", true)
-            telcomManager.callCapablePhoneAccounts?.let { handles ->
+            telcomManager?.callCapablePhoneAccounts?.let { handles ->
                 if (handles.size > simSlot)
                     putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", handles[simSlot])
             }

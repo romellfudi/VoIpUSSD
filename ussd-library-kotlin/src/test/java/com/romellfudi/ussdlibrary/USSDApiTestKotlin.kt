@@ -46,9 +46,6 @@ class USSDApiTestKotlin {
     internal val activity: Activity = mock()
 
     @InjectMockKs
-    internal var ussdController = USSDController.getInstance(activity)
-
-    @InjectMockKs
     internal var ussdService = USSDServiceKT()
 
     @MockK
@@ -74,10 +71,9 @@ class USSDApiTestKotlin {
         val MESSAGE = listOf(listOf("waiting", "problem UUID"),
                 listOf("loading"),
                 listOf("waiting", "message", "message", "message", "message", "Final Close dialog"))
-        val map = HashMap<String, HashSet<String>>().apply {
-            this["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
-            this["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
-        }
+        val map = hashMapOf(
+                "KEY_LOGIN" to listOf("espere", "waiting", "loading", "esperando"),
+                "KEY_ERROR" to listOf("problema", "problem", "error", "null"))
     }
 
     @Before
@@ -122,11 +118,11 @@ class USSDApiTestKotlin {
         j = 0
         every { accessibilityEvent.source } returns null
 
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
+        USSDController.callUSSDInvoke(activity,"*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
         assertThat(stringSlot.captured, `is`(equalTo("waiting")))
 
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
+        USSDController.callUSSDInvoke(activity,"*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
         assertThat(stringSlot.captured, `is`(equalTo("problem UUID")))
     }
@@ -137,7 +133,7 @@ class USSDApiTestKotlin {
         every { USSDServiceKT.notInputText(accessibilityEvent) } returns true
         every { accessibilityEvent.source } returns null
 
-        ussdController.callUSSDInvoke("*1#", map, callbackInvoke)
+        USSDController.callUSSDInvoke(activity,"*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
         assertThat(stringSlot.captured, `is`(equalTo("loading")))
     }
