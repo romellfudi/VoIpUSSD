@@ -19,9 +19,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.telecom.TelecomManager
-import android.text.TextUtils
 import android.view.accessibility.AccessibilityManager
-import java.util.*
 
 /**
  * @author Romell Dominguez
@@ -141,8 +139,7 @@ object USSDController : USSDInterface, USSDApi {
                 callbackInvoke.over("Bad Mapping structure")
             ussdPhoneNumber.isEmpty() -> callbackInvoke.over("Bad ussd number")
             else -> {
-                var phone =
-                Uri.encode("#")?.let {
+                var phone = Uri.encode("#")?.let {
                     ussdPhoneNumber.replace("#", it)
                 }
                 isRunning = true
@@ -230,25 +227,17 @@ object USSDController : USSDInterface, USSDApi {
     }
 
     private fun isAccessibilityServicesEnable(context: Context): Boolean {
-        (context.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager)?.let {
-            it.installedAccessibilityServiceList.forEach { service ->
-                if (service.id.contains(context.packageName))
-                    return isAccessibilitySettingsOn(context, service.id)
+        (context.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager)?.apply {
+            installedAccessibilityServiceList.forEach { service ->
+                if (service.id.contains(context.packageName) &&
+                        Settings.Secure.getInt(context.applicationContext.contentResolver,
+                                Settings.Secure.ACCESSIBILITY_ENABLED) == 1)
+                    Settings.Secure.getString(context.applicationContext.contentResolver,
+                            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)?.let {
+                        if (it.split(':').contains(service.id)) return true
+                    }
             }
         }
         return false
     }
-
-    private fun isAccessibilitySettingsOn(context: Context, service: String): Boolean =
-            if (Settings.Secure.getInt(context.applicationContext.contentResolver,
-                            Settings.Secure.ACCESSIBILITY_ENABLED) == 1) {
-                Settings.Secure.getString(context.applicationContext.contentResolver,
-                        Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)?.let {
-                    TextUtils.SimpleStringSplitter(':').apply {
-                        setString(it)
-                        while (hasNext()) if (next() == service) return true
-                    }
-                }
-                false
-            } else false
 }
