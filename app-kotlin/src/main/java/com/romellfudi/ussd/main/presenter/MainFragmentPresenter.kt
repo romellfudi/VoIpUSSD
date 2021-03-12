@@ -6,6 +6,7 @@
 
 package com.romellfudi.ussd.main.presenter
 
+import android.content.Context
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 import com.romellfudi.ussdlibrary.USSDController
@@ -16,17 +17,16 @@ import javax.inject.Inject
  * @date 2020-04-26
  * @version 1.0
  */
-var map = HashMap<String, HashSet<String>>().apply {
-    this["KEY_LOGIN"] = HashSet(listOf("espere", "waiting", "loading", "esperando"))
-    this["KEY_ERROR"] = HashSet(listOf("problema", "problem", "error", "null"))
-}
+val map = hashMapOf(
+    "KEY_LOGIN" to listOf("espere", "waiting", "loading", "esperando"),
+    "KEY_ERROR" to listOf("problema", "problem", "error", "null"))
 
 class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor>
 @Inject internal constructor(var view: V, var interator: I) : MainFragmentMVPPresenter<V, I> {
 
-    override fun call() {
+    override fun call(context: Context) {
         var result = ""
-        view.ussdApi.callUSSDInvoke(view.ussdNumber, map,
+        view.ussdApi.callUSSDInvoke(context,view.ussdNumber, map,
                 object : USSDController.CallbackInvoke {
                     override fun responseInvoke(message: String) {
                         result += "\n-\n$message"
@@ -48,11 +48,11 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
                 })
     }
 
-    override fun callOverlay() {
+    override fun callOverlay(context: Context) {
         var result = ""
-        if (view.hasAllowOverlay!!) {
+        if (view.hasAllowOverlay) {
             view.showOverlay()
-            view.ussdApi.callUSSDOverlayInvoke(view.ussdNumber, map,
+            view.ussdApi.callUSSDOverlayInvoke(context,view.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
                             result += "\n-\n$message"
@@ -78,11 +78,11 @@ class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteract
 
     }
 
-    override fun callSplashOverlay() {
+    override fun callSplashOverlay(context: Context) {
         var result = ""
-        if (view.hasAllowOverlay!!) {
+        if (view.hasAllowOverlay) {
             view.showSplashOverlay()
-            view.ussdApi.callUSSDOverlayInvoke(view.ussdNumber, map,
+            view.ussdApi.callUSSDOverlayInvoke(context,view.ussdNumber, map,
                     object : USSDController.CallbackInvoke {
                         override fun responseInvoke(message: String) {
                             result += "\n-\n$message"

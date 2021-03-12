@@ -25,8 +25,7 @@ import dagger.Provides
 class MainFragmentModule {
 
     @Provides
-    fun provideUSSDApi(fragment: MainFragmentView): USSDApi =
-            USSDController.getInstance(fragment.requireActivity())
+    fun provideUSSDApi(fragment: MainFragmentView): USSDApi = USSDController
 
     @Provides
     internal fun provideMainFragmentView(view: MainFragmentView): MainFragmentMVPView = view

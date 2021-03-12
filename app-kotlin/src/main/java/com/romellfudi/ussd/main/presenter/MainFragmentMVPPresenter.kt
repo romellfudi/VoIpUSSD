@@ -6,11 +6,12 @@
 
 package com.romellfudi.ussd.main.presenter
 
+import android.content.Context
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 
 interface MainFragmentMVPPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor> {
-    fun call()
-    fun callOverlay()
-    fun callSplashOverlay()
+    fun call(context: Context)
+    fun callOverlay(context: Context)
+    fun callSplashOverlay(context: Context)
 }

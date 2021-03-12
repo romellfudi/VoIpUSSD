@@ -7,6 +7,7 @@
 package com.romellfudi.ussd.main.view
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -43,8 +44,8 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     override val ussdNumber: String
         get() = phone?.text.toString().trim { it <= ' ' }
 
-    override val hasAllowOverlay: Boolean?
-        get() = activity?.let { USSDController.verifyOverLay(it) }
+    override val hasAllowOverlay: Boolean
+        get() = activity.let { USSDController.verifyOverLay(it as Context) }
 
     private var overlay: Intent? = null
 
@@ -63,9 +64,8 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val mainFragment = ContentOp1Binding.inflate(inflater, container, false)
-        binding = mainFragment
-        return mainFragment.root
+        binding = ContentOp1Binding.inflate(inflater, container, false)
+        return binding?.root
     }
 
     @SuppressLint("FragmentLiveDataObserve")
@@ -85,9 +85,9 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         activity?.let {
             if (USSDController.verifyAccesibilityAccess(it)) {
                 when (callViewModel.dialUpType.value) {
-                    getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay()
-                    getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay()
-                    else -> mainFragmentMVPPresenter.call()
+                    getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay(it)
+                    getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay(it)
+                    else -> mainFragmentMVPPresenter.call(it)
                 }
             }
         }

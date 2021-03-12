@@ -38,7 +38,7 @@ public class USSDServiceKT extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         USSDServiceKT.event = event;
-        USSDController ussd = USSDController.Companion.getInstance();
+        USSDController ussd = USSDController.INSTANCE;
         Log.d(TAG, String.format(
                 "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
                 event.getEventType(), event.getClassName(), event.getPackageName(),
@@ -102,7 +102,7 @@ public class USSDServiceKT extends AccessibilityService {
      * @param data  Any String
      */
     private static void setTextIntoField(AccessibilityEvent event, String data) {
-        USSDController ussd = USSDController.Companion.getInstance();
+        USSDController ussd = USSDController.INSTANCE;
         Bundle arguments = new Bundle();
         arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
         for (AccessibilityNodeInfo leaf : getLeaves(event)) {
@@ -152,7 +152,7 @@ public class USSDServiceKT extends AccessibilityService {
      */
     private boolean LoginView(AccessibilityEvent event) {
         return isUSSDWidget(event)
-                && USSDController.Companion.getInstance().getMap().get(USSDController.Companion.getKEY_LOGIN())
+                && USSDController.INSTANCE.getMap().get(USSDController.KEY_LOGIN)
                 .contains(event.getText().get(0).toString());
     }
 
@@ -164,7 +164,7 @@ public class USSDServiceKT extends AccessibilityService {
      */
     protected boolean problemView(AccessibilityEvent event) {
         return isUSSDWidget(event)
-                && USSDController.Companion.getInstance().getMap().get(USSDController.Companion.getKEY_ERROR())
+                && USSDController.INSTANCE.getMap().get(USSDController.KEY_ERROR)
                 .contains(event.getText().get(0).toString());
     }
 

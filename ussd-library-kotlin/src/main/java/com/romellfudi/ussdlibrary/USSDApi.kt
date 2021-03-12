@@ -10,6 +10,7 @@
  */
 package com.romellfudi.ussdlibrary
 
+import android.content.Context
 import java.util.*
 
 /**
@@ -21,15 +22,19 @@ import java.util.*
 interface USSDApi {
     fun send(text: String, callbackMessage: (String) -> Unit)
     fun cancel()
-    fun callUSSDInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
+    fun callUSSDInvoke(context: Context, ussdPhoneNumber: String,
+                       map: HashMap<String, List<String>>,
                        callbackInvoke: USSDController.CallbackInvoke)
 
-    fun callUSSDInvoke(ussdPhoneNumber: String, simSlot: Int, map: HashMap<String, HashSet<String>>,
+    fun callUSSDInvoke(context: Context, ussdPhoneNumber: String, simSlot: Int,
+                       map: HashMap<String, List<String>>,
                        callbackInvoke: USSDController.CallbackInvoke)
 
-    fun callUSSDOverlayInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
+    fun callUSSDOverlayInvoke(context: Context, ussdPhoneNumber: String,
+                              map: HashMap<String, List<String>>,
                               callbackInvoke: USSDController.CallbackInvoke)
 
-    fun callUSSDOverlayInvoke(ussdPhoneNumber: String, simSlot: Int, map: HashMap<String, HashSet<String>>,
+    fun callUSSDOverlayInvoke(context: Context, ussdPhoneNumber: String, simSlot: Int,
+                              map: HashMap<String, List<String>>,
                               callbackInvoke: USSDController.CallbackInvoke)
 }
