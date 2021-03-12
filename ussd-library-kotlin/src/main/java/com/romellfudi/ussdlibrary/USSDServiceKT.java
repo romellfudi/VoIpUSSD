@@ -38,23 +38,24 @@ public class USSDServiceKT extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         USSDServiceKT.event = event;
+        USSDController ussd = USSDController.Companion.getInstance();
         Log.d(TAG, String.format(
                 "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
                 event.getEventType(), event.getClassName(), event.getPackageName(),
                 event.getEventTime(), event.getText()));
-        if (USSDController.Companion.getInstance() == null
-                || !USSDController.Companion.getInstance().isRunning()) {
+        if (ussd == null
+                || !ussd.isRunning()) {
             return;
         }
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, 0);
-            USSDController.Companion.getInstance().setRunning(false);
-            USSDController.Companion.getInstance().callbackInvoke.over(event.getText().get(0).toString());
+            ussd.setRunning(false);
+            ussd.callbackInvoke.over(event.getText().get(0).toString());
         } else if (problemView(event) || LoginView(event)) {
             // deal down
             clickOnButton(event, 1);
-            USSDController.Companion.getInstance().callbackInvoke.over(event.getText().get(0).toString());
+            ussd.callbackInvoke.over(event.getText().get(0).toString());
         } else if (isUSSDWidget(event)) {
             // ready for work
             String response = event.getText().get(0).toString();
@@ -65,13 +66,13 @@ public class USSDServiceKT extends AccessibilityService {
                 // not more input panels / LAST MESSAGE
                 // sent 'OK' button
                 clickOnButton(event, 0);
-                USSDController.Companion.getInstance().setRunning(false);
-                USSDController.Companion.getInstance().callbackInvoke.over(response);
+                ussd.setRunning(false);
+                ussd.callbackInvoke.over(response);
             } else {
                 // sent option 1
-                if (USSDController.Companion.getInstance().getSendType())
-                    USSDController.Companion.getInstance().getCallbackMessage().invoke(response);
-                else USSDController.Companion.getInstance().callbackInvoke.responseInvoke(response);
+                if (ussd.getSendType())
+                    ussd.getCallbackMessage().invoke(response);
+                else ussd.callbackInvoke.responseInvoke(response);
             }
         }
 
@@ -101,13 +102,13 @@ public class USSDServiceKT extends AccessibilityService {
      * @param data  Any String
      */
     private static void setTextIntoField(AccessibilityEvent event, String data) {
-        USSDController ussdController = USSDController.Companion.getInstance();
+        USSDController ussd = USSDController.Companion.getInstance();
         Bundle arguments = new Bundle();
         arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
         for (AccessibilityNodeInfo leaf : getLeaves(event)) {
             if (leaf.getClassName().equals("android.widget.EditText")
                     && !leaf.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
-                ClipboardManager clipboardManager = ((ClipboardManager) ussdController.getContext()
+                ClipboardManager clipboardManager = ((ClipboardManager) ussd.getContext()
                         .getSystemService(Context.CLIPBOARD_SERVICE));
                 if (clipboardManager != null) {
                     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", data));

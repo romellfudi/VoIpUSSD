@@ -30,7 +30,7 @@ import java.util.*
  */
 class USSDController private constructor(var context: Context) : USSDInterface, USSDApi {
 
-    var map: HashMap<String, HashSet<String>>? = null
+    lateinit var map: HashMap<String, HashSet<String>>
 
     lateinit var callbackInvoke: CallbackInvoke
 
@@ -54,7 +54,7 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      */
     override fun callUSSDInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
                                 callbackInvoke: CallbackInvoke) {
-        this.sendType = false
+        sendType = false
         callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
     }
 
@@ -63,12 +63,12 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      * you had a overlay progress widget
      *
      * @param ussdPhoneNumber ussd number
-     * @param map             Map of Login and problem messages
+     * @param hashMap             Map of Login and problem messages
      * @param callbackInvoke  a callback object from return answer
      */
-    override fun callUSSDOverlayInvoke(ussdPhoneNumber: String, map: HashMap<String, HashSet<String>>,
+    override fun callUSSDOverlayInvoke(ussdPhoneNumber: String, hashMap: HashMap<String, HashSet<String>>,
                                        callbackInvoke: CallbackInvoke) {
-        this.sendType = false
+        sendType = false
         callUSSDOverlayInvoke(ussdPhoneNumber, 0, map, callbackInvoke)
     }
 
@@ -77,18 +77,18 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      *
      * @param ussdPhoneNumber ussd number
      * @param simSlot         simSlot number to use
-     * @param map             Map of Login and problem messages
+     * @param hashMap             Map of Login and problem messages
      * @param callbackInvoke  a callback object from return answer
      */
     @SuppressLint("MissingPermission")
     override fun callUSSDInvoke(ussdPhoneNumber: String, simSlot: Int,
-                                map: HashMap<String, HashSet<String>>, callback: CallbackInvoke) {
-        this.callbackInvoke = callback
-        this.map = map
+                                hashMap: HashMap<String, HashSet<String>>, callback: CallbackInvoke) {
+        callbackInvoke = callback
+        map = hashMap
         if (verifyAccesibilityAccess(context)) {
             dialUp(ussdPhoneNumber, simSlot)
         } else {
-            this.callbackInvoke.over("Check your accessibility")
+            callbackInvoke.over("Check your accessibility")
         }
     }
 
@@ -106,11 +106,9 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
                                        map: HashMap<String, HashSet<String>>, callback: CallbackInvoke) {
         this.callbackInvoke = callback
         this.map = map
-        if (verifyAccesibilityAccess(context) && verifyOverLay(context)) {
+        if (verifyAccesibilityAccess(context) && verifyOverLay(context))
             dialUp(ussdPhoneNumber, simSlot)
-        } else {
-            this.callbackInvoke.over("Check your accessibility | overlay permission")
-        }
+        else callbackInvoke.over("Check your accessibility | overlay permission")
     }
 
     /**
@@ -122,17 +120,13 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
      *
      */
     private fun dialUp(ussdPhoneNumber: String, simSlot: Int) {
-        var ussdPhoneNumber = ussdPhoneNumber
         when {
-            map == null || !map!!.containsKey(KEY_ERROR) || !map!!.containsKey(KEY_LOGIN)
-            -> this.callbackInvoke.over("Bad Mapping structure")
+            !map.containsKey(KEY_ERROR) || !map.containsKey(KEY_ERROR) -> this.callbackInvoke.over("Bad Mapping structure")
             ussdPhoneNumber.isEmpty() -> this.callbackInvoke.over("Bad ussd number")
             else -> {
-                Uri.encode("#")?.let { ussdPhoneNumber = ussdPhoneNumber.replace("#", it) }
-                Uri.parse("tel:$ussdPhoneNumber")?.let {
-                    isRunning = true
-                    this.context.startActivity(getActionCallIntent(it, simSlot))
-                }
+                val phone = ussdPhoneNumber.replace("#", Uri.encode("#"))
+                isRunning = true
+                this.context.startActivity(getActionCallIntent(Uri.parse("tel:$phone"), simSlot))
             }
         }
     }
@@ -150,17 +144,17 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
                 "com.android.phone.extra.slot", "slot", "simslot", "sim_slot", "subscription",
                 "Subscription", "phone", "com.android.phone.DialingMode", "simSlot", "slot_id",
                 "simId", "simnum", "phone_type", "slotId", "slotIdx")
-        val intent = Intent(Intent.ACTION_CALL, uri)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        intent.putExtra("com.android.phone.force.slot", true)
-        intent.putExtra("Cdma_Supp", true)
-        simSlotName.map { intent.putExtra(it, simSlot) }
-        (context.getSystemService(Context.TELECOM_SERVICE) as? TelecomManager)
-                ?.callCapablePhoneAccounts?.let {
-                    if (it.size > simSlot)
-                        intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", it[simSlot])
-                }
-        return intent
+        val telcomManager = (context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager)
+        return Intent(Intent.ACTION_CALL, uri).apply {
+            simSlotName.map { sim -> putExtra(sim, simSlot) }
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            putExtra("com.android.phone.force.slot", true)
+            putExtra("Cdma_Supp", true)
+            telcomManager.callCapablePhoneAccounts?.let { handles ->
+                if (handles.size > simSlot)
+                    putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", handles[simSlot])
+            }
+        }
     }
 
     override fun sendData(text: String) = USSDServiceKT.send(text)
@@ -197,64 +191,46 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
         fun getInstance(context: Context): USSDApi =
                 instance ?: USSDController(context).also { instance = it }
 
-        fun verifyAccesibilityAccess(context: Context): Boolean {
-            val isEnabled = isAccessiblityServicesEnable(context)
-            if (!isEnabled) {
-                if (context is Activity) {
-                    openSettingsAccessibility(context)
-                }
+        fun verifyAccesibilityAccess(context: Context): Boolean =
+            isAccessibilityServicesEnable(context).also{
+            if (!it) openSettingsAccessibility(context as Activity)
+        }
+
+        fun verifyOverLay(context: Context): Boolean
+            = (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+                || Settings.canDrawOverlays(context)).also {
+                if (!it) openSettingsOverlay(context as Activity)
             }
-            return isEnabled
-        }
 
-        fun verifyOverLay(context: Context): Boolean {
-            val notGrant = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                    && !Settings.canDrawOverlays(context)
-            return if (notGrant) {
-                if (context is Activity)
-                    openSettingsOverlay(context)
-                false
-            } else
-                true
-        }
-
-        private fun openSettingsAccessibility(activity: Activity) {
-            val name = getNameApp(activity)
-            with(AlertDialog.Builder(activity)) {
-                setTitle("USSD Accessibility permission")
-                setMessage("You must enable accessibility permissions for the app '$name'")
-                setCancelable(true)
-                setNeutralButton("ok") { _, _ ->
-                    activity.startActivityForResult(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1)
+        private fun openSettingsAccessibility(activity: Activity) =
+                with(AlertDialog.Builder(activity)) {
+                    setTitle("USSD Accessibility permission")
+                    setMessage("You must enable accessibility permissions for the app %s".format(getNameApp(activity)))
+                    setCancelable(true)
+                    setNeutralButton("ok") { _, _ ->
+                        activity.startActivityForResult(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS), 1)
+                    }
+                    create().show()
                 }
-                create()?.show()
-            }
-        }
 
-        private fun openSettingsOverlay(activity: Activity) {
-            val name = getNameApp(activity)
+        private fun openSettingsOverlay(activity: Activity) =
             with(AlertDialog.Builder(activity)) {
                 setTitle("USSD Overlay permission")
-                setMessage("You must allow for the app to appear '$name' on top of other apps.")
+                setMessage("You must allow for the app to appear '${getNameApp(activity)}' on top of other apps.")
                 setCancelable(true)
                 setNeutralButton("ok") { _, _ ->
-                    activity.apply {
-                        startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                Uri.parse("package:$packageName")))
-                    }
+                    activity.startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:${activity.packageName}")))
                 }
-                create()?.show()
+                create().show()
             }
+
+        private fun getNameApp(activity: Activity): String = when (activity.applicationInfo.labelRes) {
+            0 -> activity.applicationInfo.nonLocalizedLabel.toString()
+            else -> activity.getString(activity.applicationInfo.labelRes)
         }
 
-        private fun getNameApp(activity: Activity): String = with(activity.applicationInfo) {
-            return if (labelRes == 0)
-                nonLocalizedLabel.toString()
-            else
-                activity.getString(labelRes)
-        }
-
-        private fun isAccessiblityServicesEnable(context: Context): Boolean {
+        private fun isAccessibilityServicesEnable(context: Context): Boolean {
             (context.getSystemService(Context.ACCESSIBILITY_SERVICE) as? AccessibilityManager)?.let {
                 it.installedAccessibilityServiceList.forEach { service ->
                     if (service.id.contains(context.packageName))
@@ -264,31 +240,17 @@ class USSDController private constructor(var context: Context) : USSDInterface, 
             return false
         }
 
-        private fun isAccessibilitySettingsOn(context: Context, service: String): Boolean {
-            var accessibilityEnabled = 0
-            try {
-                accessibilityEnabled = Settings.Secure.getInt(
-                        context.applicationContext.contentResolver,
-                        Settings.Secure.ACCESSIBILITY_ENABLED)
-            } catch (e: Settings.SettingNotFoundException) {
-                return false
-            }
-            if (accessibilityEnabled == 1) {
-                val settingValue = Settings.Secure.getString(
-                        context.applicationContext.contentResolver,
-                        Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
-                settingValue?.let {
-                    val splitter = TextUtils.SimpleStringSplitter(':')
-                    splitter.setString(settingValue)
-                    while (splitter.hasNext()) {
-                        val accessabilityService = splitter.next()
-                        if (accessabilityService == service) {
-                            return true
+        private fun isAccessibilitySettingsOn(context: Context, service: String): Boolean =
+                if (Settings.Secure.getInt(context.applicationContext.contentResolver,
+                                Settings.Secure.ACCESSIBILITY_ENABLED) == 1) {
+                    Settings.Secure.getString(context.applicationContext.contentResolver,
+                            Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)?.let {
+                        TextUtils.SimpleStringSplitter(':').apply {
+                            setString(it)
+                            while (hasNext()) if (next() == service) return true
                         }
                     }
-                }
-            }
-            return false
-        }
+                    false
+                } else false
     }
 }

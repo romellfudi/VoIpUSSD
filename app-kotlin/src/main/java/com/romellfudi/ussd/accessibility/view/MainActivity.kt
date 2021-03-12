@@ -63,9 +63,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         setSupportActionBar(toolbar)
-        supportActionBar?.let {
-            title = getString(R.string.app_name)
-        }
+        supportActionBar?.title = getString(R.string.app_name)
         with(supportFragmentManager.beginTransaction()) {
             replace(R.id.fragment_layout, MainFragmentView())
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
