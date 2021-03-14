@@ -6,6 +6,7 @@
 
 package com.romellfudi.ussd.main.view
 
+import com.romellfudi.ussd.main.statehood.UssdState
 import com.romellfudi.ussdlibrary.USSDApi
 
 /**
@@ -19,7 +20,8 @@ interface MainFragmentMVPView {
     val hasAllowOverlay: Boolean
     fun showOverlay()
     fun showSplashOverlay()
-    fun showResult(result:String)
+    fun showResult(result: String)
+    fun observeUssdState(result: UssdState)
     fun dismissOverlay()
     fun dialUp()
 }

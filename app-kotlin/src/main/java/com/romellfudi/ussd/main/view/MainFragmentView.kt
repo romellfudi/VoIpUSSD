@@ -21,6 +21,7 @@ import com.romellfudi.ussd.databinding.ContentOp1Binding
 import com.romellfudi.ussd.main.entity.CallViewModel
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
+import com.romellfudi.ussd.main.statehood.UssdState
 import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.SplashLoadingService
 import com.romellfudi.ussdlibrary.USSDApi
@@ -113,6 +114,15 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         activity?.stopService(overlay)
         overlay = null
         Log.d("APP", "STOP OVERLAY DIALOG")
+    }
+
+    override fun observeUssdState(result: UssdState) {
+        Log.d("APP", "UssdState onGoing: $result")
+        when(result){
+            is UssdState.Successful -> 0
+            is UssdState.Error -> result.errorMessage
+            is UssdState.Progress -> result.progress
+        }
     }
 
     override fun onPause() {
