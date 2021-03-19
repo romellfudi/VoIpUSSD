@@ -17,7 +17,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.romellfudi.ussd.R
-import com.romellfudi.ussd.databinding.ContentOp1Binding
+import com.romellfudi.ussd.databinding.CallFragmentBinding
 import com.romellfudi.ussd.main.entity.CallViewModel
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
@@ -27,7 +27,7 @@ import com.romellfudi.ussdlibrary.SplashLoadingService
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.content_op1.*
+import kotlinx.android.synthetic.main.call_fragment.*
 import javax.inject.Inject
 
 /**
@@ -53,7 +53,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     @Inject
     override lateinit var ussdApi: USSDApi
 
-    private var binding: ContentOp1Binding? = null
+    private var binding: CallFragmentBinding? = null
 
     @Inject
     lateinit var mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
@@ -65,7 +65,11 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = ContentOp1Binding.inflate(inflater, container, false)
+        binding = CallFragmentBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = callViewModel
+            mainFragment = this@MainFragmentView
+        }
         return binding?.root
     }
 
@@ -73,11 +77,6 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
-        binding?.apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewModel = callViewModel
-            mainFragment = this@MainFragmentView
-        }
     }
 
     override fun dialUp() {

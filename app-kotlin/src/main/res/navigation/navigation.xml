@@ -15,7 +15,7 @@
         android:id="@+id/mainFragment"
         android:name="com.romellfudi.ussd.main.view.MainFragmentView"
         android:label="@string/app_tittle"
-        tools:layout="@layout/content_op1">
+        tools:layout="@layout/call_fragment">
         <!--        <action-->
         <!--            android:id="@+id/action_titleFragment_to_gameFragment"-->
         <!--            app:destination="@id/gameFragment" />-->
