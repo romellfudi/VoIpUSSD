@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021. BoostTag E.I.R.L. Romell D.Z.
+  ~ All rights reserved
+  ~ portfolio.romellfudi.com
+  -->
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.romellfudi.ussd.main.view.MainFragmentView"
+        android:label="@string/app_tittle"
+        tools:layout="@layout/content_op1">
+        <!--        <action-->
+        <!--            android:id="@+id/action_titleFragment_to_gameFragment"-->
+        <!--            app:destination="@id/gameFragment" />-->
+    </fragment>
+
+</navigation>

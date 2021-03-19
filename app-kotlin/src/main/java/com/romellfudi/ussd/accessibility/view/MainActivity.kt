@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
@@ -23,13 +22,11 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.rbddevs.splashy.Splashy
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
-import com.romellfudi.ussd.main.view.MainFragmentView
 import com.romellfudi.ussdlibrary.BuildConfig
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
-import kotlinx.android.synthetic.main.app_bar_main_menu.*
 import java.util.*
 import javax.inject.Inject
 
@@ -58,18 +55,10 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     lateinit var appUpdateManager: AppUpdateManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        if (savedInstanceState == null) splashy()
+        splashy()
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
-        setSupportActionBar(toolbar)
-        supportActionBar?.title = getString(R.string.app_name)
-        with(supportFragmentManager.beginTransaction()) {
-            replace(R.id.fragment_layout, MainFragmentView())
-            setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-            addToBackStack(null)
-            commit()
-        }
         permissionService.request(callback)
     }
 
@@ -85,7 +74,7 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
                 .setBackgroundResource(R.color.splash)
                 .setClickToHide(false)
                 .setFullScreen(true)
-                .setTime(1000)
+                .setTime(1500)
                 .showProgress(true)
                 .show()
         Splashy.onComplete(object : Splashy.OnComplete {

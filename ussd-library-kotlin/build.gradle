@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'androidx.navigation.safeargs'
 
 ext {
     bintrayRepo = 'maven'
@@ -61,6 +62,9 @@ dependencies {
     testImplementation 'org.powermock:powermock-api-mockito:1.6.2'
     testImplementation 'io.mockk:mockk:1.9.3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
 }
 
 apply from: 'https://raw.githubusercontent.com/romellfudi/assets/bintray/artifactory_bintray.gradle'
