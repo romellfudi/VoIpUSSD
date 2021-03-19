@@ -6,7 +6,6 @@
 
 package com.romellfudi.ussd.main.view
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -73,7 +72,6 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         return binding?.root
     }
 
-    @SuppressLint("FragmentLiveDataObserve")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setHasOptionsMenu(false)
@@ -97,7 +95,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         Log.d("APP", "START OVERLAY DIALOG")
         overlay = Intent(activity, OverlayShowingService::class.java).apply {
             putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
-        }.also { activity?.startService(it)  }
+        }.also { activity?.startService(it) }
     }
 
     override fun showSplashOverlay() {
@@ -117,7 +115,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun observeUssdState(result: UssdState) {
         Log.d("APP", "UssdState onGoing: $result")
-        when(result){
+        when (result) {
             is UssdState.Successful -> 0
             is UssdState.Error -> result.errorMessage
             is UssdState.Progress -> result.progress

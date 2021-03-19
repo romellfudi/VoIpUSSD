@@ -45,39 +45,44 @@ class OverlayShowingService : Service() {
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         if (intent.hasExtra(EXTRA))
             tittle = intent.getStringExtra(EXTRA)
-        wm = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        wm = getSystemService(Context.WINDOW_SERVICE) as? WindowManager
         val size = Point()
-        wm!!.defaultDisplay.getSize(size)
-        val flagLayout: Int = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        } else {
-            WindowManager.LayoutParams.TYPE_PHONE
+        wm?.defaultDisplay?.getSize(size)
+        val flagLayout: Int = when {
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> {
+                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
+            }
+            else -> WindowManager.LayoutParams.TYPE_PHONE
         }
-        overlayedButton = Button(this)
-        overlayedButton!!.text = tittle
-        overlayedButton!!.alpha = 0.7f
-        overlayedButton!!.setBackgroundColor(-0x1)
-        overlayedButton!!.setTextSize(TypedValue.COMPLEX_UNIT_SP, 26f)
-        var operation = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
-        val params = WindowManager.LayoutParams(WindowManager.LayoutParams.MATCH_PARENT, size.y - 200,
-                flagLayout, operation, PixelFormat.TRANSLUCENT)
-        params.gravity = Gravity.CENTER or Gravity.CENTER
-        wm!!.addView(overlayedButton, params)
+        overlayedButton = Button(this).apply {
+            text = tittle
+            alpha = 0.7f
+            setBackgroundColor(-0x1)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 26f)
+        }
+        val params = WindowManager.LayoutParams(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                size.y - 200,
+                flagLayout,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
+                PixelFormat.TRANSLUCENT)
+                .apply { gravity = Gravity.CENTER or Gravity.CENTER }
+        wm?.addView(overlayedButton, params)
         return START_STICKY
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         Handler().postDelayed({
             overlayedButton?.let {
-                wm!!.removeView(overlayedButton)
+                wm?.removeView(overlayedButton)
                 overlayedButton = null
             }
+            super.onDestroy()
         }, 500)
     }
 
     companion object {
-        val EXTRA = "TITTLE"
+        const val EXTRA = "TITTLE"
     }
 
 }
