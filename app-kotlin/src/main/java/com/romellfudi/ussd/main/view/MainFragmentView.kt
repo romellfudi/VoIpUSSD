@@ -124,10 +124,4 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
             is UssdState.Progress -> result.progress
         }
     }
-
-    override fun onPause() {
-        // EditText
-        callViewModel.number.postValue(ussdNumber)
-        super.onPause()
-    }
 }
