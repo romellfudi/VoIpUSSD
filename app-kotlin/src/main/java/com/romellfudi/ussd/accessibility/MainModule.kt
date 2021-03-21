@@ -7,15 +7,19 @@
 package com.romellfudi.ussd.accessibility
 
 import android.content.Context
+import android.widget.ImageView
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
+import com.rbddevs.splashy.Splashy
 import com.romellfudi.permission.PermissionService
+import com.romellfudi.ussd.R
 import com.romellfudi.ussd.accessibility.interactor.MainInteractor
 import com.romellfudi.ussd.accessibility.interactor.MainMVPInteractor
 import com.romellfudi.ussd.accessibility.presenter.MainMVPPresenter
 import com.romellfudi.ussd.accessibility.presenter.MainPresenter
 import com.romellfudi.ussd.accessibility.view.MainActivity
 import com.romellfudi.ussd.accessibility.view.MainMVPView
+import com.romellfudi.ussdlibrary.BuildConfig
 import dagger.Module
 import dagger.Provides
 
@@ -41,5 +45,20 @@ class MainModule {
     @Provides
     internal fun provideMainPresenter(mainPresenter: MainPresenter<MainMVPView, MainMVPInteractor>)
             : MainMVPPresenter<MainMVPView, MainMVPInteractor> = mainPresenter
+
+    @Provides
+    internal fun provideSplashy(mainActivity: MainActivity): Splashy = Splashy(mainActivity)
+            .setLogo(R.drawable.combine)
+            .setLogoScaleType(ImageView.ScaleType.FIT_CENTER)
+            .setAnimation(Splashy.Animation.GROW_LOGO_FROM_CENTER, 500)
+            .setTitle(R.string.app_tittle)
+            .setTitleColor(R.color.black)
+            .setSubTitle("Version  " + BuildConfig.VERSION_NAME)
+            .setProgressColor(R.color.black)
+            .setBackgroundResource(R.color.splash)
+            .setClickToHide(false)
+            .setFullScreen(true)
+            .setTime(1500)
+            .showProgress(true)
 
 }

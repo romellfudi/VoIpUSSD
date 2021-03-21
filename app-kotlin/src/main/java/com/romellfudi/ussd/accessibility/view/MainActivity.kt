@@ -9,7 +9,6 @@ package com.romellfudi.ussd.accessibility.view
 import android.content.IntentSender.SendIntentException
 import android.os.Bundle
 import android.os.Handler
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateInfo
@@ -22,7 +21,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.rbddevs.splashy.Splashy
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
-import com.romellfudi.ussdlibrary.BuildConfig
+import com.romellfudi.ussd.accessibility.complete
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -54,34 +53,15 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     @Inject
     lateinit var appUpdateManager: AppUpdateManager
 
+    @Inject
+    lateinit var splashy: Splashy
+
     override fun onCreate(savedInstanceState: Bundle?) {
-        splashy()
         AndroidInjection.inject(this)
+        splashy.complete(this::checkUpdate)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         permissionService.request(callback)
-    }
-
-    private fun splashy() {
-        Splashy(this@MainActivity)
-                .setLogo(R.drawable.combine)
-                .setLogoScaleType(ImageView.ScaleType.FIT_CENTER)
-                .setAnimation(Splashy.Animation.GROW_LOGO_FROM_CENTER, 500)
-                .setTitle(R.string.app_tittle)
-                .setTitleColor(R.color.black)
-                .setSubTitle("Version  " + BuildConfig.VERSION_NAME)
-                .setProgressColor(R.color.black)
-                .setBackgroundResource(R.color.splash)
-                .setClickToHide(false)
-                .setFullScreen(true)
-                .setTime(1500)
-                .showProgress(true)
-                .show()
-        Splashy.onComplete(object : Splashy.OnComplete {
-            override fun onComplete() {
-                checkUpdate()
-            }
-        })
     }
 
     override fun onStateUpdate(state: InstallState?) {
@@ -97,23 +77,19 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
                     " isUpdateTypeAllowed: " + appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE))
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
-                requestUpdate(appUpdateInfo)
+                try {
+                    appUpdateManager.startUpdateFlowForResult(
+                            appUpdateInfo, AppUpdateType.IMMEDIATE,
+                            this@MainActivity, REQUEST_CODE_FLEXIBLE_UPDATE)
+                } catch (e: SendIntentException) {
+                    showMessage("Request update error")
+                }
             }
         }
     }
 
     override fun showMessage(message: String) =
             Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
-
-    private fun requestUpdate(appUpdateInfo: AppUpdateInfo) {
-        try {
-            appUpdateManager.startUpdateFlowForResult(
-                    appUpdateInfo, AppUpdateType.IMMEDIATE,
-                    this@MainActivity, REQUEST_CODE_FLEXIBLE_UPDATE)
-        } catch (e: SendIntentException) {
-            showMessage("Request update error")
-        }
-    }
 
     override fun notifyUser() =
             Snackbar.make(findViewById(android.R.id.content), "Restart to update", Snackbar.LENGTH_INDEFINITE)
@@ -141,11 +117,9 @@ class MainActivity : AppCompatActivity(), HasAndroidInjector,
     private val callback = object : PermissionService.Callback() {
         override fun onResponse(refusePermissions: ArrayList<String>?) {
             // EXCEPTIONAL EVENT
-            if (refusePermissions!!.contains("android.permission.SYSTEM_ALERT_WINDOW"))
-                refusePermissions.remove("android.permission.SYSTEM_ALERT_WINDOW")
+            refusePermissions?.remove("android.permission.SYSTEM_ALERT_WINDOW")
             // EXCEPTIONAL EVENT
-            if (refusePermissions.contains("android.permission.ACTION_MANAGE_OVERLAY_PERMISSION"))
-                refusePermissions.remove("android.permission.ACTION_MANAGE_OVERLAY_PERMISSION")
+            refusePermissions?.remove("android.permission.ACTION_MANAGE_OVERLAY_PERMISSION")
             if (!refusePermissions.isNullOrEmpty()) {
                 showMessage(getString(R.string.refuse_permissions))
                 Handler().postDelayed({ finish() }, 2000)

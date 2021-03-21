@@ -37,7 +37,7 @@ import javax.inject.Inject
  * @since 1.0.a
  */
 
-class MainFragmentView : Fragment(), MainFragmentMVPView {
+class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMVPView {
 
     private val callViewModel: CallViewModel by activityViewModels()
 
@@ -45,14 +45,10 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
         get() = phone?.text.toString().trim { it <= ' ' }
 
     override val hasAllowOverlay: Boolean
-        get() = activity.let { USSDController.verifyOverLay(it as Context) }
-
-    private var overlay: Intent? = null
+        get() = USSDController.verifyOverLay(activity as Context)
 
     @Inject
     override lateinit var ussdApi: USSDApi
-
-    private var binding: CallFragmentBinding? = null
 
     @Inject
     lateinit var mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
@@ -64,17 +60,12 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = CallFragmentBinding.inflate(inflater, container, false).apply {
+        val binding = CallFragmentBinding.inflate(inflater, container, false).apply {
             lifecycleOwner = viewLifecycleOwner
             viewModel = callViewModel
             mainFragment = this@MainFragmentView
         }
-        return binding?.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setHasOptionsMenu(false)
+        return binding.root
     }
 
     override fun dialUp() {
@@ -115,10 +106,11 @@ class MainFragmentView : Fragment(), MainFragmentMVPView {
 
     override fun observeUssdState(result: UssdState) {
         Log.d("APP", "UssdState onGoing: $result")
-        when (result) {
+        val log = when (result) {
             is UssdState.Successful -> 0
             is UssdState.Error -> result.errorMessage
             is UssdState.Progress -> result.progress
         }
+        Log.d("APP", "UssdState log string: $log")
     }
 }
