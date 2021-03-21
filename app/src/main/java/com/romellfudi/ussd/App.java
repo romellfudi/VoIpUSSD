@@ -12,6 +12,8 @@ import com.romellfudi.ussd.di.component.AppComponent;
 import com.romellfudi.ussd.di.component.DaggerAppComponent;
 import com.romellfudi.ussd.di.module.USSDModule;
 
+import timber.log.Timber;
+
 /**
  * @version 1.0
  * @autor Romell Domínguez
@@ -24,6 +26,7 @@ public class App extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Timber.plant(new Timber.DebugTree());
         appComponent = DaggerAppComponent.builder()
 //                .applicationModule(new ApplicationModule(this))
                 .uSSDModule(new USSDModule(this))

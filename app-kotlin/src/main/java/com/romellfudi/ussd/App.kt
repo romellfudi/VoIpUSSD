@@ -10,6 +10,7 @@ import android.app.Application
 import com.romellfudi.ussd.di.component.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -25,6 +26,7 @@ class App : Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
+        Timber.plant(Timber.DebugTree())
         DaggerAppComponent.factory()
                 .create(this)
                 .inject(this)

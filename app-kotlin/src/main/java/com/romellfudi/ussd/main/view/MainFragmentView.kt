@@ -9,7 +9,6 @@ package com.romellfudi.ussd.main.view
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +26,7 @@ import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.call_fragment.*
+import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -83,14 +83,14 @@ class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMV
     }
 
     override fun showOverlay() {
-        Log.d("APP", "START OVERLAY DIALOG")
+        Timber.i("START OVERLAY DIALOG")
         overlay = Intent(activity, OverlayShowingService::class.java).apply {
             putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
         }.also { activity?.startService(it) }
     }
 
     override fun showSplashOverlay() {
-        Log.d("APP", "START OVERLAY DIALOG")
+        Timber.i("START OVERLAY DIALOG")
         overlay = Intent(activity, SplashLoadingService::class.java)
                 .also { activity?.startService(it) }
     }
@@ -101,16 +101,16 @@ class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMV
     override fun dismissOverlay() {
         activity?.stopService(overlay)
         overlay = null
-        Log.d("APP", "STOP OVERLAY DIALOG")
+        Timber.i("STOP OVERLAY DIALOG")
     }
 
     override fun observeUssdState(result: UssdState) {
-        Log.d("APP", "UssdState onGoing: $result")
+        Timber.i("UssdState onGoing: $result")
         val log = when (result) {
             is UssdState.Successful -> 0
             is UssdState.Error -> result.errorMessage
             is UssdState.Progress -> result.progress
         }
-        Log.d("APP", "UssdState log string: $log")
+        Timber.i("UssdState log string: $log")
     }
 }

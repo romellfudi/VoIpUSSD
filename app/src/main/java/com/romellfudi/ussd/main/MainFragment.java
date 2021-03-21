@@ -8,7 +8,6 @@ package com.romellfudi.ussd.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +34,8 @@ import java.util.HashSet;
 import java.util.Objects;
 
 import javax.inject.Inject;
+
+import timber.log.Timber;
 
 /**
  * Use Case for Test Windows
@@ -79,25 +80,25 @@ public class MainFragment extends Fragment {
                 ussdApi.callUSSDInvoke(phone, map, new USSDController.CallbackInvoke() {
                     @Override
                     public void responseInvoke(String message) {
-                        Log.d("APP", message);
+                        Timber.d(message);
                         binding.result.append("\n-\n" + message);
                         // first option list - select option 1
                         ussdApi.send("1", new USSDController.CallbackMessage() {
                             @Override
                             public void responseMessage(String message) {
-                                Log.d("APP", message);
+                                Timber.i(message);
                                 binding.result.append("\n-\n" + message);
                                 // second option list - select option 2
                                 ussdApi.send("2", new USSDController.CallbackMessage() {
                                     @Override
                                     public void responseMessage(String message) {
-                                        Log.d("APP", message);
+                                        Timber.i(message);
                                         binding.result.append("\n-\n" + message);
                                         // second option list - select option 1
                                         ussdApi.send("1", new USSDController.CallbackMessage() {
                                             @Override
                                             public void responseMessage(String message) {
-                                                Log.d("APP", message);
+                                                Timber.i(message);
                                                 binding.result.append("\n-\n" + message);
                                             }
                                         });
@@ -110,7 +111,7 @@ public class MainFragment extends Fragment {
 
                     @Override
                     public void over(String message) {
-                        Log.d("APP", message);
+                        Timber.i(message);
                         binding.result.append("\n-\n" + message);
 //                        mViewModel.setResult(dao);
 //                        mViewModel.update();
@@ -126,36 +127,36 @@ public class MainFragment extends Fragment {
                     final Intent svc = new Intent(getActivity(), OverlayShowingService.class);
                     svc.putExtra(OverlayShowingService.EXTRA, "PROCESANDO");
                     getActivity().startService(svc);
-                    Log.d("APP", "START OVERLAY DIALOG");
+                    Timber.i("START OVERLAY DIALOG");
                     String phoneNumber = binding.phone.getText().toString().trim();
                     ussdApi = USSDController.getInstance(getActivity());
                     binding.result.setText("");
                     ussdApi.callUSSDOverlayInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                         @Override
                         public void responseInvoke(String message) {
-                            Log.d("APP", message);
+                            Timber.i(message);
                             binding.result.append("\n-\n" + message);
                             // first option list - select option 1
                             ussdApi.send("1", new USSDController.CallbackMessage() {
                                 @Override
                                 public void responseMessage(String message) {
-                                    Log.d("APP", message);
+                                    Timber.i(message);
                                     binding.result.append("\n-\n" + message);
                                     // second option list - select option 2
                                     ussdApi.send("2", new USSDController.CallbackMessage() {
                                         @Override
                                         public void responseMessage(String message) {
-                                            Log.d("APP", message);
+                                            Timber.i(message);
                                             binding.result.append("\n-\n" + message);
                                             // second option list - select option 1
                                             ussdApi.send("1", new USSDController.CallbackMessage() {
                                                 @Override
                                                 public void responseMessage(String message) {
-                                                    Log.d("APP", message);
+                                                    Timber.i(message);
                                                     binding.result.append("\n-\n" + message);
                                                     getActivity().stopService(svc);
-                                                    Log.d("APP", "STOP OVERLAY DIALOG");
-                                                    Log.d("APP", "successful");
+                                                    Timber.i("STOP OVERLAY DIALOG");
+                                                    Timber.i("successful");
                                                 }
                                             });
                                         }
@@ -167,10 +168,10 @@ public class MainFragment extends Fragment {
 
                         @Override
                         public void over(String message) {
-                            Log.d("APP", message);
+                            Timber.i(message);
                             binding.result.append("\n-\n" + message);
                             getActivity().stopService(svc);
-                            Log.d("APP", "STOP OVERLAY DIALOG");
+                            Timber.i("STOP OVERLAY DIALOG");
                         }
                     });
                 }
@@ -183,35 +184,35 @@ public class MainFragment extends Fragment {
                 if (USSDController.verifyOverLay(getActivity())) {
                     final Intent svc = new Intent(getActivity(), SplashLoadingService.class);
                     getActivity().startService(svc);
-                    Log.d("APP", "START SPLASH DIALOG");
+                    Timber.i("START SPLASH DIALOG");
                     String phoneNumber = binding.phone.getText().toString().trim();
                     binding.result.setText("");
                     ussdApi.callUSSDOverlayInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
                         @Override
                         public void responseInvoke(String message) {
-                            Log.d("APP", message);
+                            Timber.i(message);
                             binding.result.append("\n-\n" + message);
                             // first option list - select option 1
                             ussdApi.send("1", new USSDController.CallbackMessage() {
                                 @Override
                                 public void responseMessage(String message) {
-                                    Log.d("APP", message);
+                                    Timber.i(message);
                                     binding.result.append("\n-\n" + message);
                                     // second option list - select option 2
                                     ussdApi.send("2", new USSDController.CallbackMessage() {
                                         @Override
                                         public void responseMessage(String message) {
-                                            Log.d("APP", message);
+                                            Timber.i(message);
                                             binding.result.append("\n-\n" + message);
                                             // second option list - select option 1
                                             ussdApi.send("1", new USSDController.CallbackMessage() {
                                                 @Override
                                                 public void responseMessage(String message) {
-                                                    Log.d("APP", message);
+                                                    Timber.i(message);
                                                     binding.result.append("\n-\n" + message);
                                                     getActivity().stopService(svc);
-                                                    Log.d("APP", "STOP OVERLAY DIALOG");
-                                                    Log.d("APP", "successful");
+                                                    Timber.i("STOP OVERLAY DIALOG");
+                                                    Timber.i("successful");
                                                 }
                                             });
                                         }
@@ -223,10 +224,10 @@ public class MainFragment extends Fragment {
 
                         @Override
                         public void over(String message) {
-                            Log.d("APP", message);
+                            Timber.i(message);
                             binding.result.append("\n-\n" + message);
                             getActivity().stopService(svc);
-                            Log.d("APP", "STOP OVERLAY DIALOG");
+                            Timber.i("STOP OVERLAY DIALOG");
                         }
                     });
                 }
