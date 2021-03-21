@@ -14,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.databinding.CallFragmentBinding
 import com.romellfudi.ussd.main.entity.CallViewModel
@@ -26,6 +27,7 @@ import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.call_fragment.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -69,14 +71,16 @@ class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMV
     }
 
     override fun dialUp() {
-        if (callViewModel.hasNoFlavorSet())
-            callViewModel.setDialUpType(getString(R.string.normal))
-        activity?.let {
-            if (USSDController.verifyAccesibilityAccess(it)) {
-                when (callViewModel.dialUpType.value) {
-                    getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay(it)
-                    getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay(it)
-                    else -> mainFragmentMVPPresenter.call(it)
+        viewLifecycleOwner.lifecycleScope.launch {
+            if (callViewModel.hasNoFlavorSet())
+                callViewModel.setDialUpType(getString(R.string.normal))
+            activity?.let {
+                if (USSDController.verifyAccesibilityAccess(it)) {
+                    when (callViewModel.dialUpType.value) {
+                        getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay(it)
+                        getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay(it)
+                        else -> mainFragmentMVPPresenter.call(it)
+                    }
                 }
             }
         }
