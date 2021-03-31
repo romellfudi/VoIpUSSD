@@ -37,7 +37,7 @@
 [![](https://raw.githubusercontent.com/romellfudi/assets/master/favicon.ico)](https://www.romellfudi.com/)
 
 ## Target Development [High Quality](https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif):
-<p align="center"> <a href="https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif"><img src="/snapshot/device_recored.gif" alt="Jitpack"></a> </p>
+<p align="center"> <a href="https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif"><img src="https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif" alt="Jitpack"></a> </p>
 
 Interactive with ussd windoows, It is necessary to have present that the interface depends on the SO and on the manufacturer of Android device.
 
