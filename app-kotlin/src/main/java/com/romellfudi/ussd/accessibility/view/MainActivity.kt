@@ -22,13 +22,10 @@ import com.rbddevs.splashy.Splashy
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.accessibility.complete
-import dagger.android.AndroidInjection
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 import java.util.*
-import javax.inject.Inject
-
 
 /**
  * Main Activity
@@ -39,33 +36,24 @@ import javax.inject.Inject
  */
 const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
 
-class MainActivity : AppCompatActivity(), HasAndroidInjector,
+internal class MainActivity : AppCompatActivity(), KoinComponent,
         InstallStateUpdatedListener, MainMVPView {
 
-    @Inject
-    lateinit var permissionService: PermissionService
+    private val permissionService: PermissionService by inject{ parametersOf(this)}
 
-    @Inject
-    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+    private val appUpdateManager: AppUpdateManager by inject()
 
-    override fun androidInjector(): AndroidInjector<Any> = androidInjector
-
-    @Inject
-    lateinit var appUpdateManager: AppUpdateManager
-
-    @Inject
-    lateinit var splashy: Splashy
+    private val splashy: Splashy by inject{ parametersOf(this)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this)
         splashy.complete(this::checkUpdate)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         permissionService.request(callback)
     }
 
-    override fun onStateUpdate(state: InstallState?) {
-        if (state?.installStatus() == InstallStatus.DOWNLOADED) {
+    override fun onStateUpdate(state: InstallState) {
+        if (state.installStatus() == InstallStatus.DOWNLOADED) {
             showMessage("Has been Downloaded!!!")
             notifyUser()
         }

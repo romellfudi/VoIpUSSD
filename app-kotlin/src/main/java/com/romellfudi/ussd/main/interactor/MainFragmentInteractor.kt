@@ -7,7 +7,6 @@
 package com.romellfudi.ussd.main.interactor
 
 import android.content.Context
-import javax.inject.Inject
 
 /**
  * @autor Romell Domínguez
@@ -15,6 +14,6 @@ import javax.inject.Inject
  * @version 1.0
  */
 
-class MainFragmentInteractor @Inject constructor(private val mContext: Context) : MainFragmentMVPInteractor {
+class MainFragmentInteractor constructor(private val mContext: Context) : MainFragmentMVPInteractor {
 
 }
