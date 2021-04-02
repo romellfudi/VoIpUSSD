@@ -11,7 +11,6 @@ import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.statehood.UssdState
 import com.romellfudi.ussd.main.view.MainFragmentMVPView
 import com.romellfudi.ussdlibrary.USSDController
-import javax.inject.Inject
 
 /**
  * @autor Romell Domínguez
@@ -23,7 +22,7 @@ val map = hashMapOf(
         "KEY_ERROR" to listOf("problema", "problem", "error", "null"))
 
 class MainFragmentPresenter<V : MainFragmentMVPView, I : MainFragmentMVPInteractor>
-@Inject internal constructor(var view: V, var interator: I) : MainFragmentMVPPresenter<V, I> {
+internal constructor(var view: V, var interator: I) : MainFragmentMVPPresenter<V, I> {
 
     override fun call(context: Context) {
         var result = ""

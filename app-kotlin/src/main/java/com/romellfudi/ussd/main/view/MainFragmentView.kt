@@ -6,14 +6,12 @@
 
 package com.romellfudi.ussd.main.view
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.databinding.CallFragmentBinding
@@ -25,50 +23,44 @@ import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.SplashLoadingService
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.call_fragment.*
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.koin.core.parameter.parametersOf
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * Use Case for Test Windows
  *
  * @author Romell Domínguez
- * @version 1.1.b 27/09/2018
- * @since 1.0.a
+ * @version 1.12.a 27/09/2018
+ * @since 1.12.a
  */
 
-class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMVPView {
+class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMVPView, KoinComponent {
 
-    private val callViewModel: CallViewModel by activityViewModels()
+    private val callViewModel: CallViewModel by viewModel()
 
     override val ussdNumber: String
         get() = phone?.text.toString().trim { it <= ' ' }
 
     override val hasAllowOverlay: Boolean
-        get() = USSDController.verifyOverLay(activity as Context)
+        get() = USSDController.verifyOverLay(requireContext())
 
-    @Inject
-    override lateinit var ussdApi: USSDApi
+    override val ussdApi: USSDApi by inject()
 
-    @Inject
-    lateinit var mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidSupportInjection.inject(this)
-        super.onCreate(savedInstanceState)
-    }
+    private val mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
+            by inject { parametersOf(this@MainFragmentView) }
 
     override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val binding = CallFragmentBinding.inflate(inflater, container, false).apply {
-            lifecycleOwner = viewLifecycleOwner
-            viewModel = callViewModel
-            mainFragment = this@MainFragmentView
-        }
-        return binding.root
-    }
+                              container: ViewGroup?, savedInstanceState: Bundle?): View? =
+            CallFragmentBinding.inflate(inflater, container, false).apply {
+                lifecycleOwner = viewLifecycleOwner
+                viewModel = callViewModel
+                mainFragment = this@MainFragmentView
+            }.run { root }
 
     override fun dialUp() {
         viewLifecycleOwner.lifecycleScope.launch {

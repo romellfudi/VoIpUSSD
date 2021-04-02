@@ -7,30 +7,30 @@
 package com.romellfudi.ussd
 
 import android.app.Application
-import com.romellfudi.ussd.di.component.DaggerAppComponent
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
+import com.romellfudi.ussd.accessibility.di.accessibilityModule
+import com.romellfudi.ussd.main.di.appModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 import timber.log.Timber
-import javax.inject.Inject
 
 /**
  * @autor Romell Domínguez
  * @date 2020-04-20
  * @version 1.0
  */
-class App : Application(), HasAndroidInjector {
-
-    @Inject
-    internal lateinit var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-
-
+class App : Application() {
     override fun onCreate() {
         super.onCreate()
-        Timber.plant(Timber.DebugTree())
-        DaggerAppComponent.factory()
-                .create(this)
-                .inject(this)
+        if (BuildConfig.DEBUG) {
+            Timber.plant(Timber.DebugTree())
+        }
+        startKoin {
+            printLogger()
+            androidContext(this@App)
+            modules(
+                    appModule,
+                    accessibilityModule
+            )
+        }
     }
-
-    override fun androidInjector() = activityDispatchingAndroidInjector
 }
