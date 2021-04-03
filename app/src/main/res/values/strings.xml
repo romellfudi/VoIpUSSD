@@ -14,5 +14,8 @@
     <string name="refuse_permissions">Please allow call permission</string>
     <string name="usss_input">Introduce # ussd</string>
     <string name="copyright">RomellFudi</string>
+    <string name="primissionsLogFormat">callback.handler::permissions:{0}:grantResults:{1}</string>
+    <string name="process">PROCESS... USSD message</string>
+    <string name="overlayDialog">START OVERLAY DIALOG</string>
 
 </resources>

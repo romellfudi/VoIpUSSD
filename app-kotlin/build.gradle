@@ -4,9 +4,22 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id 'com.google.gms.google-services'
 }
 
-android { 
+def keystorePropertiesFile = rootProject.file("app.properties")
+def attrs = new Properties()
+attrs.load(new FileInputStream(keystorePropertiesFile))
+
+android {
+    signingConfigs {
+        config {
+            keyAlias attrs['keyAlias']
+            keyPassword attrs['password']
+            storeFile file(attrs['storeFile'] == null ? "build.gradle" : attrs['storeFile'])
+            storePassword attrs['password']
+        }
+    }
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
@@ -16,6 +29,7 @@ android {
         versionCode 12
         versionName "1.12.a"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.config
     }
     buildFeatures {
         dataBinding true
@@ -26,7 +40,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "version"
     productFlavors {
+        demo {
+            dimension "version"
+            applicationIdSuffix ".demo"
+//            versionNameSuffix "-demo"
+        }
+        publish {
+            dimension "version"
+            versionNameSuffix "-publish"
+        }
+    }
+    android.variantFilter { variant ->
+        if ((variant.buildType.name == 'release'
+                && variant.getFlavors().get(0).name == 'demo')
+                || (variant.buildType.name == 'debug'
+                && variant.getFlavors().get(0).name == 'publish'))
+            variant.setIgnore(true)
     }
 
     compileOptions {
@@ -64,6 +95,8 @@ dependencies {
 
     implementation "io.reactivex.rxjava2:rxjava:2.0.6"
     implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
+
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
 }
 repositories {
     mavenCentral()

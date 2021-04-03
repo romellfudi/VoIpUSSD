@@ -8,6 +8,7 @@ package com.romellfudi.ussd.main.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,6 +84,7 @@ class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMV
         overlay = Intent(activity, OverlayShowingService::class.java).apply {
             putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
         }.also { activity?.startService(it) }
+        Handler().postDelayed(::dismissOverlay,12000)
     }
 
     override fun showSplashOverlay() {
@@ -95,7 +97,7 @@ class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMV
             callViewModel.result.postValue(result)
 
     override fun dismissOverlay() {
-        activity?.stopService(overlay)
+        overlay?.let { activity?.stopService(it) }
         overlay = null
         Timber.i("STOP OVERLAY DIALOG")
     }

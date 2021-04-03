@@ -8,6 +8,7 @@ package com.romellfudi.ussd.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.romellfudi.ussdlibrary.SplashLoadingService;
 import com.romellfudi.ussdlibrary.USSDApi;
 import com.romellfudi.ussdlibrary.USSDController;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -53,6 +55,7 @@ public class MainFragment extends Fragment {
     HashMap<String, HashSet<String>> map;
 
     DaoViewModel mViewModel;
+    ContentOp1Binding binding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,184 +67,116 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        final ContentOp1Binding binding = DataBindingUtil.inflate(inflater, R.layout.content_op1, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.content_op1, container, false);
         Objects.requireNonNull(getActivity());
         binding.setViewModel(mViewModel);
         binding.setLifecycleOwner(getActivity());
         setHasOptionsMenu(false);
 
-        binding.btn1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String phone = binding.phone.getText().toString().trim();
-                binding.phone.setText(phone);
-                binding.result.setText("");
-                ussdApi = USSDController.getInstance(getActivity());
-                ussdApi.callUSSDInvoke(phone, map, new USSDController.CallbackInvoke() {
-                    @Override
-                    public void responseInvoke(String message) {
-                        Timber.d(message);
-                        binding.result.append("\n-\n" + message);
-                        // first option list - select option 1
-                        ussdApi.send("1", new USSDController.CallbackMessage() {
-                            @Override
-                            public void responseMessage(String message) {
-                                Timber.i(message);
-                                binding.result.append("\n-\n" + message);
-                                // second option list - select option 2
-                                ussdApi.send("2", new USSDController.CallbackMessage() {
-                                    @Override
-                                    public void responseMessage(String message) {
-                                        Timber.i(message);
-                                        binding.result.append("\n-\n" + message);
-                                        // second option list - select option 1
-                                        ussdApi.send("1", new USSDController.CallbackMessage() {
-                                            @Override
-                                            public void responseMessage(String message) {
-                                                Timber.i(message);
-                                                binding.result.append("\n-\n" + message);
-                                            }
-                                        });
-                                    }
-                                });
-                            }
+        binding.btn1.setOnClickListener(view -> {
+            binding.result.setText("");
+            ussdApi.callUSSDInvoke(getPhoneNumber(), map, new USSDController.CallbackInvoke() {
+                @Override
+                public void responseInvoke(String message) {
+                    Timber.d(message);
+                    binding.result.append("\n-\n" + message);
+                    // first option list - select option 1
+                    ussdApi.send("1", message12 -> {
+                        Timber.i(message12);
+                        binding.result.append("\n-\n" + message12);
+                        // second option list - select option 2
+                        ussdApi.send("2", message121 -> {
+                            Timber.i(message121);
+                            binding.result.append("\n-\n" + message121);
+                            // second option list - select option 1
+                            ussdApi.send("1", message1211 -> {
+                                Timber.i(message1211);
+                                binding.result.append("\n-\n" + message1211);
+                                Timber.i("successful");
+                            });
                         });
+                    });
 //                        ussdApi.cancel();
-                    }
+                }
 
-                    @Override
-                    public void over(String message) {
-                        Timber.i(message);
-                        binding.result.append("\n-\n" + message);
+                @Override
+                public void over(String message) {
+                    Timber.i(message);
+                    binding.result.append("\n-\n" + message);
 //                        mViewModel.setResult(dao);
 //                        mViewModel.update();
-                    }
-                });
-            }
-        });
-
-        binding.btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (USSDController.verifyOverLay(getActivity())) {
-                    final Intent svc = new Intent(getActivity(), OverlayShowingService.class);
-                    svc.putExtra(OverlayShowingService.EXTRA, "PROCESANDO");
-                    getActivity().startService(svc);
-                    Timber.i("START OVERLAY DIALOG");
-                    String phoneNumber = binding.phone.getText().toString().trim();
-                    ussdApi = USSDController.getInstance(getActivity());
-                    binding.result.setText("");
-                    ussdApi.callUSSDOverlayInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
-                        @Override
-                        public void responseInvoke(String message) {
-                            Timber.i(message);
-                            binding.result.append("\n-\n" + message);
-                            // first option list - select option 1
-                            ussdApi.send("1", new USSDController.CallbackMessage() {
-                                @Override
-                                public void responseMessage(String message) {
-                                    Timber.i(message);
-                                    binding.result.append("\n-\n" + message);
-                                    // second option list - select option 2
-                                    ussdApi.send("2", new USSDController.CallbackMessage() {
-                                        @Override
-                                        public void responseMessage(String message) {
-                                            Timber.i(message);
-                                            binding.result.append("\n-\n" + message);
-                                            // second option list - select option 1
-                                            ussdApi.send("1", new USSDController.CallbackMessage() {
-                                                @Override
-                                                public void responseMessage(String message) {
-                                                    Timber.i(message);
-                                                    binding.result.append("\n-\n" + message);
-                                                    getActivity().stopService(svc);
-                                                    Timber.i("STOP OVERLAY DIALOG");
-                                                    Timber.i("successful");
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-//                            ussdApi.cancel();
-                        }
-
-                        @Override
-                        public void over(String message) {
-                            Timber.i(message);
-                            binding.result.append("\n-\n" + message);
-                            getActivity().stopService(svc);
-                            Timber.i("STOP OVERLAY DIALOG");
-                        }
-                    });
                 }
+            });
+        });
+
+        binding.btn2.setOnClickListener(view -> {
+            if (USSDController.verifyOverLay(getActivity())) {
+                final Intent svc = new Intent(getActivity(), OverlayShowingService.class);
+                svc.putExtra(OverlayShowingService.EXTRA, getString(R.string.process));
+                pendingServiceIntent(svc);
+                callOverlay(svc);
             }
         });
 
-        binding.btn4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (USSDController.verifyOverLay(getActivity())) {
-                    final Intent svc = new Intent(getActivity(), SplashLoadingService.class);
-                    getActivity().startService(svc);
-                    Timber.i("START SPLASH DIALOG");
-                    String phoneNumber = binding.phone.getText().toString().trim();
-                    binding.result.setText("");
-                    ussdApi.callUSSDOverlayInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
-                        @Override
-                        public void responseInvoke(String message) {
-                            Timber.i(message);
-                            binding.result.append("\n-\n" + message);
-                            // first option list - select option 1
-                            ussdApi.send("1", new USSDController.CallbackMessage() {
-                                @Override
-                                public void responseMessage(String message) {
-                                    Timber.i(message);
-                                    binding.result.append("\n-\n" + message);
-                                    // second option list - select option 2
-                                    ussdApi.send("2", new USSDController.CallbackMessage() {
-                                        @Override
-                                        public void responseMessage(String message) {
-                                            Timber.i(message);
-                                            binding.result.append("\n-\n" + message);
-                                            // second option list - select option 1
-                                            ussdApi.send("1", new USSDController.CallbackMessage() {
-                                                @Override
-                                                public void responseMessage(String message) {
-                                                    Timber.i(message);
-                                                    binding.result.append("\n-\n" + message);
-                                                    getActivity().stopService(svc);
-                                                    Timber.i("STOP OVERLAY DIALOG");
-                                                    Timber.i("successful");
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-//                            ussdApi.cancel();
-                        }
-
-                        @Override
-                        public void over(String message) {
-                            Timber.i(message);
-                            binding.result.append("\n-\n" + message);
-                            getActivity().stopService(svc);
-                            Timber.i("STOP OVERLAY DIALOG");
-                        }
-                    });
-                }
+        binding.btn4.setOnClickListener(view -> {
+            if (USSDController.verifyOverLay(getActivity())) {
+                final Intent svc = new Intent(getActivity(), SplashLoadingService.class);
+                pendingServiceIntent(svc);
+                callOverlay(svc);
             }
         });
 
-        binding.btn3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                USSDController.verifyAccesibilityAccess(getActivity());
-            }
-        });
+        binding.btn3.setOnClickListener(view ->
+                USSDController.verifyAccesibilityAccess(getActivity()));
 
         return binding.getRoot();
+    }
+
+    private void callOverlay(Intent overlayDialogService) {
+        ussdApi.callUSSDOverlayInvoke(getPhoneNumber(), map, new USSDController.CallbackInvoke() {
+            @Override
+            public void responseInvoke(String message) {
+                Timber.i(message);
+                binding.result.append("\n-\n" + message);
+                // first option list - select option 1
+                ussdApi.send("1", message1 -> {
+                    Timber.i(message1);
+                    binding.result.append("\n-\n" + message1);
+                    // second option list - select option 2
+                    ussdApi.send("2", message2 -> {
+                        Timber.i(message2);
+                        binding.result.append("\n-\n" + message2);
+                        // second option list - select option 1
+                        ussdApi.send("1", message3 -> {
+                            Timber.i(message3);
+                            binding.result.append("\n-\n" + message3);
+                            getActivity().stopService(overlayDialogService);
+                            Timber.i("successful");
+                        });
+                    });
+                });
+//                            ussdApi.cancel();
+            }
+
+            @Override
+            public void over(String message) {
+                Timber.i(message);
+                binding.result.append("\n-\n" + message);
+                getActivity().stopService(overlayDialogService);
+                Timber.i("STOP OVERLAY DIALOG");
+            }
+        });
+    }
+
+    private void pendingServiceIntent(Intent overlayService) {
+        getActivity().startService(overlayService);
+        Timber.i(getString(R.string.overlayDialog));
+        new Handler().postDelayed(() -> getActivity().stopService(overlayService), 12000);
+        binding.result.setText("");
+    }
+
+    private String getPhoneNumber() {
+        return binding.phone.getText().toString().trim();
     }
 
     private PermissionService.Callback callback = new PermissionService.Callback() {
@@ -258,6 +193,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Timber.i(MessageFormat.format(getString(R.string.primissionsLogFormat), permissions, grantResults));
         callback.handler(permissions, grantResults);
     }
 }

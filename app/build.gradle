@@ -4,7 +4,7 @@ apply plugin: 'com.google.gms.google-services'
 apply plugin: 'io.fabric'
 ext.enableCrashlytics = true
 
-def keystorePropertiesFile = rootProject.file("app/app.properties")
+def keystorePropertiesFile = rootProject.file("app.properties")
 def attrs = new Properties()
 attrs.load(new FileInputStream(keystorePropertiesFile))
 
@@ -23,8 +23,8 @@ android {
         applicationId "com.romellfudi.ussd"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 11
-        versionName "1.11.a"
+        versionCode 12
+        versionName "1.12.a"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         signingConfig signingConfigs.config
     }
@@ -43,7 +43,7 @@ android {
         demo {
             dimension "version"
             applicationIdSuffix ".demo"
-            versionNameSuffix "-demo"
+//            versionNameSuffix "-demo"
         }
         publish {
             dimension "version"
@@ -56,6 +56,11 @@ android {
                 || (variant.buildType.name == 'debug'
                 && variant.getFlavors().get(0).name == 'publish'))
             variant.setIgnore(true)
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
