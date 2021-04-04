@@ -6,12 +6,12 @@
 
 package com.romellfudi.ussd.accessibility.view
 
+import android.annotation.SuppressLint
 import android.content.IntentSender.SendIntentException
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.install.InstallState
 import com.google.android.play.core.install.InstallStateUpdatedListener
@@ -25,7 +25,6 @@ import com.romellfudi.ussd.accessibility.complete
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
-import java.util.*
 
 /**
  * Main Activity
@@ -34,43 +33,49 @@ import java.util.*
  * @version 1.0.b 23/02/2017
  * @since 1.0
  */
-const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
-
 internal class MainActivity : AppCompatActivity(), KoinComponent,
         InstallStateUpdatedListener, MainMVPView {
 
-    private val permissionService: PermissionService by inject{ parametersOf(this)}
+    private val permissionService: PermissionService
+            by inject { parametersOf(this) }
 
     private val appUpdateManager: AppUpdateManager by inject()
 
-    private val splashy: Splashy by inject{ parametersOf(this)}
+    private val splashy: Splashy
+            by inject { parametersOf(this) }
+
+    private val refuses by lazy { getString(R.string.refuse_permissions) }
+    private val restart by lazy { getString(R.string.restartUpdate) }
+    private val downloaded by lazy { getString(R.string.downloaded) }
+    private val errorUpdate by lazy { getString(R.string.errorUpdate) }
+    private val remainingPermissions by lazy { resources.getStringArray(R.array.permissions) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        splashy.complete(this::checkUpdate)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
+        splashy.complete(this::checkUpdate)
         permissionService.request(callback)
     }
 
     override fun onStateUpdate(state: InstallState) {
         if (state.installStatus() == InstallStatus.DOWNLOADED) {
-            showMessage("Has been Downloaded!!!")
+            showMessage(downloaded)
             notifyUser()
         }
     }
 
+    @SuppressLint("StringFormatMatches")
     override fun checkUpdate() {
         appUpdateManager.appUpdateInfo.addOnSuccessListener { appUpdateInfo ->
-            showMessage("updateAvailability: " + appUpdateInfo.updateAvailability() +
-                    " isUpdateTypeAllowed: " + appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE))
+            showMessage(getString(R.string.app_update_info, appUpdateInfo.updateAvailability(),
+                    appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)))
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                     && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)) {
                 try {
-                    appUpdateManager.startUpdateFlowForResult(
-                            appUpdateInfo, AppUpdateType.IMMEDIATE,
-                            this@MainActivity, REQUEST_CODE_FLEXIBLE_UPDATE)
+                    appUpdateManager.startUpdateFlowForResult(appUpdateInfo,
+                            AppUpdateType.IMMEDIATE, this, REQUEST_CODE_FLEXIBLE_UPDATE)
                 } catch (e: SendIntentException) {
-                    showMessage("Request update error")
+                    showMessage(errorUpdate)
                 }
             }
         }
@@ -80,15 +85,15 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
             Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_SHORT).show()
 
     override fun notifyUser() =
-            Snackbar.make(findViewById(android.R.id.content), "Restart to update", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Restart to update") {
+            Snackbar.make(findViewById(android.R.id.content), restart, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(restart) {
                         appUpdateManager.completeUpdate()
-                        appUpdateManager.unregisterListener(this@MainActivity)
+                        appUpdateManager.unregisterListener(this)
                     }.show()
 
     override fun onDestroy() {
         super.onDestroy()
-        appUpdateManager.unregisterListener(this@MainActivity)
+        appUpdateManager.unregisterListener(this)
     }
 
     override fun onResume() {
@@ -104,18 +109,23 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
 
     private val callback = object : PermissionService.Callback() {
         override fun onResponse(refusePermissions: ArrayList<String>?) {
-            // EXCEPTIONAL EVENT
-            refusePermissions?.remove("android.permission.SYSTEM_ALERT_WINDOW")
-            // EXCEPTIONAL EVENT
-            refusePermissions?.remove("android.permission.ACTION_MANAGE_OVERLAY_PERMISSION")
-            if (!refusePermissions.isNullOrEmpty()) {
-                showMessage(getString(R.string.refuse_permissions))
-                Handler().postDelayed({ finish() }, 2000)
-            } else appUpdateManager.registerListener(this@MainActivity)
+            refusePermissions?.apply {
+                removeAll(remainingPermissions)
+                if (isNotEmpty()) {
+                    showMessage(refuses)
+                    Handler().postDelayed(::finish, 2000)
+                }
+            }
+            if (refusePermissions.isNullOrEmpty())
+                appUpdateManager.registerListener(this@MainActivity)
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
                                             grantResults: IntArray) =
             PermissionService.handler(callback, grantResults, permissions)
+
+    companion object{
+        internal const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
+    }
 }

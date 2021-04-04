@@ -18,5 +18,14 @@
     <string name="normal">Normal Dial-Up</string>
     <string name="custom">Custom Dial-Up</string>
     <string name="splash">Splash Dial-Up</string>
+    <string name="restartUpdate">Restart to update</string>
+    <string name="downloaded">Has been Downloaded!!!</string>
+    <string name="errorUpdate">Request update error</string>
+    <string name="app_update_info">updateAvailability: %1$s; isUpdateTypeAllowed: %2$s</string>
+
+    <string-array name="permissions">
+        <item>android.permission.SYSTEM_ALERT_WINDOW</item>
+        <item>android.permission.ACTION_MANAGE_OVERLAY_PERMISSION</item>
+    </string-array>
 
 </resources>
