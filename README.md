@@ -68,22 +68,6 @@ dependencies {
 }
 ```
 
-### From African Telcoms
-```groovy
-repositories {
-    maven { url 'https://jitpack.io' }// (jetpacking)
-}
-dependencies {
-    // africa SNAPSHOT (jetpacking)
-    // java
-    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:africa-SNAPSHOT'
-    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:alternative-SNAPSHOT'
-    // kotlin
-    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:africa-SNAPSHOT'
-    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:alternative-SNAPSHOT'
-}
-```
-
 * Writing xml config file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
 
 ```xml
