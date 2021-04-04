@@ -125,7 +125,7 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
                                             grantResults: IntArray) =
             PermissionService.handler(callback, grantResults, permissions)
 
-    companion object{
-        internal const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
+    private companion object{
+        private const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
     }
 }
