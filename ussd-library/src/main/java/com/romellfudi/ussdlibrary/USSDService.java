@@ -63,9 +63,9 @@ public class USSDService extends AccessibilityService {
         } else if (isUSSDWidget(event)) {
             // ready for work
             String response = event.getText().get(0).toString();
-            if (response.contains("\n")) {
-                response = response.substring(response.indexOf('\n') + 1);
-            }
+//            if (response.contains("\n")) {
+//                response = response.substring(response.indexOf('\n') + 1);
+//            }
             if (notInputText(event)) {
                 // not more input panels / LAST MESSAGE
                 // sent 'OK' button

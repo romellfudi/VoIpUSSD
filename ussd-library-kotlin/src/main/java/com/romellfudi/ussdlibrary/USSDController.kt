@@ -174,7 +174,7 @@ object USSDController : USSDInterface, USSDApi {
 
     override fun send(text: String, callbackMessage: (String) -> Unit) {
         this.callbackMessage = callbackMessage
-        this.sendType = true
+        sendType = true
         ussdInterface?.sendData(text)
     }
 
