@@ -43,8 +43,7 @@ public class USSDServiceKT extends AccessibilityService {
                 "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
                 event.getEventType(), event.getClassName(), event.getPackageName(),
                 event.getEventTime(), event.getText()));
-        if (ussd == null
-                || !ussd.isRunning()) {
+        if (ussd == null || !ussd.isRunning()) {
             return;
         }
         if (LoginView(event) && notInputText(event)) {
@@ -59,9 +58,9 @@ public class USSDServiceKT extends AccessibilityService {
         } else if (isUSSDWidget(event)) {
             // ready for work
             String response = event.getText().get(0).toString();
-            if (response.contains("\n")) {
-                response = response.substring(response.indexOf('\n') + 1);
-            }
+//            if (response.contains("\n")) {
+//                response = response.substring(response.indexOf('\n') + 1);
+//            }
             if (notInputText(event)) {
                 // not more input panels / LAST MESSAGE
                 // sent 'OK' button
