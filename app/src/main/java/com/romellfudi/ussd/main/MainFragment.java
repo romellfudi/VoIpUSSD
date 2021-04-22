@@ -6,12 +6,19 @@
 
 package com.romellfudi.ussd.main;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.telecom.PhoneAccountHandle;
+import android.telecom.TelecomManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +27,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.github.javafaker.Faker;
 import com.romellfudi.permission.PermissionService;
 import com.romellfudi.ussd.App;
 import com.romellfudi.ussd.R;
@@ -33,6 +41,7 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
@@ -54,8 +63,36 @@ public class MainFragment extends Fragment {
     @Inject
     HashMap<String, HashSet<String>> map;
 
+    @Inject
+    String[] info;
+
+    @Inject
+    Faker faker;
+
     DaoViewModel mViewModel;
     ContentOp1Binding binding;
+    private int simSelected;
+
+
+    @SuppressLint("MissingPermission")
+    private void callSecondSIM(View view, int simSlot) {
+        String ussdPhoneNumber = binding.phone.toString().trim();
+        if (ussdPhoneNumber.contains("#"))
+            ussdPhoneNumber = ussdPhoneNumber.replace("#", Uri.encode("#"));
+        Uri uriPhone = Uri.parse("tel:" + ussdPhoneNumber);
+
+        Intent intent = new Intent(Intent.ACTION_CALL, uriPhone);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("com.android.phone.force.slot", true);
+        intent.putExtra("Cdma_Supp", true);
+        for (String s : info)
+            intent.putExtra(s, simSlot);
+        TelecomManager telecomManager = (TelecomManager) getContext().getSystemService(Context.TELECOM_SERVICE);
+        List<PhoneAccountHandle> phoneAccountHandleList = telecomManager.getCallCapablePhoneAccounts();
+        if (phoneAccountHandleList != null && phoneAccountHandleList.size() > simSlot)
+            intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", phoneAccountHandleList.get(simSlot));
+        startActivity(intent);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +109,6 @@ public class MainFragment extends Fragment {
         binding.setViewModel(mViewModel);
         binding.setLifecycleOwner(getActivity());
         setHasOptionsMenu(false);
-
         binding.btn1.setOnClickListener(view -> {
             binding.result.setText("");
             ussdApi.callUSSDInvoke(getPhoneNumber(), map, new USSDController.CallbackInvoke() {
@@ -129,8 +165,27 @@ public class MainFragment extends Fragment {
         binding.btn3.setOnClickListener(view ->
                 USSDController.verifyAccesibilityAccess(getActivity()));
 
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.all_sims, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.simSpinner.setAdapter(adapter);
+        binding.simSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                simSelected = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                simSelected = 0;
+            }
+        });
+        binding.btn5.setOnClickListener(view -> callSecondSIM(view, simSelected));
+
+        new Handler().postDelayed(() -> binding.phone.setText(faker.phoneNumber().cellPhone()), 1000);
         return binding.getRoot();
     }
+
 
     private void callOverlay(Intent overlayDialogService) {
         ussdApi.callUSSDOverlayInvoke(getPhoneNumber(), map, new USSDController.CallbackInvoke() {

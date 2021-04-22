@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:123456789012:android:1234567890123456",
+        "mobilesdk_app_id": "1:0:android:0",
         "android_client_info": {
-          "package_name": "com.romellfudi.ussd.demo"
+          "package_name": "com.romellfudi.ussd.carusagossou"
         }
       },
       "oauth_client": [

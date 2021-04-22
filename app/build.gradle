@@ -42,7 +42,7 @@ android {
     productFlavors {
         demo {
             dimension "version"
-            applicationIdSuffix ".demo"
+            applicationIdSuffix ".carusagossou"
 //            versionNameSuffix "-demo"
         }
         publish {
@@ -79,4 +79,6 @@ dependencies {
     annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
 
     implementation 'android.arch.lifecycle:extensions:1.0.0'
+
+    implementation 'com.github.javafaker:javafaker:1.0.2'
 }

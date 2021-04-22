@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
   ~ All rights reserved
   ~ porfile.romellfudi.com
@@ -17,5 +16,9 @@
     <string name="primissionsLogFormat">callback.handler::permissions:{0}:grantResults:{1}</string>
     <string name="process">PROCESS... USSD message</string>
     <string name="overlayDialog">START OVERLAY DIALOG</string>
+    <string-array name="all_sims">
+        <item>FIRST SLOT</item>
+        <item>SECOND SLOT</item>
+    </string-array>
 
 </resources>
