@@ -120,11 +120,11 @@ class USSDApiTestKotlin {
 
         USSDController.callUSSDInvoke(activity,"*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo("waiting")))
+        assertThat(stringSlot.captured, `is`(equalTo("[waiting]")))
 
         USSDController.callUSSDInvoke(activity,"*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo("problem UUID")))
+        assertThat(stringSlot.captured, `is`(equalTo("[problem UUID]")))
     }
 
     @Test
@@ -135,7 +135,7 @@ class USSDApiTestKotlin {
 
         USSDController.callUSSDInvoke(activity,"*1#", map, callbackInvoke)
         verify { callbackInvoke.over(capture(stringSlot)) }
-        assertThat(stringSlot.captured, `is`(equalTo("loading")))
+        assertThat(stringSlot.captured, `is`(equalTo("[loading]")))
     }
 
 }
