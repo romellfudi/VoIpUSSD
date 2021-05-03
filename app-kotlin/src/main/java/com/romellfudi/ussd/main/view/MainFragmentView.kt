@@ -6,7 +6,6 @@
 
 package com.romellfudi.ussd.main.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -16,7 +15,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.databinding.CallFragmentBinding
+import com.romellfudi.ussd.main.dismissIntent
 import com.romellfudi.ussd.main.entity.CallViewModel
+import com.romellfudi.ussd.main.goService
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
 import com.romellfudi.ussd.main.statehood.UssdState
@@ -40,7 +41,7 @@ import timber.log.Timber
  * @since 1.12.a
  */
 
-class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMVPView, KoinComponent {
+class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
 
     private val callViewModel: CallViewModel by viewModel()
 
@@ -64,7 +65,7 @@ class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMV
             }.run { root }
 
     override fun dialUp() {
-        viewLifecycleOwner.lifecycleScope.launch {
+        lifecycleScope.launch {
             if (callViewModel.hasNoFlavorSet())
                 callViewModel.setDialUpType(getString(R.string.normal))
             activity?.let {
@@ -81,25 +82,21 @@ class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMV
 
     override fun showOverlay() {
         Timber.i("START OVERLAY DIALOG")
-        overlay = Intent(activity, OverlayShowingService::class.java).apply {
-            putExtra(OverlayShowingService.EXTRA, "PROCESANDO")
-        }.also { activity?.startService(it) }
-        Handler().postDelayed(::dismissOverlay,12000)
+        goService<OverlayShowingService>(hashMapOf(OverlayShowingService.EXTRA to "PROCESANDO"))
+        Handler().postDelayed(::dismissOverlay, 12000)
     }
 
     override fun showSplashOverlay() {
         Timber.i("START OVERLAY DIALOG")
-        overlay = Intent(activity, SplashLoadingService::class.java)
-                .also { activity?.startService(it) }
+        goService<SplashLoadingService>()
     }
 
     override fun showResult(result: String) =
             callViewModel.result.postValue(result)
 
     override fun dismissOverlay() {
-        overlay?.let { activity?.stopService(it) }
-        overlay = null
-        Timber.i("STOP OVERLAY DIALOG")
+        dismissIntent()
+        Timber.i("TRY TO STOP OVERLAY DIALOG")
     }
 
     override fun observeUssdState(result: UssdState) {
@@ -110,5 +107,10 @@ class MainFragmentView(var overlay: Intent? = null) : Fragment(), MainFragmentMV
             is UssdState.Progress -> result.progress
         }
         Timber.i("UssdState log string: $log")
+    }
+
+    override fun onDestroy() {
+        dismissOverlay()
+        super.onDestroy()
     }
 }
