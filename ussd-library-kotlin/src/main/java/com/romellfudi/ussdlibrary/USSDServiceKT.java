@@ -16,6 +16,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * AccessibilityService for ussd windows on Android mobile Telcom
@@ -46,18 +47,17 @@ public class USSDServiceKT extends AccessibilityService {
         if (ussd == null || !ussd.isRunning()) {
             return;
         }
+        String response = event.getText().toString();
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, 0);
             ussd.setRunning(false);
-            ussd.callbackInvoke.over(event.getText().get(0).toString());
+            ussd.callbackInvoke.over(response);
         } else if (problemView(event) || LoginView(event)) {
             // deal down
             clickOnButton(event, 1);
-            ussd.callbackInvoke.over(event.getText().get(0).toString());
+            ussd.callbackInvoke.over(response);
         } else if (isUSSDWidget(event)) {
-            // ready for work
-            String response = event.getText().get(0).toString();
 //            if (response.contains("\n")) {
 //                response = response.substring(response.indexOf('\n') + 1);
 //            }
