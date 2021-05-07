@@ -28,12 +28,12 @@
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/animation_view"
-                android:layout_width="300dp"
-                android:layout_height="240dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:lottie_rawRes="@raw/ussd_interface"
+                app:lottie_rawRes="@raw/sms"
                 app:lottie_speed="1.5"
                 app:lottie_loop="true"
                 app:lottie_renderMode="automatic"

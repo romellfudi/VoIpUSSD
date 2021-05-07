@@ -22,6 +22,8 @@
     <string name="downloaded">Has been Downloaded!!!</string>
     <string name="errorUpdate">Request update error</string>
     <string name="app_update_info">updateAvailability: %1$s; isUpdateTypeAllowed: %2$s</string>
+    <string name="loading_data">Loading Data</string>
+    <string name="splash_dialog">READING AND SENDING USSD MESSAGES</string>
 
     <string-array name="permissions">
         <item>android.permission.SYSTEM_ALERT_WINDOW</item>
