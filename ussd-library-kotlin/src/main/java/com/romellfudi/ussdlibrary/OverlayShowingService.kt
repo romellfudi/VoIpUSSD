@@ -43,8 +43,8 @@ class OverlayShowingService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        if (intent.hasExtra(EXTRA))
-            tittle = intent.getStringExtra(EXTRA)
+        if (intent.hasExtra("EXTRA"))
+            tittle = intent.getStringExtra("EXTRA")
         wm = getSystemService(Context.WINDOW_SERVICE) as? WindowManager
         val size = Point()
         wm?.defaultDisplay?.getSize(size)
@@ -79,10 +79,6 @@ class OverlayShowingService : Service() {
             }
             super.onDestroy()
         }, 500)
-    }
-
-    companion object {
-        const val EXTRA = "TITTLE"
     }
 
 }

@@ -6,6 +6,7 @@
 
 package com.romellfudi.ussd.main.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -13,6 +14,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.airbnb.lottie.LottieAnimationView
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.databinding.CallFragmentBinding
 import com.romellfudi.ussd.main.dismissIntent
@@ -20,6 +22,7 @@ import com.romellfudi.ussd.main.entity.CallViewModel
 import com.romellfudi.ussd.main.goService
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
+import com.romellfudi.ussd.main.service
 import com.romellfudi.ussd.main.statehood.UssdState
 import com.romellfudi.ussdlibrary.OverlayShowingService
 import com.romellfudi.ussdlibrary.SplashLoadingService
@@ -82,13 +85,15 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
 
     override fun showOverlay() {
         Timber.i("START OVERLAY DIALOG")
-        goService<OverlayShowingService>(hashMapOf(OverlayShowingService.EXTRA to "PROCESANDO"))
+        goService<OverlayShowingService>(hashMapOf("EXTRA" to getString(R.string.loading_data)))
         Handler().postDelayed(::dismissOverlay, 12000)
     }
 
     override fun showSplashOverlay() {
         Timber.i("START OVERLAY DIALOG")
-        goService<SplashLoadingService>()
+//        goService<SplashLoadingService>()
+        goService<CustomSplashService>(hashMapOf("EXTRA" to getString(R.string.splash_dialog)))
+        Handler().postDelayed(::dismissOverlay, 12000)
     }
 
     override fun showResult(result: String) =
