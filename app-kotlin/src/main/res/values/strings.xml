@@ -7,7 +7,7 @@
 
 <resources>
 
-    <string name="app_name">Kotlin VOIP USSD Sample</string>
+    <string name="app_name">Romellfudi\'s VOIP USSD library Sample</string>
     <string name="app_tittle">VOIP USSD</string>
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_cp1">Test</string>

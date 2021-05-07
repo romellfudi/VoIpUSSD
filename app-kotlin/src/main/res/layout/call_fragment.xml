@@ -26,6 +26,19 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/side_margin">
 
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="300dp"
+                android:layout_height="240dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_rawRes="@raw/ussd_interface"
+                app:lottie_speed="1.5"
+                app:lottie_loop="true"
+                app:lottie_renderMode="automatic"
+                app:lottie_autoPlay="true"/>
+
             <TextView
                 android:id="@+id/txt"
                 android:layout_width="match_parent"
@@ -34,7 +47,7 @@
                 android:textSize="16sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/animation_view" />
 
 
             <EditText

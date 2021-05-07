@@ -7,6 +7,7 @@
 package com.romellfudi.ussd
 
 import android.app.Application
+import com.airbnb.lottie.L
 import com.romellfudi.ussd.accessibility.di.accessibilityModule
 import com.romellfudi.ussd.main.di.appModule
 import org.koin.android.ext.koin.androidContext
@@ -22,6 +23,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
+            L.DBG = true
             Timber.plant(Timber.DebugTree())
         }
         startKoin {
