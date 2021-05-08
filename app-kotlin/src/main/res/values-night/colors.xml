@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright (c) 2020. BoostTag E.I.R.L. Romell D.Z.
+  ~ All rights reserved
+  ~ porfile.romellfudi.com
+  -->
+
+<resources>
+
+    <color name="colorPrimary">#212121</color>
+    <color name="colorPrimaryLight">#484848</color>
+    <color name="colorPrimaryDark">#000000</color>
+    <color name="colorOnPrimary">#ffffff</color>
+    <color name="colorSecondary">#D591FF</color>
+    <color name="colorSecondaryLight">#ffffee</color>
+    <color name="colorSecondaryDark">#A563C9</color>
+    <color name="colorOnSecondary">#212121</color>
+
+</resources>
