@@ -5,7 +5,7 @@ on:
     types: [opened]
 
 jobs:
-  welcome contribution:
+  welcome_contribution:
     runs-on: ubuntu-latest
 
     steps:
