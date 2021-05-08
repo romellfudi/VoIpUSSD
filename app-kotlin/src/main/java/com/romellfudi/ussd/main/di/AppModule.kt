@@ -6,6 +6,7 @@
 
 package com.romellfudi.ussd.main.di
 
+import android.os.Handler
 import com.romellfudi.ussd.main.entity.CallViewModel
 import com.romellfudi.ussd.main.interactor.MainFragmentInteractor
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
@@ -30,6 +31,6 @@ val appModule = module {
     single<MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>> { (view: MainFragmentMVPView) ->
         MainFragmentPresenter(view, get())
     }
-
+    single { Handler() }
     single<MainFragmentMVPInteractor> { MainFragmentInteractor(get()) }
 }

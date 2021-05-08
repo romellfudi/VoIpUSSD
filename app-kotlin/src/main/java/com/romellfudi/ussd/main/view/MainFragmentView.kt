@@ -6,7 +6,6 @@
 
 package com.romellfudi.ussd.main.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -14,7 +13,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import com.airbnb.lottie.LottieAnimationView
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.databinding.CallFragmentBinding
 import com.romellfudi.ussd.main.dismissIntent
@@ -22,10 +20,8 @@ import com.romellfudi.ussd.main.entity.CallViewModel
 import com.romellfudi.ussd.main.goService
 import com.romellfudi.ussd.main.interactor.MainFragmentMVPInteractor
 import com.romellfudi.ussd.main.presenter.MainFragmentMVPPresenter
-import com.romellfudi.ussd.main.service
 import com.romellfudi.ussd.main.statehood.UssdState
 import com.romellfudi.ussdlibrary.OverlayShowingService
-import com.romellfudi.ussdlibrary.SplashLoadingService
 import com.romellfudi.ussdlibrary.USSDApi
 import com.romellfudi.ussdlibrary.USSDController
 import kotlinx.android.synthetic.main.call_fragment.*
@@ -59,6 +55,8 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
     private val mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
             by inject { parametersOf(this@MainFragmentView) }
 
+    private val handler: Handler by inject()
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? =
             CallFragmentBinding.inflate(inflater, container, false).apply {
@@ -86,32 +84,28 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
     override fun showOverlay() {
         Timber.i("START OVERLAY DIALOG")
         goService<OverlayShowingService>(hashMapOf("EXTRA" to getString(R.string.loading_data)))
-        Handler().postDelayed(::dismissOverlay, 12000)
+        handler.postDelayed(::dismissOverlay, 12000)
     }
 
     override fun showSplashOverlay() {
         Timber.i("START OVERLAY DIALOG")
 //        goService<SplashLoadingService>()
         goService<CustomSplashService>(hashMapOf("EXTRA" to getString(R.string.splash_dialog)))
-        Handler().postDelayed(::dismissOverlay, 12000)
+        handler.postDelayed(::dismissOverlay, 12000)
     }
 
     override fun showResult(result: String) =
             callViewModel.result.postValue(result)
 
     override fun dismissOverlay() {
+        handler.removeCallbacksAndMessages(null)
         dismissIntent()
         Timber.i("TRY TO STOP OVERLAY DIALOG")
     }
 
     override fun observeUssdState(result: UssdState) {
         Timber.i("UssdState onGoing: $result")
-        val log = when (result) {
-            is UssdState.Successful -> 0
-            is UssdState.Error -> result.errorMessage
-            is UssdState.Progress -> result.progress
-        }
-        Timber.i("UssdState log string: $log")
+        CustomSplashService.progressMessage.postValue(result)
     }
 
     override fun onDestroy() {

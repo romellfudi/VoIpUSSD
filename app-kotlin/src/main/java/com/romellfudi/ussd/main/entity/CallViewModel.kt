@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModel
  * @date 3/8/21
  */
 class CallViewModel : ViewModel() {
+
     var number = MutableLiveData<String>()
     val result = MutableLiveData<String>()
     private val _dialUpType = MutableLiveData<String>()
