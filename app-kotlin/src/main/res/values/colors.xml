@@ -6,7 +6,7 @@
 
 <resources>
 
-    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimary">#B178F4</color>
     <color name="colorPrimaryLight">#ffffff</color>
     <color name="colorPrimaryDark">#cccccc</color>
     <color name="colorOnPrimary">#212121</color>
