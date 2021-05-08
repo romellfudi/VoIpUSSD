@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build Android Components:
+  build_android_components:
     runs-on: ubuntu-latest
 
     steps:
