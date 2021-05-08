@@ -45,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/usss_input"
                 android:textSize="16sp"
+                android:textStyle="bold|italic"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/animation_view" />
@@ -84,6 +85,7 @@
                     android:id="@+id/normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="italic"
                     android:checked="@{viewModel.dialUpType.equals(@string/normal)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/normal)}"
                     android:text="@string/normal" />
@@ -92,6 +94,7 @@
                     android:id="@+id/custom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="italic"
                     android:checked="@{viewModel.dialUpType.equals(@string/custom)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/custom)}"
                     android:text="@string/custom" />
@@ -100,6 +103,7 @@
                     android:id="@+id/splash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textStyle="italic"
                     android:checked="@{viewModel.dialUpType.equals(@string/splash)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/splash)}"
                     android:text="@string/splash" />

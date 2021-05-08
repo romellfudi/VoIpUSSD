@@ -11,6 +11,8 @@ import android.content.IntentSender.SendIntentException
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.install.InstallState
@@ -53,6 +55,7 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
+        AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
         splashy.complete(this::checkUpdate)
         permissionService.request(callback)
     }
@@ -125,7 +128,7 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
                                             grantResults: IntArray) =
             PermissionService.handler(callback, grantResults, permissions)
 
-    private companion object{
+    private companion object {
         private const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
     }
 }
