@@ -57,6 +57,10 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
 
     private val handler: Handler by inject()
 
+    private val loading by lazy { getString(R.string.loading_data) }
+
+    private val dialog by lazy { getString(R.string.splash_dialog) }
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?, savedInstanceState: Bundle?): View? =
             CallFragmentBinding.inflate(inflater, container, false).apply {
@@ -83,14 +87,14 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
 
     override fun showOverlay() {
         Timber.i("START OVERLAY DIALOG")
-        goService<OverlayShowingService>(hashMapOf("EXTRA" to getString(R.string.loading_data)))
+        goService<OverlayShowingService>(hashMapOf("EXTRA" to loading))
         handler.postDelayed(::dismissOverlay, 12000)
     }
 
     override fun showSplashOverlay() {
         Timber.i("START OVERLAY DIALOG")
 //        goService<SplashLoadingService>()
-        goService<CustomSplashService>(hashMapOf("EXTRA" to getString(R.string.splash_dialog)))
+        goService<CustomSplashService>(hashMapOf("EXTRA" to dialog))
         handler.postDelayed(::dismissOverlay, 12000)
     }
 

@@ -31,6 +31,11 @@
             android:launchMode="singleTop"
             android:configChanges="orientation|screenSize|smallestScreenSize|screenLayout"
             android:windowSoftInputMode="stateAlwaysHidden" >
+        </activity>
+        <activity android:name=".accessibility.view.SplashActivity"
+            android:theme="@style/SplashAppTheme"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

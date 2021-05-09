@@ -20,10 +20,8 @@ import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
-import com.rbddevs.splashy.Splashy
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
-import com.romellfudi.ussd.accessibility.complete
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
@@ -43,9 +41,6 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
 
     private val appUpdateManager: AppUpdateManager by inject()
 
-    private val splashy: Splashy
-            by inject { parametersOf(this) }
-
     private val refuses by lazy { getString(R.string.refuse_permissions) }
     private val restart by lazy { getString(R.string.restartUpdate) }
     private val downloaded by lazy { getString(R.string.downloaded) }
@@ -56,7 +51,6 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
-        splashy.complete(this::checkUpdate)
         permissionService.request(callback)
     }
 
@@ -95,8 +89,8 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
                     }.show()
 
     override fun onDestroy() {
-        super.onDestroy()
         appUpdateManager.unregisterListener(this)
+        super.onDestroy()
     }
 
     override fun onResume() {
@@ -119,8 +113,10 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
                     Handler().postDelayed(::finish, 2000)
                 }
             }
-            if (refusePermissions.isNullOrEmpty())
+            if (refusePermissions.isNullOrEmpty()) {
                 appUpdateManager.registerListener(this@MainActivity)
+                checkUpdate()
+            }
         }
     }
 

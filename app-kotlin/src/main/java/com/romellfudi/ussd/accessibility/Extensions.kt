@@ -6,7 +6,12 @@
 
 package com.romellfudi.ussd.accessibility
 
-import com.rbddevs.splashy.Splashy
+import android.app.Activity
+import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
+
+//import com.rbddevs.splashy.Splashy
 
 /**
  * Extensions
@@ -15,11 +20,18 @@ import com.rbddevs.splashy.Splashy
  * @autor Romell Domínguez (@romellfudi)
  * @date 3/21/21
  */
-fun Splashy.complete(postDelay:() -> Unit){
-    show()
-    Splashy.onComplete(object : Splashy.OnComplete {
-        override fun onComplete() {
-            postDelay()
-        }
-    })
+//fun Splashy.complete(postDelay:() -> Unit){
+//    show()
+//    Splashy.onComplete(object : Splashy.OnComplete {
+//        override fun onComplete() {
+//            postDelay()
+//        }
+//    })
+//}
+@RequiresApi(Build.VERSION_CODES.N)
+inline fun <reified T : Activity> Activity.goActivity(extras: HashMap<String, String>? = null) {
+    intent = Intent(this, T::class.java).apply {
+        extras?.forEach { key, value -> putExtra(key, value) }
+    }
+    startActivity(intent)
 }
