@@ -25,7 +25,7 @@ import org.koin.dsl.module
  */
 val accessibilityModule = module {
 
-    single { (act: Activity) -> PermissionService(act) }
+    single { PermissionService }
 
     factory { AppUpdateManagerFactory.create(get()) }
 

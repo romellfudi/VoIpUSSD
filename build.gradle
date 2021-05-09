@@ -10,9 +10,7 @@ buildscript {
     repositories {
         google()
         jcenter()
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.0'
@@ -30,6 +28,7 @@ allprojects {
         google()
         jcenter()
         flatDir { dirs 'libs' }
+        maven { url 'https://jitpack.io' }
     }
     tasks.withType(Javadoc).all {
         enabled = false

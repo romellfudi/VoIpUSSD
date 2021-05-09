@@ -36,9 +36,7 @@ import org.koin.core.parameter.parametersOf
 internal class MainActivity : AppCompatActivity(), KoinComponent,
         InstallStateUpdatedListener, MainMVPView {
 
-    private val permissionService: PermissionService
-            by inject { parametersOf(this) }
-
+    private val permissionService: PermissionService by inject()
     private val appUpdateManager: AppUpdateManager by inject()
 
     private val refuses by lazy { getString(R.string.refuse_permissions) }
@@ -51,7 +49,7 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
-        permissionService.request(callback)
+        permissionService.request(this,callback)
     }
 
     override fun onStateUpdate(state: InstallState) {
@@ -105,15 +103,14 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
     override fun onBackPressed() = finish()
 
     private val callback = object : PermissionService.Callback() {
-        override fun onResponse(refusePermissions: ArrayList<String>?) {
-            refusePermissions?.apply {
+        override fun onResponse(permissions: List<String>?) {
+            val refusePermissions = permissions?.toMutableList()?.apply {
                 removeAll(remainingPermissions)
-                if (isNotEmpty()) {
-                    showMessage(refuses)
-                    Handler().postDelayed(::finish, 2000)
-                }
             }
-            if (refusePermissions.isNullOrEmpty()) {
+            if (!refusePermissions.isNullOrEmpty()){
+                showMessage(refuses)
+                Handler().postDelayed(::finish, 2000)
+            } else {
                 appUpdateManager.registerListener(this@MainActivity)
                 checkUpdate()
             }
