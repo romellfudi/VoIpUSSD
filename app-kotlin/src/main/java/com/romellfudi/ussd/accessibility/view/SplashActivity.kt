@@ -14,6 +14,12 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
+//        requestWindowFeature(Window.FEATURE_NO_TITLE)
+//        supportActionBar?.hide()
+//        window.setFlags(
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+
         activityScope.launch {
             delay(3000)
             goActivity<MainActivity>()
