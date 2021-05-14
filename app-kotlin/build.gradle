@@ -68,6 +68,13 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "${project.rootProject.rootProject.name}-${variant.name}.apk"
+        }
+    }
+
 }
 
 dependencies {
