@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021. BoostTag E.I.R.L. Romell D.Z.
+  ~ All rights reserved
+  ~ portfolio.romellfudi.com
+  -->
+<resources>
+    <integer name="slide_animation_duration">300</integer>
+</resources>

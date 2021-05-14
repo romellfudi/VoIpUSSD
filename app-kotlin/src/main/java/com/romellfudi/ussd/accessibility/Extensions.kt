@@ -10,6 +10,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.romellfudi.ussd.R
 
 //import com.rbddevs.splashy.Splashy
 
@@ -34,4 +35,5 @@ inline fun <reified T : Activity> Activity.goActivity(extras: HashMap<String, St
         extras?.forEach { key, value -> putExtra(key, value) }
     }
     startActivity(intent)
+    overridePendingTransition(R.anim.slide_from_right, R.anim.slide_to_left)
 }

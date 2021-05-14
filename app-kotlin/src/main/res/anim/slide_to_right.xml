@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (c) 2021. BoostTag E.I.R.L. Romell D.Z.
+  ~ All rights reserved
+  ~ portfolio.romellfudi.com
+  -->
+
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+    <translate android:fromXDelta="0" android:toXDelta="100%p"
+        android:interpolator="@android:anim/accelerate_decelerate_interpolator"
+        android:duration="@integer/slide_animation_duration"/>
+</set>
