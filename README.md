@@ -53,6 +53,8 @@ Interactive with ussd windoows, It is necessary to have present that the interfa
 
 `kotlinLatestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg?&style=flat-square&logo=jfrog)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
 
+`jitpackVersion` is [![](https://jitpack.io/v/romellfudi/VoIpUSSD.svg)](https://jitpack.io/#romellfudi/VoIpUSSD)
+
 Add the following in your app's `build.gradle` file:
 
 ### From American Telcoms
@@ -61,10 +63,15 @@ repositories {
     jcenter()
 }
 dependencies {
-    // java
+    // java [deprecated]
     implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
-    // kotlin
+    // kotlin [deprecated]
     implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{kotlinLatestVersion}'
+
+    // java
+    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:{jitpackVersion}'
+    // kotlin
+    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:{jitpackVersion}'
 }
 ```
 
