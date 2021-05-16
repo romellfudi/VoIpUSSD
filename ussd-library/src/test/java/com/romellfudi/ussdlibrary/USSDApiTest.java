@@ -21,6 +21,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -46,6 +47,7 @@ import static org.powermock.api.mockito.PowerMockito.when;
  * @date 10/4/18
  */
 @RunWith(PowerMockRunner.class)
+@PowerMockIgnore("jdk.internal.reflect.*")
 @PrepareForTest({USSDController.class,USSDService.class, Uri.class})
 public class USSDApiTest {
 
@@ -114,15 +116,15 @@ public class USSDApiTest {
         when(accessibilityEvent.getText()).thenReturn(texts);
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke);
         verify(callbackInvoke).over(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
 
-        MESSAGE = "problem UUID";
+        MESSAGE = "[problem UUID]";
         texts.remove(0);
         texts.add(MESSAGE);
         when(accessibilityEvent.getText()).thenReturn(texts);
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke);
         verify(callbackInvoke,times(2)).over(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
     }
 
     @Test
@@ -152,7 +154,7 @@ public class USSDApiTest {
         when(USSDService.notInputText(accessibilityEvent)).thenReturn(true);
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke);
         verify(callbackInvoke,times(1)).over(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
 
     }
 
@@ -182,7 +184,7 @@ public class USSDApiTest {
         when(accessibilityEvent.getText()).thenReturn(texts);
         ussdController.callUSSDInvoke("*1#", map, callbackInvoke);
         verify(callbackInvoke,times(1)).over(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
 
         doAnswer(new Answer<Object>() {
             @Override
@@ -197,16 +199,16 @@ public class USSDApiTest {
         when(accessibilityEvent.getText()).thenReturn(texts);
         ussdController.send("1",callbackMessage);
         verify(callbackMessage,times(1)).responseMessage(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
         ussdController.send("1",callbackMessage);
         verify(callbackMessage,times(2)).responseMessage(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
         ussdController.send("1",callbackMessage);
         verify(callbackMessage,times(3)).responseMessage(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
         ussdController.send("1",callbackMessage);
         verify(callbackMessage,times(4)).responseMessage(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
 
         MESSAGE = "Final Close dialog";
         texts.remove(0);
@@ -214,7 +216,7 @@ public class USSDApiTest {
         when(USSDService.notInputText(accessibilityEvent)).thenReturn(true);
         ussdController.send("1",callbackMessage);
         verify(callbackInvoke,times(2)).over(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
     }
 
     @Test
@@ -244,7 +246,7 @@ public class USSDApiTest {
         when(accessibilityEvent.getText()).thenReturn(texts);
         ussdController.callUSSDOverlayInvoke("*1#", map, callbackInvoke);
         verify(callbackInvoke,times(1)).over(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
 
         doAnswer(new Answer<Object>() {
             @Override
@@ -259,16 +261,16 @@ public class USSDApiTest {
         when(accessibilityEvent.getText()).thenReturn(texts);
         ussdController.send("1",callbackMessage);
         verify(callbackMessage,times(1)).responseMessage(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
         ussdController.send("1",callbackMessage);
         verify(callbackMessage,times(2)).responseMessage(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
         ussdController.send("1",callbackMessage);
         verify(callbackMessage,times(3)).responseMessage(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
         ussdController.send("1",callbackMessage);
         verify(callbackMessage,times(4)).responseMessage(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
 
         MESSAGE = "Final Close dialog";
         texts.remove(0);
@@ -276,6 +278,6 @@ public class USSDApiTest {
         when(USSDService.notInputText(accessibilityEvent)).thenReturn(true);
         ussdController.send("1",callbackMessage);
         verify(callbackInvoke,times(2)).over(stringArgumentCaptor.capture());
-        assertThat(stringArgumentCaptor.getValue(), is(equalTo(MESSAGE)));
+        assertThat(stringArgumentCaptor.getValue(), is(equalTo(String.format("[%s]", MESSAGE))));
     }
 }

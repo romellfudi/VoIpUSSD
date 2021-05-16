@@ -51,18 +51,18 @@ public class USSDService extends AccessibilityService {
             return;
         }
 
+        String response = event.getText().toString();
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, 0);
             USSDController.instance.isRunning = false;
-            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
+            USSDController.instance.callbackInvoke.over(response);
         } else if (problemView(event) || LoginView(event)) {
             // deal down
             clickOnButton(event, 1);
-            USSDController.instance.callbackInvoke.over(event.getText().get(0).toString());
+            USSDController.instance.callbackInvoke.over(response);
         } else if (isUSSDWidget(event)) {
             // ready for work
-            String response = event.getText().get(0).toString();
 //            if (response.contains("\n")) {
 //                response = response.substring(response.indexOf('\n') + 1);
 //            }
