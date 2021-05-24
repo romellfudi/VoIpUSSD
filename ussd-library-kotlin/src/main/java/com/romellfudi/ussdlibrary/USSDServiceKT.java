@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * AccessibilityService for ussd windows on Android mobile Telcom
+ * AccessibilityService object for ussd dialogs on Android mobile Telcoms
  *
  * @author Romell Dominguez
  * @version 1.1.c 27/09/2018
@@ -88,7 +88,7 @@ public class USSDServiceKT extends AccessibilityService {
     }
 
     /**
-     * Cancel USSD
+     * Dismiss dialog by using first button from USSD Dialog
      */
     public static void cancel() {
         clickOnButton(event, 0);

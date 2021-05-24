@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'org.jetbrains.dokka'
 
 ext {
     bintrayRepo = 'maven'
@@ -49,6 +50,32 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("../documentation"))
+}
+
+tasks.dokkaJavadoc.configure {
+    outputDirectory.set(file("../documentation/javadoc"))
+}
+
+tasks.dokkaGfm.configure {
+    outputDirectory.set(file("../documentation/gfm"))
+}
+
+tasks.withType(dokkaHtml.getClass()).configureEach {
+    pluginsMapConfiguration.set(
+            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
+    )
+}
+
+//dokkaHtml.configure {
+//    dokkaSourceSets {
+//        named("app") {
+//            skipDeprecated.set(true)
+//        }
+//    }
+//}
 
 dependencies {
     implementation 'com.android.support:appcompat-v7:29.+'
