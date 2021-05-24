@@ -24,7 +24,19 @@ class App : Application() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
             L.DBG = true
-            Timber.plant(Timber.DebugTree())
+            Timber.plant(object : Timber.DebugTree(){
+                override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+                    super.log(priority, "timber_tag_$tag", message, t)
+                }
+
+                override fun createStackElementTag(element: StackTraceElement): String? {
+                    return String.format(
+                        "%s:%s",
+                        element.methodName,
+                        element.lineNumber,
+                        super.createStackElementTag(element))
+                }
+            })
         }
         startKoin {
             printLogger()
