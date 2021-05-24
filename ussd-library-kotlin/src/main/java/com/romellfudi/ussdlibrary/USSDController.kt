@@ -26,6 +26,7 @@ import android.view.accessibility.AccessibilityManager
  * @version 1.1.i 2019/04/18
  * @since 1.1.i
  */
+@SuppressLint("StaticFieldLeak")
 object USSDController : USSDInterface, USSDApi {
 
     const val KEY_LOGIN = "KEY_LOGIN"
@@ -90,7 +91,7 @@ object USSDController : USSDInterface, USSDApi {
      * @param ussdPhoneNumber ussd number
      * @param simSlot         simSlot number to use
      * @param hashMap             Map of Login and problem messages
-     * @param callbackInvoke  a callback object from return answer
+     * @param callback  a callback object from return answer
      */
     @SuppressLint("MissingPermission")
     override fun callUSSDInvoke(baseContext: Context, ussdPhoneNumber: String, simSlot: Int,
@@ -112,7 +113,7 @@ object USSDController : USSDInterface, USSDApi {
      * @param ussdPhoneNumber ussd number
      * @param simSlot         simSlot number to use
      * @param hashMap             Map of Login and problem messages
-     * @param callbackInvoke  a callback object from return answer
+     * @param callback  a callback object from return answer
      */
     @SuppressLint("MissingPermission")
     override fun callUSSDOverlayInvoke(baseContext: Context, ussdPhoneNumber: String, simSlot: Int,

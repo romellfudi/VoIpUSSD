@@ -194,25 +194,43 @@ public class USSDController implements USSDInterface, USSDApi {
             if (phoneAccountHandleList != null && phoneAccountHandleList.size() > simSlot)
                 intent.putExtra("android.telecom.extra.PHONE_ACCOUNT_HANDLE", phoneAccountHandleList.get(simSlot));
         }
-
         return intent;
     }
 
+    /**
+     * Send a string by using inputText from USSD Dialog
+     * @param text string which contains info to be sent
+     */
     public void sendData(String text) {
         USSDService.send(text);
     }
 
+    /**
+     * Send a string by using  the inputText from USSD Dialog
+     *
+     * @param text string which contains info to be sent
+     * @param callbackMessage response callback
+     */
     public void send(String text, CallbackMessage callbackMessage) {
         this.callbackMessage = callbackMessage;
         this.send = true;
         ussdInterface.sendData(text);
     }
 
+    /**
+     * Press the first button od USSD Dialog as to cancel operation
+     */
     @Override
     public void cancel() {
         USSDService.cancel();
     }
 
+    /**
+     * Check whether USSD Accessibility was enabled or not
+     *
+     * @param context Application context
+     * @return
+     */
     public static boolean verifyAccesibilityAccess(Context context) {
         boolean isEnabled = USSDController.isAccessiblityServicesEnable(context);
         if (!isEnabled) {
@@ -229,6 +247,12 @@ public class USSDController implements USSDInterface, USSDApi {
         return isEnabled;
     }
 
+    /**
+     * Check whether the overlay capacity was enabled or not
+     *
+     * @param context Application context
+     * @return
+     */
     public static boolean verifyOverLay(Context context) {
         boolean m_android_doesnt_grant = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && !Settings.canDrawOverlays(context);

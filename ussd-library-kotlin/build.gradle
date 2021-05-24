@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'androidx.navigation.safeargs'
+apply plugin: 'org.jetbrains.dokka'
 
 ext {
     bintrayRepo = 'maven'
@@ -50,6 +51,32 @@ android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+tasks.dokkaHtml.configure {
+    outputDirectory.set(file("../docs"))
+}
+
+tasks.dokkaJavadoc.configure {
+    outputDirectory.set(file("../documentation/javadoc"))
+}
+
+tasks.dokkaGfm.configure {
+    outputDirectory.set(file("../documentation/gfm"))
+}
+
+tasks.withType(dokkaHtml.getClass()).configureEach {
+    pluginsMapConfiguration.set(
+            ["org.jetbrains.dokka.base.DokkaBase": """{ "separateInheritedMembers": true}"""]
+    )
+}
+
+dokkaHtml.configure {
+    dokkaSourceSets {
+        named("main") {
+            skipDeprecated.set(true)
+        }
     }
 }
 
