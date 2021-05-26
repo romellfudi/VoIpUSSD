@@ -348,6 +348,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/IMoHaMeDHaMdYI"><img src="https://avatars3.githubusercontent.com/u/36090360?v=4" width="100px;" alt=""/><br /><sub><b>Mohamed Hamdy Hasan</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=IMoHaMeDHaMdYI" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ducaale"><img src="https://avatars3.githubusercontent.com/u/16341131?v=4" width="100px;" alt=""/><br /><sub><b>Mohamed Daahir</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=ducaale" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/rmxakalogistik"><img src="https://avatars3.githubusercontent.com/u/263449?v=4" width="100px;" alt=""/><br /><sub><b>Ramy Mokako</b></sub></a><br /><a href="https://github.com/rmxakalogistik/cordova-plugin-VoIpUSSD" title="Plugin">🔌</a></td>
+    <td align="center"><a href="https://github.com/shadiqaust"><img src="https://avatars.githubusercontent.com/u/10364016?v=4" width="100px;" alt=""/><br /><sub><b>Md Mafizur Rahman</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=shadiqaust" title="Code">💻</a></td>
   </tr>
 </table>
 
