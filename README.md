@@ -63,8 +63,8 @@ Add the following in your app's `build.gradle` file:
 | :------: | ------ | :------: |
 | jcenter() | 'com.romellfudi.ussdlibrary:ussd-library:1.1.i' | `DEPRECATED` |
 | jcenter() | 'com.romellfudi.ussdlibrary:kotlin-ussd-library:1.1.k' | `DEPRECATED` |
-| maven { url 'https://jitpack.io' } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.c' | `OK` |
-| maven { url 'https://jitpack.io' } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.c:' | `OK` |
+| maven { url 'https://jitpack.io' } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `OK` |
+| maven { url 'https://jitpack.io' } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `OK` |
 
 * Writing xml config file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
 
@@ -325,7 +325,7 @@ Once initialized the call will begin to receive and send the **famous USSD windo
 
 ## Contributors ✨
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-5-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-6-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
@@ -339,6 +339,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
     <td align="center"><a href="https://github.com/IMoHaMeDHaMdYI"><img src="https://avatars3.githubusercontent.com/u/36090360?v=4" width="100px;" alt=""/><br /><sub><b>Mohamed Hamdy Hasan</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=IMoHaMeDHaMdYI" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/ducaale"><img src="https://avatars3.githubusercontent.com/u/16341131?v=4" width="100px;" alt=""/><br /><sub><b>Mohamed Daahir</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=ducaale" title="Code">💻</a></td>
     <td align="center"><a href="https://github.com/rmxakalogistik"><img src="https://avatars3.githubusercontent.com/u/263449?v=4" width="100px;" alt=""/><br /><sub><b>Ramy Mokako</b></sub></a><br /><a href="https://github.com/rmxakalogistik/cordova-plugin-VoIpUSSD" title="Plugin">🔌</a></td>
+    <td align="center"><a href="https://github.com/shadiqaust"><img src="https://avatars.githubusercontent.com/u/10364016?v=4" width="100px;" alt=""/><br /><sub><b>Md Mafizur Rahman</b></sub></a><br /><a href="https://github.com/romellfudi/VoIpUSSD/commits?author=shadiqaust" title="Code">💻</a></td>
   </tr>
 </table>
 

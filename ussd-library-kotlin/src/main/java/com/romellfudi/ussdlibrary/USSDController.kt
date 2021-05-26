@@ -66,7 +66,6 @@ object USSDController : USSDInterface, USSDApi {
     override fun callUSSDInvoke(baseContext: Context, ussdPhoneNumber: String, hashMap: HashMap<String, List<String>>,
                                 callbackInvoke: CallbackInvoke) {
         context = baseContext
-        sendType = false
         callUSSDInvoke(context, ussdPhoneNumber, 0, hashMap, callbackInvoke)
     }
 
@@ -80,8 +79,7 @@ object USSDController : USSDInterface, USSDApi {
      */
     override fun callUSSDOverlayInvoke(baseContext: Context, ussdPhoneNumber: String, hashMap: HashMap<String, List<String>>,
                                        callbackInvoke: CallbackInvoke) {
-        context = baseContext
-        sendType = false
+        context = baseContext        
         callUSSDOverlayInvoke(context, ussdPhoneNumber, 0, hashMap, callbackInvoke)
     }
 
@@ -96,6 +94,7 @@ object USSDController : USSDInterface, USSDApi {
     @SuppressLint("MissingPermission")
     override fun callUSSDInvoke(baseContext: Context, ussdPhoneNumber: String, simSlot: Int,
                                 hashMap: HashMap<String, List<String>>, callback: CallbackInvoke) {
+		sendType = false
         context = baseContext
         callbackInvoke = callback
         map = hashMap
@@ -117,7 +116,8 @@ object USSDController : USSDInterface, USSDApi {
      */
     @SuppressLint("MissingPermission")
     override fun callUSSDOverlayInvoke(baseContext: Context, ussdPhoneNumber: String, simSlot: Int,
-                                       hashMap: HashMap<String, List<String>>, callback: CallbackInvoke) {
+                                       hashMap: HashMap<String, List<String>>, callback: CallbackInvoke) {		
+        sendType = false
         context = baseContext
         callbackInvoke = callback
         map = hashMap
