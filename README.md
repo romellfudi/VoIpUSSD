@@ -57,23 +57,14 @@ Interactive with ussd windoows, It is necessary to have present that the interfa
 
 Add the following in your app's `build.gradle` file:
 
-### From American Telcoms
-```groovy
-repositories {
-    jcenter()
-}
-dependencies {
-    // java [deprecated]
-    implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestVersion}'
-    // kotlin [deprecated]
-    implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{kotlinLatestVersion}'
+### Implementations
 
-    // java
-    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:{jitpackVersion}'
-    // kotlin
-    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:{jitpackVersion}'
-}
-```
+| Repository | KEY MESSAGE | Status |
+| :------: | ------ | :------: |
+| jcenter() | 'com.romellfudi.ussdlibrary:ussd-library:1.1.i' | `DEPRECATED` |
+| jcenter() | 'com.romellfudi.ussdlibrary:kotlin-ussd-library:1.1.k' | `DEPRECATED` |
+| maven { url 'https://jitpack.io' } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.c' | `OK` |
+| maven { url 'https://jitpack.io' } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.c:' | `OK` |
 
 * Writing xml config file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
 

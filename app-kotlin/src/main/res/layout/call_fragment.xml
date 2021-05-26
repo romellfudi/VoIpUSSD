@@ -6,12 +6,14 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.romellfudi.ussd.main.view.MainFragmentView">
+    toolsz:context="com.romellfudi.ussd.main.view.MainFragmentView">
 
     <data>
+
         <variable
             name="viewModel"
             type="com.romellfudi.ussd.main.entity.CallViewModel" />
+
         <variable
             name="mainFragment"
             type="com.romellfudi.ussd.main.view.MainFragmentView" />
@@ -33,11 +35,11 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:lottie_rawRes="@raw/sms"
-                app:lottie_speed="1.5"
+                app:lottie_autoPlay="true"
                 app:lottie_loop="true"
+                app:lottie_rawRes="@raw/sms"
                 app:lottie_renderMode="automatic"
-                app:lottie_autoPlay="true"/>
+                app:lottie_speed="1.5" />
 
             <TextView
                 android:id="@+id/txt"
@@ -50,19 +52,29 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/animation_view" />
 
-
-            <EditText
-                android:id="@+id/phone"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phone_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Put number"
-                android:inputType="phone"
-                android:singleLine="true"
-                android:text="@{viewModel.number}"
-                android:textSize="16sp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:hint="Input number"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/txt" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txt">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:background="#CBCCB8D3"
+                    android:textColor="#CB9509C6"
+                    android:textColorHint="#CB764D85"
+                    android:text="@{viewModel.number}"
+                    android:layout_margin="5dp"
+                    tools:text="@tools:sample/us_phones"
+                    android:textSize="16sp" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <View
                 android:id="@+id/divider_p"
@@ -71,7 +83,8 @@
                 android:layout_height="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phone" />
+                app:layout_constraintTop_toBottomOf="@id/phone_layout" />
+
             <RadioGroup
                 android:id="@+id/flavor_options"
                 android:layout_width="match_parent"
@@ -85,28 +98,28 @@
                     android:id="@+id/normal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"
                     android:checked="@{viewModel.dialUpType.equals(@string/normal)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/normal)}"
-                    android:text="@string/normal" />
+                    android:text="@string/normal"
+                    android:textStyle="italic" />
 
                 <RadioButton
                     android:id="@+id/custom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"
                     android:checked="@{viewModel.dialUpType.equals(@string/custom)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/custom)}"
-                    android:text="@string/custom" />
+                    android:text="@string/custom"
+                    android:textStyle="italic" />
 
                 <RadioButton
                     android:id="@+id/splash"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textStyle="italic"
                     android:checked="@{viewModel.dialUpType.equals(@string/splash)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/splash)}"
-                    android:text="@string/splash" />
+                    android:text="@string/splash"
+                    android:textStyle="italic" />
 
             </RadioGroup>
 
@@ -130,13 +143,14 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/accessibility" />
+
             <TextView
                 android:id="@+id/result"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@{viewModel.result}"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                 android:textSize="16sp"
-                android:text="@{viewModel.result}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/divider_f" />
