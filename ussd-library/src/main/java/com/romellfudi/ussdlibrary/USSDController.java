@@ -77,8 +77,7 @@ public class USSDController implements USSDInterface, USSDApi {
      * @param map             Map of Login and problem messages
      * @param callbackInvoke  a callback object from return answer
      */
-    public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
-        send=false;
+    public void callUSSDInvoke(String ussdPhoneNumber, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {        
         callUSSDInvoke(ussdPhoneNumber, 0, map, callbackInvoke);
     }
 
@@ -90,8 +89,7 @@ public class USSDController implements USSDInterface, USSDApi {
      * @param map             Map of Login and problem messages
      * @param callbackInvoke  a callback object from return answer
      */
-    public void callUSSDOverlayInvoke(String ussdPhoneNumber, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
-        send=false;
+    public void callUSSDOverlayInvoke(String ussdPhoneNumber, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {        
         callUSSDOverlayInvoke(ussdPhoneNumber, 0, map, callbackInvoke);
     }
 
@@ -105,6 +103,7 @@ public class USSDController implements USSDInterface, USSDApi {
      */
     @SuppressLint("MissingPermission")
     public void callUSSDInvoke(String ussdPhoneNumber, int simSlot, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
+		send=false;
         this.callbackInvoke = callbackInvoke;
         this.map = map;
         if (verifyAccesibilityAccess(context)) {
@@ -125,6 +124,7 @@ public class USSDController implements USSDInterface, USSDApi {
      */
     @SuppressLint("MissingPermission")
     public void callUSSDOverlayInvoke(String ussdPhoneNumber, int simSlot, HashMap<String, HashSet<String>> map, CallbackInvoke callbackInvoke) {
+		send=false;
         this.callbackInvoke = callbackInvoke;
         this.map = map;
         if (verifyAccesibilityAccess(context) && verifyOverLay(context)) {
