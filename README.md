@@ -59,12 +59,12 @@ Add the following in your app's `build.gradle` file:
 
 ### Implementations
 
-| Repository | KEY MESSAGE | Status |
+| Repository | implementation | Status |
 | :------: | ------ | :------: |
 | jcenter() | 'com.romellfudi.ussdlibrary:ussd-library:1.1.i' | `DEPRECATED` |
 | jcenter() | 'com.romellfudi.ussdlibrary:kotlin-ussd-library:1.1.k' | `DEPRECATED` |
-| maven { url 'https://jitpack.io' } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `OK` |
-| maven { url 'https://jitpack.io' } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `OK` |
+| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `READY` |
+| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `READY` |
 
 * Writing xml config file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
 
