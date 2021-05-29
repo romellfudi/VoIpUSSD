@@ -39,7 +39,7 @@
 ## Target Development [High Quality](https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif):
 <p align="center"> <a href="https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif"><img src="https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif" alt="Jitpack"></a> </p>
 
-Interactive with ussd windoows, It is necessary to have present that the interface depends on the SO and on the manufacturer of Android device.
+Interactive with ussd windows, remember the USSD interfaces depends on the System Operative and the manufacturer of Android devices.
 
 ## Community Chat
 [![Gitter](https://img.shields.io/badge/gitter-join%20us-%23753a89.svg?&style=for-the-badge&logo=gitter&labelColor=ee1a67)](https://gitter.im/romellfudi/VoIpUSSD?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
@@ -49,24 +49,17 @@ Interactive with ussd windoows, It is necessary to have present that the interfa
 
 ## USSD LIBRARY
 
-`latestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg?style=flat-square&logo=jfrog)](https://bintray.com/romllz489/maven/ussd-library)
-
-`kotlinLatestVersion` is [![](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg?&style=flat-square&logo=jfrog)](https://bintray.com/romllz489/maven/kotlin-ussd-library)
-
-`jitpackVersion` is [![](https://jitpack.io/v/romellfudi/VoIpUSSD.svg)](https://jitpack.io/#romellfudi/VoIpUSSD)
-
-Add the following in your app's `build.gradle` file:
-
 ### Implementations
+Add the following in your app's `build.gradle` file:
 
 | Repository | implementation | Status |
 | :------: | ------ | :------: |
 | jcenter() | 'com.romellfudi.ussdlibrary:ussd-library:1.1.i' | `DEPRECATED` |
 | jcenter() | 'com.romellfudi.ussdlibrary:kotlin-ussd-library:1.1.k' | `DEPRECATED` |
-| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `READY` |
+| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:ussd-library:1.2.d' | `READY` |
 | maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `READY` |
 
-* Writing xml config file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) to res/xml folder (if necessary), this config file allow link between App and SO:
+* Writing a config xml file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) `to res/xml` folder (if necessary), this config file allow to link between Application and System Oerative:
 
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
