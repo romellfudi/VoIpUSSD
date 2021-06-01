@@ -6,6 +6,7 @@
 
 package com.romellfudi.ussd.main.view
 
+import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -13,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import com.google.android.material.snackbar.Snackbar
+import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.databinding.CallFragmentBinding
 import com.romellfudi.ussd.main.dismissIntent
@@ -40,6 +43,7 @@ import timber.log.Timber
  * @since 1.12.a
  */
 
+const val REQUEST_CODE_PERMISSIONS: Int = 4321
 class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
 
     private val callViewModel: CallViewModel by viewModel()
@@ -51,39 +55,67 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
         get() = USSDController.verifyOverLay(requireContext())
 
     override val ussdApi: USSDApi by inject()
+    private val permissionService: PermissionService by inject()
 
     private val mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
             by inject { parametersOf(this@MainFragmentView) }
 
     private val handler: Handler by inject()
 
+    private val remainingPermissions by lazy { resources.getStringArray(R.array.permissions) }
+
+    private val refuses by lazy { getString(R.string.refuse_permissions) }
+
     private val loading by lazy { getString(R.string.loading_data) }
 
     private val dialog by lazy { getString(R.string.splash_dialog) }
 
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?, savedInstanceState: Bundle?): View? =
-            CallFragmentBinding.inflate(inflater, container, false).apply {
-                lifecycleOwner = viewLifecycleOwner
-                viewModel = callViewModel
-                mainFragment = this@MainFragmentView
-            }.run { root }
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?, savedInstanceState: Bundle?
+    ): View = CallFragmentBinding.inflate(inflater, container, false).apply {
+            lifecycleOwner = viewLifecycleOwner
+            viewModel = callViewModel
+            mainFragment = this@MainFragmentView
+        }.run { root }
 
-    override fun dialUp() {
-        lifecycleScope.launch {
-            if (callViewModel.hasNoFlavorSet())
-                callViewModel.setDialUpType(getString(R.string.normal))
-            activity?.let {
-                if (USSDController.verifyAccesibilityAccess(it)) {
-                    when (callViewModel.dialUpType.value) {
-                        getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay(it)
-                        getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay(it)
-                        else -> mainFragmentMVPPresenter.call(it)
+    override fun dialUp() = requestPermissions(
+            permissionService.getPermissions(activity as Activity),
+            REQUEST_CODE_PERMISSIONS )
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int, permissions: Array<String>,
+        grantResults: IntArray
+    ) = permissionService.handler(callback, grantResults, permissions)
+
+    private val callback = object : PermissionService.Callback() {
+        override fun onResponse(permissions: List<String>?) {
+            permissions?.toMutableList()?.apply {
+                removeAll(remainingPermissions)
+                if (isNotEmpty()) {
+                    showMessage(refuses)
+                    return@onResponse
+                }
+            }
+            lifecycleScope.launch {
+                if (callViewModel.hasNoFlavorSet())
+                    callViewModel.setDialUpType(getString(R.string.normal))
+                activity?.let {
+                    if (USSDController.verifyAccesibilityAccess(it)) {
+                        when (callViewModel.dialUpType.value) {
+                            getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay(it)
+                            getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay(it)
+                            else -> mainFragmentMVPPresenter.call(it)
+                        }
                     }
                 }
             }
         }
     }
+
+    fun showMessage(message: String) =
+        Snackbar.make( requireActivity().findViewById(android.R.id.content),
+            message, Snackbar.LENGTH_SHORT ).show()
 
     override fun showOverlay() {
         Timber.i("START OVERLAY DIALOG")
@@ -99,7 +131,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
     }
 
     override fun showResult(result: String) =
-            callViewModel.result.postValue(result)
+        callViewModel.result.postValue(result)
 
     override fun dismissOverlay() {
         handler.removeCallbacksAndMessages(null)

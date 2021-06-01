@@ -52,6 +52,9 @@ android {
             versionNameSuffix "-publish"
         }
     }
+    lintOptions {
+        abortOnError false
+    }
     android.variantFilter { variant ->
         if ((variant.buildType.name == 'release'
                 && variant.getFlavors().get(0).name == 'demo')
