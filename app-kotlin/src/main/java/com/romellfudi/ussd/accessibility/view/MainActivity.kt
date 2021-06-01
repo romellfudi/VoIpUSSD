@@ -22,6 +22,9 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.romellfudi.permission.PermissionService
 import com.romellfudi.ussd.R
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import org.koin.core.parameter.parametersOf
@@ -33,23 +36,26 @@ import org.koin.core.parameter.parametersOf
  * @version 1.0.b 23/02/2017
  * @since 1.0
  */
+const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
 internal class MainActivity : AppCompatActivity(), KoinComponent,
         InstallStateUpdatedListener, MainMVPView {
 
-    private val permissionService: PermissionService by inject()
     private val appUpdateManager: AppUpdateManager by inject()
 
-    private val refuses by lazy { getString(R.string.refuse_permissions) }
     private val restart by lazy { getString(R.string.restartUpdate) }
     private val downloaded by lazy { getString(R.string.downloaded) }
     private val errorUpdate by lazy { getString(R.string.errorUpdate) }
-    private val remainingPermissions by lazy { resources.getStringArray(R.array.permissions) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
         AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
-        permissionService.request(this,callback)
+        runBlocking {
+            async {
+                appUpdateManager.registerListener(this@MainActivity)
+                checkUpdate()
+            }
+        }
     }
 
     override fun onStateUpdate(state: InstallState) {
@@ -102,26 +108,4 @@ internal class MainActivity : AppCompatActivity(), KoinComponent,
 
     override fun onBackPressed() = finish()
 
-    private val callback = object : PermissionService.Callback() {
-        override fun onResponse(permissions: List<String>?) {
-            val refusePermissions = permissions?.toMutableList()?.apply {
-                removeAll(remainingPermissions)
-            }
-            if (!refusePermissions.isNullOrEmpty()){
-                showMessage(refuses)
-                Handler().postDelayed(::finish, 2000)
-            } else {
-                appUpdateManager.registerListener(this@MainActivity)
-                checkUpdate()
-            }
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>,
-                                            grantResults: IntArray) =
-            PermissionService.handler(callback, grantResults, permissions)
-
-    private companion object {
-        private const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
-    }
 }
