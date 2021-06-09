@@ -153,7 +153,8 @@ public class USSDService extends AccessibilityService {
         return (event.getClassName().equals("amigo.app.AmigoAlertDialog")
                 || event.getClassName().equals("android.app.AlertDialog")
                 || event.getClassName().equals("com.android.phone.oppo.settings.LocalAlertDialog")
-                || event.getClassName().equals("com.zte.mifavor.widget.AlertDialog"));
+                || event.getClassName().equals("com.zte.mifavor.widget.AlertDialog"))
+                || event.getClassName().equals("color.support.v7.app.AlertDialog"));
     }
 
     /**
