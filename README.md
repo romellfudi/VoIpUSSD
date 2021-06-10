@@ -50,14 +50,14 @@ Interactive with ussd windows, remember the USSD interfaces depends on the Syste
 ## USSD LIBRARY
 
 ### Implementations
-Add the following in your app's `build.gradle` file:
+Add the following dependency in your app's `build.gradle` configuration file:
 
 | Repository | implementation | Status |
 | :------: | ------ | :------: |
 | jcenter() | 'com.romellfudi.ussdlibrary:ussd-library:1.1.i' | `DEPRECATED` |
 | jcenter() | 'com.romellfudi.ussdlibrary:kotlin-ussd-library:1.1.k' | `DEPRECATED` |
-| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:ussd-library:1.2.d' | `READY` |
-| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.d' | `READY` |
+| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:ussd-library:1.2.f' | `READY` |
+| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.f' | `READY` |
 
 * Writing a config xml file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) `to res/xml` folder (if necessary), this config file allow to link between Application and System Oerative:
 
