@@ -1,21 +1,42 @@
 # Changelog
 
-## Release 1.2.a (19/05/2020)
-- versions
-latestJavaVersion : ![Bintray](https://img.shields.io/bintray/v/romllz489/maven/ussd-library.svg)
-latestKotlinVersion : ![Bintray Kotlin](https://img.shields.io/bintray/v/romllz489/maven/kotlin-ussd-library.svg)
+## Release USSD Library 1.2.f in Jitpack (10/06/2021)
+[1.2.f](https://github.com/romellfudi/VoIpUSSD/releases/tag/1.2.f)
+🎉 Released a new version 1.2.f! 🎉
 
 ```gradle
 repositories {
-    jcenter()
+    maven { url 'https://jitpack.io' }
 }
 dependencies {
     // java
-    implementation 'com.romellfudi.ussdlibrary:ussd-library:{latestJavaVersion}'
+    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:1.2.f'
     // kotlin
-    implementation 'com.romellfudi.ussdlibrary:kotlin-ussd-library:{latestKotlinVersion}'
+    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.f'
 }
 ```
+---
+
+## Release 1.2.e (29/05/2021)
+[1.2.e](https://github.com/romellfudi/VoIpUSSD/releases/tag/1.2.e)
+🎉 Released a new version 1.2.e! 🎉
+
+```gradle
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+dependencies {
+    // java
+    implementation 'com.github.romellfudi.VoIpUSSD:ussd-library:1.2.e'
+    // kotlin
+    implementation 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.e'
+}
+```
+---
+
+## Rev28 (19/05/2020)
+- [**External dependency**][**bug**][**wontfix**] Final USSD dialog message showing on top of Splash Screen [#67](https://github.com/romellfudi/VoIpUSSD/issues/67)
+
 ---
 
 ## Release USSD Library 1.1.i Ask Permission Requests (06/03/2019)
