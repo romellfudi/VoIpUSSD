@@ -2,11 +2,8 @@ $dokka.format:html-v1
 $dokka.linkExtension:html
 $dokka.location:com.romellfudi.ussdlibrary////PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/index.html
 $dokka.location:com.romellfudi.ussdlibrary//contains/kotlin.String#kotlin.String/PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/contains.html
-$dokka.location:com.romellfudi.ussdlibrary//indexOf/kotlin.String#kotlin.String/PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/index-of.html
-$dokka.location:com.romellfudi.ussdlibrary//isEmpty/kotlin.CharSequence#/PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/is-empty.html
 $dokka.location:com.romellfudi.ussdlibrary//replace/kotlin.String#kotlin.String#kotlin.String/PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/replace.html
 $dokka.location:com.romellfudi.ussdlibrary//substring/kotlin.String#kotlin.Int/PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/substring.html
-$dokka.location:com.romellfudi.ussdlibrary//toLowerCase/kotlin.String#/PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/to-lower-case.html
 $dokka.location:com.romellfudi.ussdlibrary/GifImageView///PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/-gif-image-view/index.html
 $dokka.location:com.romellfudi.ussdlibrary/GifImageView/GifImageView/#android.content.Context#android.util.AttributeSet#kotlin.Int/PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/-gif-image-view/-gif-image-view.html
 $dokka.location:com.romellfudi.ussdlibrary/GifImageView/GifImageView/#android.content.Context/PointingToDeclaration/ussd-library-kotlin/com.romellfudi.ussdlibrary/-gif-image-view/-gif-image-view.html
