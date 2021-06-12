@@ -61,7 +61,7 @@ object USSDController : USSDInterface, USSDApi {
      *
      * @param ussdPhoneNumber ussd number
      * @param hashMap             Map of Login and problem messages
-     * @param callbackInvoke  a callback object from return answer
+     * @param callbackInvoke  a listener object as to return answer
      */
     override fun callUSSDInvoke(baseContext: Context, ussdPhoneNumber: String, hashMap: HashMap<String, List<String>>,
                                 callbackInvoke: CallbackInvoke) {
@@ -75,7 +75,7 @@ object USSDController : USSDInterface, USSDApi {
      *
      * @param ussdPhoneNumber ussd number
      * @param hashMap         Map of Login and problem messages
-     * @param callbackInvoke  a callback object from return answer
+     * @param callbackInvoke  a listener object as to return answer
      */
     override fun callUSSDOverlayInvoke(baseContext: Context, ussdPhoneNumber: String, hashMap: HashMap<String, List<String>>,
                                        callbackInvoke: CallbackInvoke) {
@@ -86,10 +86,23 @@ object USSDController : USSDInterface, USSDApi {
     /**
      * Invoke a dial-up calling a ussd number
      *
+     * ```
+     * ussdApi.callUSSDInvoke(activity,"*515#",0,
+     *              hashOf("KEY_LOGIN" to listOf("loading", "waiting"),
+     *                      "KEY_ERROR" to listOf("null", "problem")  ),
+     *              object : USSDController.CallbackInvoke {
+     *                  override fun responseInvoke(message: String) {
+     *                  }
+     *                  override fun over(message: String) {
+     *                  }
+     *              }
+     *         )
+     * ```
+     *
      * @param ussdPhoneNumber ussd number
-     * @param simSlot         simSlot number to use
-     * @param hashMap             Map of Login and problem messages
-     * @param callback  a callback object from return answer
+     * @param simSlot         location number of the SIM
+     * @param hashMap         Map of Login and problem messages
+     * @param callback        a listener object as to return answer
      */
     @SuppressLint("MissingPermission")
     override fun callUSSDInvoke(baseContext: Context, ussdPhoneNumber: String, simSlot: Int,
@@ -109,10 +122,23 @@ object USSDController : USSDInterface, USSDApi {
      * Invoke a dial-up calling a ussd number and
      * you had a overlay progress widget
      *
+     * ```
+     * ussdApi.callUSSDOverlayInvoke(activity,"*515#",0,
+     *              hashOf("KEY_LOGIN" to listOf("loading", "waiting"),
+     *                      "KEY_ERROR" to listOf("null", "problem")  ),
+     *              object : USSDController.CallbackInvoke {
+     *                  override fun responseInvoke(message: String) {
+     *                  }
+     *                  override fun over(message: String) {
+     *                  }
+     *              }
+     *         )
+     * ```
+     *
      * @param ussdPhoneNumber ussd number
      * @param simSlot         simSlot number to use
-     * @param hashMap             Map of Login and problem messages
-     * @param callback  a callback object from return answer
+     * @param hashMap         Map of Login and problem messages
+     * @param callback        a listener object as to return answer
      */
     @SuppressLint("MissingPermission")
     override fun callUSSDOverlayInvoke(baseContext: Context, ussdPhoneNumber: String, simSlot: Int,
@@ -126,14 +152,6 @@ object USSDController : USSDInterface, USSDApi {
         else callbackInvoke.over("Check your accessibility | overlay permission")
     }
 
-    /**
-     * Invoke a dial-up calling a ussd number and
-     * you had a overlay progress widget
-     *
-     * @param ussdPhoneNumber ussd number
-     * @param simSlot         simSlot number to use
-     *
-     */
     private fun dialUp(ussdPhoneNumber: String, simSlot: Int) {
         when {
             !map.containsKey(KEY_LOGIN) || !map.containsKey(KEY_ERROR) ->
@@ -171,14 +189,47 @@ object USSDController : USSDInterface, USSDApi {
         }
     }
 
+    /**
+     * The aim of this function is to send text via [android.widget.EditText]
+     *
+     * ```
+     * ussdApi.sendData("12345")
+     * ```
+     * @param[text] String will be sent by EditText
+     */
     override fun sendData(text: String) = USSDServiceKT.send(text)
 
+    /**
+     * The aim of this is to send text(contains 145 characters in avg.)
+     *
+     * ```
+     * ussdApi.send("12345") { it -> "ArrayString"
+     *   it.toString()
+     * }
+     * ```
+     *
+     * @param[text] String send it into @see [android.widget.EditText]
+     * @param[callbackMessage] The listener to get response, for example: ```[Hello,Cancel,Accept]```
+     */
     override fun send(text: String, callbackMessage: (String) -> Unit) {
         this.callbackMessage = callbackMessage
         sendType = true
         ussdInterface?.sendData(text)
     }
 
+    /**
+     * Cancel the USSD flow in processing
+     *
+     * ```
+     * ussdApi.callUSSDInvoke( ... ) {
+     *      ussdApi.cancel()
+     * }
+     * ```
+     *
+     * @see callUSSDInvoke
+     * @see callUSSDOverlayInvoke
+     *
+     */
     override fun cancel() = USSDServiceKT.cancel()
 
     /**
@@ -189,11 +240,21 @@ object USSDController : USSDInterface, USSDApi {
         fun over(message: String)
     }
 
+    /**
+     * The aim of this is to check whether accessibility is enabled or not
+     * @param[context] The application context
+     * @return The enable value of the accessibility
+     */
     fun verifyAccesibilityAccess(context: Context): Boolean =
             isAccessibilityServicesEnable(context).also {
                 if (!it) openSettingsAccessibility(context as Activity)
             }
 
+    /**
+     * The aim of this is to check whether overlay permission is enabled or not
+     * @param[context] The application context
+     * @return The enable value of the permission
+     */
     fun verifyOverLay(context: Context): Boolean = (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
             || Settings.canDrawOverlays(context)).also {
         if (!it) openSettingsOverlay(context as Activity)
