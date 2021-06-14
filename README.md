@@ -154,7 +154,6 @@ ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
 ```
 
 ```kotlin
-USSDApi ussdApi = USSDController.getInstance(activity)
 ussdApi.callUSSDOverlayInvoke(phoneNumber, map, object : USSDController.CallbackInvoke {
     override fun responseInvoke(message: String) {
         // message has the response string data
@@ -239,10 +238,10 @@ ussdApi.callUSSDOverlayInvoke(phoneNumber, simSlot, map, object : USSDController
 In case use at android >= M, you could check previusly permissions, `callInvoke` and `callUSSDOverlayInvoke` methods check eneble too:
 
 ```java
- # check if accessibility permissions is enable
-    USSDController.verifyAccesibilityAccess(Activity)
- # check if overlay permissions is enable
-    USSDController.verifyOverLay(Activity)
+ # check if accessibility permissions is enabled or not
+    ussdApi.verifyAccesibilityAccess(Activity)
+ # check if overlay permissions is enabled or not
+    ussdApi.verifyOverLay(Activity)
 ```
 
 ## Overlay Service Widget (not required)
