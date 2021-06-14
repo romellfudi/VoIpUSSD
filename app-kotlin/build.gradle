@@ -28,7 +28,8 @@ android {
         targetSdkVersion 29
         versionCode 13
         versionName "1.13.a"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
         signingConfig signingConfigs.config
     }
     buildFeatures {
@@ -110,6 +111,8 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.7.0'
     implementation "com.google.android.material:material:1.3.0-alpha03"
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
+
+    androidTestImplementation 'com.kaspersky.android-components:kaspresso:1.2.0'
 }
 repositories {
     mavenCentral()

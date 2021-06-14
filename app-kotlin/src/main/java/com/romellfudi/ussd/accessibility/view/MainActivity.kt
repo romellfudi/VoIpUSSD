@@ -37,7 +37,7 @@ import org.koin.core.parameter.parametersOf
  * @since 1.0
  */
 const val REQUEST_CODE_FLEXIBLE_UPDATE: Int = 1234
-internal class MainActivity : AppCompatActivity(), KoinComponent,
+class MainActivity : AppCompatActivity(), KoinComponent,
         InstallStateUpdatedListener, MainMVPView {
 
     private val appUpdateManager: AppUpdateManager by inject()

@@ -21,6 +21,7 @@
         app:layout_constraintGuide_percent="0.4" />
 
     <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/logo"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:src="@drawable/combine"
@@ -32,6 +33,7 @@
 
 
     <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lottie"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"

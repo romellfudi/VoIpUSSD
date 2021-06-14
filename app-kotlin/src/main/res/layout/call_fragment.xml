@@ -20,6 +20,7 @@
     </data>
 
     <ScrollView
+        android:id="@+id/call_scroll"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -96,7 +97,7 @@
 
                 <RadioButton
                     android:id="@+id/normal"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.dialUpType.equals(@string/normal)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/normal)}"
@@ -105,7 +106,7 @@
 
                 <RadioButton
                     android:id="@+id/custom"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.dialUpType.equals(@string/custom)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/custom)}"
@@ -114,7 +115,7 @@
 
                 <RadioButton
                     android:id="@+id/splash"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checked="@{viewModel.dialUpType.equals(@string/splash)}"
                     android:onClick="@{() -> viewModel.setDialUpType(@string/splash)}"
