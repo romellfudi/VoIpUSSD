@@ -52,7 +52,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
         get() = phone?.text.toString().trim { it <= ' ' }
 
     override val hasAllowOverlay: Boolean
-        get() = USSDController.verifyOverLay(requireContext())
+        get() = ussdApi.verifyOverLay(requireContext())
 
     override val ussdApi: USSDApi by inject()
     private val permissionService: PermissionService by inject()
@@ -101,7 +101,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
                 if (callViewModel.hasNoFlavorSet())
                     callViewModel.setDialUpType(getString(R.string.normal))
                 activity?.let {
-                    if (USSDController.verifyAccesibilityAccess(it)) {
+                    if (ussdApi.verifyAccessibilityAccess(it)) {
                         when (callViewModel.dialUpType.value) {
                             getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay(it)
                             getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay(it)

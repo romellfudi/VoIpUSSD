@@ -37,4 +37,6 @@ interface USSDApi {
     fun callUSSDOverlayInvoke(context: Context, ussdPhoneNumber: String, simSlot: Int,
                               map: HashMap<String, List<String>>,
                               callbackInvoke: USSDController.CallbackInvoke)
+    fun verifyAccessibilityAccess(context: Context): Boolean
+    fun verifyOverLay(context: Context): Boolean
 }
