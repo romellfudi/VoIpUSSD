@@ -43,7 +43,6 @@ import timber.log.Timber
  * @since 1.12.a
  */
 
-const val REQUEST_CODE_PERMISSIONS: Int = 4321
 class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
 
     private val callViewModel: CallViewModel by viewModel()
@@ -78,8 +77,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
         }.run { root }
 
     override fun dialUp() = requestPermissions(
-            permissionService.getPermissions(activity as Activity),
-            REQUEST_CODE_PERMISSIONS )
+            permissionService.getPermissions(activity as Activity),4321 )
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>,
