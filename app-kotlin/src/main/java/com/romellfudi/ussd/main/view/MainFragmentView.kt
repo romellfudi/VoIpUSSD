@@ -43,24 +43,21 @@ import timber.log.Timber
  * @since 1.12.a
  */
 
-const val REQUEST_CODE_PERMISSIONS: Int = 4321
 class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
 
     private val callViewModel: CallViewModel by viewModel()
+    private val permissionService: PermissionService by inject()
+    private val handler: Handler by inject()
+    override val ussdApi: USSDApi by inject()
 
     override val ussdNumber: String
         get() = phone?.text.toString().trim { it <= ' ' }
 
     override val hasAllowOverlay: Boolean
-        get() = USSDController.verifyOverLay(requireContext())
-
-    override val ussdApi: USSDApi by inject()
-    private val permissionService: PermissionService by inject()
+        get() = ussdApi.verifyOverLay(requireContext())
 
     private val mainFragmentMVPPresenter: MainFragmentMVPPresenter<MainFragmentMVPView, MainFragmentMVPInteractor>
             by inject { parametersOf(this@MainFragmentView) }
-
-    private val handler: Handler by inject()
 
     private val remainingPermissions by lazy { resources.getStringArray(R.array.permissions) }
 
@@ -80,8 +77,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
         }.run { root }
 
     override fun dialUp() = requestPermissions(
-            permissionService.getPermissions(activity as Activity),
-            REQUEST_CODE_PERMISSIONS )
+            permissionService.getPermissions(activity as Activity),4321 )
 
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<String>,
@@ -101,7 +97,7 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
                 if (callViewModel.hasNoFlavorSet())
                     callViewModel.setDialUpType(getString(R.string.normal))
                 activity?.let {
-                    if (USSDController.verifyAccesibilityAccess(it)) {
+                    if (ussdApi.verifyAccessibilityAccess(it)) {
                         when (callViewModel.dialUpType.value) {
                             getString(R.string.custom) -> mainFragmentMVPPresenter.callOverlay(it)
                             getString(R.string.splash) -> mainFragmentMVPPresenter.callSplashOverlay(it)

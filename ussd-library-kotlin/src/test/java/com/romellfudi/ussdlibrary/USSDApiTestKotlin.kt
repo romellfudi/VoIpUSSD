@@ -89,7 +89,7 @@ class USSDApiTestKotlin {
         every { accessibilityEvent.className } returns "amigo.app.AmigoAlertDialog"
         mockkObject(USSDController)
         mockkStatic(Uri::class)
-        every { USSDController.verifyAccesibilityAccess(any()) } returns true
+        every { USSDController.verifyAccessibilityAccess(any()) } returns true
         every { USSDController.verifyOverLay(any()) } returns true
         every { Uri.decode(any()) } returns ""
         every { Uri.parse(any()) } returns uri
@@ -110,7 +110,7 @@ class USSDApiTestKotlin {
         `when`(activity.applicationInfo).thenReturn(applicationInfo)
         `when`(activity.getSystemService(any())).thenReturn(null)
         applicationInfo.nonLocalizedLabel = javaClass.getPackage().toString()
-        USSDController.verifyAccesibilityAccess(activity)
+        USSDController.verifyAccessibilityAccess(activity)
     }
 
     @Test

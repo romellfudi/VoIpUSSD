@@ -51,7 +51,7 @@ public class USSDServiceKT extends AccessibilityService {
         if (LoginView(event) && notInputText(event)) {
             // first view or logView, do nothing, pass / FIRST MESSAGE
             clickOnButton(event, 0);
-            ussd.setRunning(false);
+            ussd.stopRunning();
             ussd.callbackInvoke.over(response);
         } else if (problemView(event) || LoginView(event)) {
             // deal down
@@ -65,7 +65,7 @@ public class USSDServiceKT extends AccessibilityService {
                 // not more input panels / LAST MESSAGE
                 // sent 'OK' button
                 clickOnButton(event, 0);
-                ussd.setRunning(false);
+                ussd.stopRunning();
                 ussd.callbackInvoke.over(response);
             } else {
                 // sent option 1
@@ -101,14 +101,13 @@ public class USSDServiceKT extends AccessibilityService {
      * @param data  Any String
      */
     private static void setTextIntoField(AccessibilityEvent event, String data) {
-        USSDController ussd = USSDController.INSTANCE;
         Bundle arguments = new Bundle();
         arguments.putCharSequence(AccessibilityNodeInfo.ACTION_ARGUMENT_SET_TEXT_CHARSEQUENCE, data);
         for (AccessibilityNodeInfo leaf : getLeaves(event)) {
             if (leaf.getClassName().equals("android.widget.EditText")
                     && !leaf.performAction(AccessibilityNodeInfo.ACTION_SET_TEXT, arguments)) {
-                ClipboardManager clipboardManager = ((ClipboardManager) ussd.getContext()
-                        .getSystemService(Context.CLIPBOARD_SERVICE));
+                ClipboardManager clipboardManager = ((ClipboardManager)  USSDController
+                        .INSTANCE.getContext().getSystemService(Context.CLIPBOARD_SERVICE));
                 if (clipboardManager != null) {
                     clipboardManager.setPrimaryClip(ClipData.newPlainText("text", data));
                 }
@@ -124,11 +123,9 @@ public class USSDServiceKT extends AccessibilityService {
      * @return boolean has or not input text
      */
     protected static boolean notInputText(AccessibilityEvent event) {
-        boolean flag = true;
-        for (AccessibilityNodeInfo leaf : getLeaves(event)) {
-            if (leaf.getClassName().equals("android.widget.EditText")) flag = false;
-        }
-        return flag;
+        for (AccessibilityNodeInfo leaf : getLeaves(event))
+            if (leaf.getClassName().equals("android.widget.EditText")) return false; 
+        return true;
     }
 
     /**
