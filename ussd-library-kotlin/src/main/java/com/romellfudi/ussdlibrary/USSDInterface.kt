@@ -20,4 +20,5 @@ package com.romellfudi.ussdlibrary
 
 interface USSDInterface {
     fun sendData(text: String)
+    fun stopRunning()
 }

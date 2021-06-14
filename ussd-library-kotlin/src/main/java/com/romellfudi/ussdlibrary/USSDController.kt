@@ -29,8 +29,8 @@ import android.view.accessibility.AccessibilityManager
 @SuppressLint("StaticFieldLeak")
 object USSDController : USSDInterface, USSDApi {
 
-    const val KEY_LOGIN = "KEY_LOGIN"
-    const val KEY_ERROR = "KEY_ERROR"
+    internal const val KEY_LOGIN = "KEY_LOGIN"
+    internal const val KEY_ERROR = "KEY_ERROR"
 
     private val simSlotName = arrayOf("extra_asus_dial_use_dualsim",
             "com.android.phone.extra.slot", "slot", "simslot", "sim_slot", "subscription",
@@ -46,11 +46,15 @@ object USSDController : USSDInterface, USSDApi {
     lateinit var callbackInvoke: CallbackInvoke
 
     var callbackMessage: ((String) -> Unit)? = null
+        private set
 
     var isRunning: Boolean? = false
-    var sendType: Boolean? = false
+        private set
 
-    var ussdInterface: USSDInterface? = null
+    var sendType: Boolean? = false
+        private set
+
+    private var ussdInterface: USSDInterface? = null
 
     init {
         ussdInterface = this
@@ -111,7 +115,7 @@ object USSDController : USSDInterface, USSDApi {
         context = baseContext
         callbackInvoke = callback
         map = hashMap
-        if (verifyAccesibilityAccess(context)) {
+        if (verifyAccessibilityAccess(context)) {
             dialUp(ussdPhoneNumber, simSlot)
         } else {
             callbackInvoke.over("Check your accessibility")
@@ -147,7 +151,7 @@ object USSDController : USSDInterface, USSDApi {
         context = baseContext
         callbackInvoke = callback
         map = hashMap
-        if (verifyAccesibilityAccess(context) && verifyOverLay(context))
+        if (verifyAccessibilityAccess(context) && verifyOverLay(context))
             dialUp(ussdPhoneNumber, simSlot)
         else callbackInvoke.over("Check your accessibility | overlay permission")
     }
@@ -199,6 +203,10 @@ object USSDController : USSDInterface, USSDApi {
      */
     override fun sendData(text: String) = USSDServiceKT.send(text)
 
+    override fun stopRunning() {
+        isRunning = false
+    }
+
     /**
      * The aim of this is to send text(contains 145 characters in avg.)
      *
@@ -245,7 +253,7 @@ object USSDController : USSDInterface, USSDApi {
      * @param[context] The application context
      * @return The enable value of the accessibility
      */
-    fun verifyAccesibilityAccess(context: Context): Boolean =
+    override fun verifyAccessibilityAccess(context: Context): Boolean =
             isAccessibilityServicesEnable(context).also {
                 if (!it) openSettingsAccessibility(context as Activity)
             }
@@ -255,7 +263,7 @@ object USSDController : USSDInterface, USSDApi {
      * @param[context] The application context
      * @return The enable value of the permission
      */
-    fun verifyOverLay(context: Context): Boolean = (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
+    override fun verifyOverLay(context: Context): Boolean = (Build.VERSION.SDK_INT < Build.VERSION_CODES.M
             || Settings.canDrawOverlays(context)).also {
         if (!it) openSettingsOverlay(context as Activity)
     }
