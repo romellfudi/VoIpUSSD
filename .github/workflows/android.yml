@@ -46,10 +46,6 @@ jobs:
           path: ussd-library-kotlin/build/outputs/aar/ussd-library-kotlin-debug.aar
   android_testing:
     runs-on: macos-latest
-    strategy:
-      matrix:
-        api-level: [21, 23, 29]
-        target: [default, google_apis]
     steps:
       - name: checkout
         uses: actions/checkout@v2
