@@ -81,8 +81,7 @@ class SimpleTest : TestCase() {
                         isDisplayed()
                         hasNoText("Empty")
                         hasAnyText()
-                        startsWithText("\n-\n[")
-                        containsText("]")
+                        hasText(RegexMatcher.matchesRegex("^\\n-\\n\\[.+(, .*)*\\]$"))
                     }
                     device.screenshots.take("over_screenshot")
                 }
