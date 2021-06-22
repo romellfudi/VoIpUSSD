@@ -50,7 +50,7 @@ class SimpleTest : TestCase() {
                 )
                 device.screenshots.take("splash_screenshot")
             }
-            step("Make the USSD call") {
+            step("Make the USSD call & not show the splashView") {
                 MainScreen {
                     testLogger.i("Writing the short number in the input...")
                     result { hasText("Empty") }
@@ -66,10 +66,7 @@ class SimpleTest : TestCase() {
                         SERVICE_CLASS_NAME
                     )
                     testLogger.i("Dial up...")
-                    dialUpButton {
-                        isClickable()
-                        click()
-                    }
+                    dialUpButton { click() }
                     device.screenshots.take("dial_screenshot")
                 }
             }
@@ -81,7 +78,29 @@ class SimpleTest : TestCase() {
                         isDisplayed()
                         hasNoText("Empty")
                         hasAnyText()
-                        hasText(RegexMatcher.matchesRegex("^\\n-\\n\\[.+(, .*)*\\]$"))
+                        hasText(RegexMatcher.matchesRegex("^\\n-\\n\\[.+(,\\s+.*)*\\]$"))
+                    }
+                    device.screenshots.take("over_screenshot")
+                }
+            }
+            step("Make the USSD call & show the splashView") {
+                MainScreen {
+                    testLogger.i("Closing soft keyboard...")
+                    closeSoftKeyboard()
+                    radioSplash { click() }
+                    testLogger.i("Dial up...")
+                    dialUpButton { click() }
+                    device.screenshots.take("dial_splash_screenshot")
+                }
+            }
+            step("Verify the result of the sdk after showing SplashView") {
+                MainScreen {
+                    testLogger.i("Scrolling the page and display the result")
+                    call_scroll { swipeUp() }
+                    result {
+                        hasNoText("Empty")
+                        hasAnyText()
+                        hasText(RegexMatcher.matchesRegex("^\\n-\\n\\[.+(,\\s+.*)*\\]$"))
                     }
                     device.screenshots.take("over_screenshot")
                 }

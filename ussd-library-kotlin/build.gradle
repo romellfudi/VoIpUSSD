@@ -84,6 +84,7 @@ dokkaHtml.configure {
 
 dependencies {
     implementation 'com.android.support:appcompat-v7:30.0.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.mockito:mockito-all:1.10.19'
     testImplementation 'org.powermock:powermock-module-junit4:1.6.2'
