@@ -3,33 +3,24 @@
  * All rights reserved
  * portfolio.romellfudi.com
  */
+package com.romellfudi.ussd.test
 
-package com.romellfudi.ussd.test;
+import org.hamcrest.Description
+import org.hamcrest.TypeSafeMatcher
 
-import org.hamcrest.Description;
-import org.hamcrest.TypeSafeMatcher;
-
-public class RegexMatcher extends TypeSafeMatcher<String> {
-
-    private final String regex;
-
-    public RegexMatcher(final String regex) {
-        this.regex = regex;
+class RegexMatcher(private val regex: String) : TypeSafeMatcher<String>() {
+    override fun describeTo(description: Description) {
+        description.appendText("matches regular expression=`$regex`")
     }
 
-    @Override
-    public void describeTo(final Description description) {
-        description.appendText("matches regular expression=`" + regex + "`");
+    public override fun matchesSafely(string: String): Boolean {
+        return string.matches(regex.toRegex())
     }
 
-    @Override
-    public boolean matchesSafely(final String string) {
-        return string.matches(regex);
-    }
-
-
-     // matcher method you can call on this matcher class
-    public static RegexMatcher matchesRegex(final String regex) {
-        return new RegexMatcher(regex);
+    companion object {
+        // matcher method you can call on this matcher class
+        fun matchesRegex(regex: String): RegexMatcher {
+            return RegexMatcher(regex)
+        }
     }
 }
