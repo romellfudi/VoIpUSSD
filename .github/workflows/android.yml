@@ -44,3 +44,12 @@ jobs:
         with:
           name: ussd-library-kotlin-aar
           path: ussd-library-kotlin/build/outputs/aar/ussd-library-kotlin-debug.aar
+
+      - name: run Android tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 29
+          target: default
+          arch: x86_64
+          profile: Nexus 6
+          script: ./gradlew connectedCheck
