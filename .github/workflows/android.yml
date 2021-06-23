@@ -55,11 +55,6 @@ jobs:
         with:
           java-version: 1.8
       - name: run Android tests
-        uses: reactivecircus/android-emulator-runner@v2
+        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.2
         with:
-          api-level: 29
-          arch: x86
-          profile: Nexus 5X
-          force-avd-creation: false
-          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
-          script: ./gradlew connectedCheck -p app-kotlin
+          cmd: ./gradlew connectedAndroidTest -p app-kotlin
