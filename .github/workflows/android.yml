@@ -68,4 +68,4 @@ jobs:
           target: default
           arch: x86
           profile: Nexus 6
-          script: ./gradlew connectedCheck -p app-kotlin --stacktrace
+          script: ./gradlew connectedDemoDebugAndroidTest -p app-kotlin --stacktrace
