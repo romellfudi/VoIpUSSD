@@ -58,8 +58,8 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Execute Unit Tests (gradlew test)
-        run: bash ./gradlew test --stacktrace
+#      - name: Execute Unit Tests (gradlew test)
+#        run: bash ./gradlew test --stacktrace
 
       - name: Run Android instrumented tests
         uses: reactivecircus/android-emulator-runner@v2
