@@ -16,11 +16,4 @@ class RegexMatcher(private val regex: String) : TypeSafeMatcher<String>() {
     public override fun matchesSafely(string: String): Boolean {
         return string.matches(regex.toRegex())
     }
-
-    companion object {
-        // matcher method you can call on this matcher class
-        fun matchesRegex(regex: String): RegexMatcher {
-            return RegexMatcher(regex)
-        }
-    }
 }
