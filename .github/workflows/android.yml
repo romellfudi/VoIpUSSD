@@ -49,9 +49,10 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - uses: actions/checkout@v2
-      - name: run Android tests
-        uses: malinskiy/action-android/emulator-run-cmd@release/0.1.2
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: run android tests
+        uses: reactivecircus/android-emulator-runner@v2
         with:
-          api: 29
-          cmd: ./gradlew connectedAndroidTest -p app-kotlin
+          api-level: 29
+          script: ./gradlew connectedAndroidTest -p app-kotlin
