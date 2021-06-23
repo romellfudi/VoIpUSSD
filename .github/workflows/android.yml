@@ -55,4 +55,5 @@ jobs:
         uses: reactivecircus/android-emulator-runner@v2
         with:
           api-level: 29
-          script: ./gradlew connectedAndroidTest -p app-kotlin
+          script: ./gradlew :app-kotlin:connectedCheck
+          profile: Nexus 6
