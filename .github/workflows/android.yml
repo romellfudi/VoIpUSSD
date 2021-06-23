@@ -56,4 +56,4 @@ jobs:
           target: default
           arch: x86_64
           profile: Nexus 6
-          script: ./gradlew connectedCheck
+          script: ./gradlew :app-kotlin:connectedCheck
