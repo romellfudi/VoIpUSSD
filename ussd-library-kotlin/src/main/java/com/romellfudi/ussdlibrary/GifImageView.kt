@@ -18,6 +18,7 @@ import android.os.SystemClock
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
+import timber.log.Timber
 
 import java.io.FileNotFoundException
 import java.io.InputStream
@@ -89,7 +90,7 @@ class GifImageView : View {
             mInputStream = mContext!!.contentResolver.openInputStream(uri)
             init()
         } catch (e: FileNotFoundException) {
-            Log.e("GIfImageView", "File not found")
+            Timber.e( "File not found")
         }
 
     }

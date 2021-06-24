@@ -6,6 +6,7 @@
 
 package com.romellfudi.ussd.main.view
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.os.Bundle
 import android.os.Handler
@@ -126,8 +127,10 @@ class MainFragmentView : Fragment(), MainFragmentMVPView, KoinComponent {
         handler.postDelayed(::dismissOverlay, 12000)
     }
 
-    override fun showResult(result: String) =
+    override fun showResult(result: String) {
         callViewModel.result.postValue(result)
+        Timber.d("$result")
+    }
 
     override fun dismissOverlay() {
         handler.removeCallbacksAndMessages(null)

@@ -16,6 +16,7 @@ object MainScreen : KScreen<MainScreen>() {
     override val viewClass: Class<*> = MainActivity::class.java
 
     val dialUpButton = KButton { withId(R.id.accessibility) }
+    val radioSplash = KButton { withId(R.id.splash)}
     val phone = KEditText { withId(R.id.phone) }
     val result = KTextView { withId(R.id.result) }
     val call_scroll = KScrollView { withId(R.id.call_scroll) }

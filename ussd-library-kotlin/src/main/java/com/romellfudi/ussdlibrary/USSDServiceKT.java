@@ -16,7 +16,8 @@ import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+
+import timber.log.Timber;
 
 /**
  * AccessibilityService object for ussd dialogs on Android mobile Telcoms
@@ -26,8 +27,6 @@ import java.util.stream.Collectors;
  * @since 1.0.a
  */
 public class USSDServiceKT extends AccessibilityService {
-
-    private static String TAG = USSDServiceKT.class.getSimpleName();
 
     private static AccessibilityEvent event;
 
@@ -40,7 +39,7 @@ public class USSDServiceKT extends AccessibilityService {
     public void onAccessibilityEvent(AccessibilityEvent event) {
         USSDServiceKT.event = event;
         USSDController ussd = USSDController.INSTANCE;
-        Log.d(TAG, String.format(
+        Timber.d(String.format(
                 "onAccessibilityEvent: [type] %s [class] %s [package] %s [time] %s [text] %s",
                 event.getEventType(), event.getClassName(), event.getPackageName(),
                 event.getEventTime(), event.getText()));
@@ -58,12 +57,11 @@ public class USSDServiceKT extends AccessibilityService {
             clickOnButton(event, 1);
             ussd.callbackInvoke.over(response);
         } else if (isUSSDWidget(event)) {
-//            if (response.contains("\n")) {
-//                response = response.substring(response.indexOf('\n') + 1);
-//            }
+            Timber.d("catch a USSD widget/Window");
             if (notInputText(event)) {
                 // not more input panels / LAST MESSAGE
                 // sent 'OK' button
+                Timber.d("No inputText found & closing USSD process");
                 clickOnButton(event, 0);
                 ussd.stopRunning();
                 ussd.callbackInvoke.over(response);
@@ -83,6 +81,7 @@ public class USSDServiceKT extends AccessibilityService {
      * @param text any string
      */
     public static void send(String text) {
+        Timber.d("trying to send... %s", text);
         setTextIntoField(event, text);
         clickOnButton(event, 1);
     }
@@ -92,6 +91,7 @@ public class USSDServiceKT extends AccessibilityService {
      */
     public static void cancel() {
         clickOnButton(event, 0);
+        Timber.d("Trying to close/cancel USSD process by clicked in first button ");
     }
 
     /**
@@ -124,7 +124,7 @@ public class USSDServiceKT extends AccessibilityService {
      */
     protected static boolean notInputText(AccessibilityEvent event) {
         for (AccessibilityNodeInfo leaf : getLeaves(event))
-            if (leaf.getClassName().equals("android.widget.EditText")) return false; 
+            if (leaf.getClassName().equals("android.widget.EditText")) return false;
         return true;
     }
 
@@ -207,7 +207,7 @@ public class USSDServiceKT extends AccessibilityService {
      */
     @Override
     public void onInterrupt() {
-        Log.d(TAG, "onInterrupt");
+        Timber.d( "onInterrupt");
     }
 
     /**
@@ -216,6 +216,6 @@ public class USSDServiceKT extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        Log.d(TAG, "onServiceConnected");
+        Timber.d("onServiceConnected");
     }
 }

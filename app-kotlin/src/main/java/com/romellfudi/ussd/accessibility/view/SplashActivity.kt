@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.accessibility.goActivity
 import kotlinx.coroutines.*
+import timber.log.Timber
 
 class SplashActivity : AppCompatActivity() {
 
@@ -19,10 +20,12 @@ class SplashActivity : AppCompatActivity() {
 //        window.setFlags(
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN,
 //                WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        Timber.i("Splash Activity")
 
         activityScope.launch {
             delay(3000)
             goActivity<MainActivity>()
+            Timber.i("starting Main Activity")
             finish()
         }
     }
