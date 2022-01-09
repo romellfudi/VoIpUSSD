@@ -27,7 +27,7 @@ object service {
 @RequiresApi(Build.VERSION_CODES.N)
 inline fun <reified T : Service> Activity.goService(extras:HashMap<String,String>?=null ) {
     service.internalIntent = Intent(this, T::class.java).apply {
-        extras?.forEach { key, value -> putExtra(key, value) }
+        extras?.forEach(::putExtra) // key, value -> putExtra(key, value)
     }
     startService(service.internalIntent)
 }
