@@ -84,7 +84,7 @@ android {
 dependencies {
     implementation project(':ussd-library-kotlin')
 //    implementation 'com.romellfudi.permission:kotlin-fudi-permission:2.0.a'
-    implementation 'com.github.romellfudi.FudiPermission:kotlin-fudi-permission:main-SNAPSHOT'
+    implementation 'com.github.romellfudi.FudiPermission:kotlin-fudi-permission:2.0.a'
 }
 dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
