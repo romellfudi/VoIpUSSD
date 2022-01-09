@@ -23,7 +23,7 @@ class SplashActivity : AppCompatActivity() {
         Timber.i("Splash Activity")
 
         activityScope.launch {
-            delay(3000)
+            delay(2000)
             goActivity<MainActivity>()
             Timber.i("starting Main Activity")
             finish()

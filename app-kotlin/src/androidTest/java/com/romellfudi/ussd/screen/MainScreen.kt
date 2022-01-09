@@ -1,11 +1,9 @@
 package com.romellfudi.ussd.screen
 
-import com.agoda.kakao.edit.KEditText
-import com.agoda.kakao.scroll.KScrollView
-import com.agoda.kakao.text.KButton
-import com.agoda.kakao.text.KTextView
-import com.kaspersky.components.kautomator.component.scroll.UiScrollView
-import com.kaspersky.components.kautomator.component.text.UiTextView
+import io.github.kakaocup.kakao.edit.KEditText
+import io.github.kakaocup.kakao.scroll.KScrollView
+import io.github.kakaocup.kakao.text.KButton
+import io.github.kakaocup.kakao.text.KTextView
 import com.kaspersky.kaspresso.screens.KScreen
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.accessibility.view.MainActivity

@@ -78,7 +78,7 @@ class SimpleTest : TestCase() {
                         isDisplayed()
                         hasNoText("Empty")
                         hasAnyText()
-                        hasText(RegexMatcher("^\\n-\\n\\[.+(,\\s+.*)*\\]$"))
+                        hasText(RegexMatcher("^\\n-\\n\\[.+(\\s+.*)*\\]$"))
                     }
                     device.screenshots.take("over_screenshot")
                 }
@@ -100,7 +100,7 @@ class SimpleTest : TestCase() {
                     result {
                         hasNoText("Empty")
                         hasAnyText()
-                        hasText(RegexMatcher("^\\n-\\n\\[.+(,\\s+.*)*\\]$"))
+                        hasText(RegexMatcher("^\\n-\\n\\[.+(\\s+.*)*\\]$"))
                     }
                     device.screenshots.take("over_screenshot")
                 }

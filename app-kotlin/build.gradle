@@ -84,7 +84,7 @@ android {
 dependencies {
     implementation project(':ussd-library-kotlin')
 //    implementation 'com.romellfudi.permission:kotlin-fudi-permission:2.0.a'
-    implementation 'com.github.romellfudi.FudiPermission:kotlin-fudi-permission:2.0.a'
+    implementation 'com.github.romellfudi.FudiPermission:kotlin-fudi-permission:2.0.b'
 }
 dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -118,5 +118,5 @@ dependencies {
 }
 dependencies {
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.7'
-    androidTestImplementation 'com.kaspersky.android-components:kaspresso:1.2.0'
+    androidTestImplementation 'com.kaspersky.android-components:kaspresso:1.4.0'
 }

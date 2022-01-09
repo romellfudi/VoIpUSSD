@@ -1,6 +1,6 @@
 package com.romellfudi.ussd.screen
 
-import com.agoda.kakao.common.views.KView
+import io.github.kakaocup.kakao.common.views.KView
 import com.kaspersky.kaspresso.screens.KScreen
 import com.romellfudi.ussd.R
 import com.romellfudi.ussd.accessibility.view.SplashActivity
