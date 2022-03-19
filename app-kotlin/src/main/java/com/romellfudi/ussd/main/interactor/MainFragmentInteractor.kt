@@ -14,6 +14,4 @@ import android.content.Context
  * @version 1.0
  */
 
-class MainFragmentInteractor constructor(private val mContext: Context) : MainFragmentMVPInteractor {
-
-}
+class MainFragmentInteractor constructor(private val mContext: Context) : MainFragmentMVPInteractor

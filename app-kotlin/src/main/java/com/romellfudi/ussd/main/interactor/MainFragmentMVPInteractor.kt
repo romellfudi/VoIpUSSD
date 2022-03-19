@@ -12,5 +12,4 @@ package com.romellfudi.ussd.main.interactor
  * @date 2020-04-27
  * @version 1.0
  */
-interface MainFragmentMVPInteractor{
-}
+interface MainFragmentMVPInteractor

@@ -45,10 +45,7 @@ class SimpleTest : TestCase() {
         }.run {
             step("check splash") {
                 activityTestRule.launchActivity(null)
-                scenario(
-                    CheckScenario()
-                )
-                device.screenshots.take("splash_screenshot")
+                scenario( CheckScenario() )
             }
             step("Make the USSD call & not show the splashView") {
                 MainScreen {
@@ -61,13 +58,9 @@ class SimpleTest : TestCase() {
                     testLogger.i("Closing soft keyboard...")
                     closeSoftKeyboard()
                     testLogger.i("Enable USSDService accessibility...")
-                    device.accessibility.enable(
-                        device.targetContext.packageName,
-                        SERVICE_CLASS_NAME
-                    )
+                    device.accessibility.enable(device.targetContext.packageName,SERVICE_CLASS_NAME)
                     testLogger.i("Dial up...")
                     dialUpButton { click() }
-                    device.screenshots.take("dial_screenshot")
                 }
             }
             step("Verify the result of the sdk") {
@@ -80,7 +73,6 @@ class SimpleTest : TestCase() {
                         hasAnyText()
                         hasText(RegexMatcher("^\\n-\\n\\[.+(\\s+.*)*\\]$"))
                     }
-                    device.screenshots.take("over_screenshot")
                 }
             }
             step("Make the USSD call & show the splashView") {
@@ -90,7 +82,6 @@ class SimpleTest : TestCase() {
                     radioSplash { click() }
                     testLogger.i("Dial up...")
                     dialUpButton { click() }
-                    device.screenshots.take("dial_splash_screenshot")
                 }
             }
             step("Verify the result of the sdk after showing SplashView") {
@@ -102,7 +93,6 @@ class SimpleTest : TestCase() {
                         hasAnyText()
                         hasText(RegexMatcher("^\\n-\\n\\[.+(\\s+.*)*\\]$"))
                     }
-                    device.screenshots.take("over_screenshot")
                 }
             }
         }
