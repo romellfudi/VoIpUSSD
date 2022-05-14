@@ -56,8 +56,8 @@ Add the following dependency in your app's `build.gradle` configuration file:
 | :------: | ------ | :------: |
 | jcenter() | 'com.romellfudi.ussdlibrary:ussd-library:1.1.i' | `DEPRECATED` |
 | jcenter() | 'com.romellfudi.ussdlibrary:kotlin-ussd-library:1.1.k' | `DEPRECATED` |
-| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:ussd-library:1.2.f' | `READY` |
-| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.2.f' | `READY` |
+| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:ussd-library:1.3.0' | `READY` |
+| maven { url `https://jitpack.io` } | 'com.github.romellfudi.VoIpUSSD:kotlin-ussd-library:1.3.0' | `READY` |
 
 * Writing a config xml file from [here](https://github.com/romellfudi/VoIpUSSD/blob/master/ussd-library/src/main/res/xml/ussd_service.xml) `to res/xml` folder (if necessary), this config file allow to link between Application and System Oerative:
 
