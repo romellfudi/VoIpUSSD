@@ -9,14 +9,14 @@ ext {
     bintrayRepo = 'maven'
     bintrayName = 'kotlin-ussd-library'
 
-    publishedGroupId = 'com.romellfudi.ussdlibrary'
+    publishedGroupId = 'com.github.AshaluwalaKazeem'
     libraryName = 'VoIpUSSD'
     artifact = 'kotlin-ussd-library'
 
     libraryDescription = 'Android library To comunicate with ussd display'
 
     siteUrl = 'https://romellfudi.github.io/VoIpUSSD'
-    gitUrl = 'https://github.com/romellfudi/VoIpUSSD.git'
+    gitUrl = 'https://github.com/AshaluwalaKazeem/MultiSessionUSSDDialer.git'
 
     libraryVersion = '1.2.f'
 
