@@ -8,6 +8,6 @@
     <string name="app_name">USSSD Library</string>
     <string name="action_settings">Settings</string>
     <string name="accessibility_service_description">
-        Enable permissions from use USSD displays, Data Scientist Romell D.Z.</string>
+        Enable permissions from use USSD displays</string>
 
 </resources>
