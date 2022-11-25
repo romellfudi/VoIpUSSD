@@ -155,6 +155,7 @@ public class USSDService extends AccessibilityService {
                 || event.getClassName().equals("com.android.phone.oppo.settings.LocalAlertDialog")
                 || event.getClassName().equals("com.zte.mifavor.widget.AlertDialog")
                 || event.getClassName().equals("color.support.v7.app.AlertDialog")
+                || event.getClassName().contains("AlertDialog")
                 || event.getClassName().equals("com.transsion.widgetslib.dialog.PromptDialog"));
     }
 
