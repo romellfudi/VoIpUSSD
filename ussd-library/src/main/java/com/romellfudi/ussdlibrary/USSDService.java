@@ -150,13 +150,7 @@ public class USSDService extends AccessibilityService {
      * @return boolean AccessibilityEvent is USSD
      */
     private boolean isUSSDWidget(AccessibilityEvent event) {
-        return (event.getClassName().equals("amigo.app.AmigoAlertDialog")
-                || event.getClassName().equals("android.app.AlertDialog")
-                || event.getClassName().equals("com.android.phone.oppo.settings.LocalAlertDialog")
-                || event.getClassName().equals("com.zte.mifavor.widget.AlertDialog")
-                || event.getClassName().equals("color.support.v7.app.AlertDialog")
-                || event.getClassName().toString().contains("AlertDialog")
-                || event.getClassName().equals("com.transsion.widgetslib.dialog.PromptDialog"));
+        return event.getClassName().toString().contains("AlertDialog");
     }
 
     /**

@@ -48,7 +48,7 @@ public class USSDController implements USSDInterface, USSDApi {
 
     protected static final String KEY_ERROR = "KEY_ERROR";
 
-    public Boolean isRunning = false;
+    protected Boolean isRunning = false;
     protected Boolean send = false;
 
     private USSDInterface ussdInterface;
@@ -362,5 +362,10 @@ public class USSDController implements USSDInterface, USSDApi {
 
     public interface CallbackMessage {
         void responseMessage(String message);
+    }
+
+    @Override
+    public boolean isCurrentlyWorking() {
+        return isRunning
     }
 }
