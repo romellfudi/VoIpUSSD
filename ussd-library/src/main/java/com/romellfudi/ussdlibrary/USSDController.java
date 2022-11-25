@@ -48,7 +48,7 @@ public class USSDController implements USSDInterface, USSDApi {
 
     protected static final String KEY_ERROR = "KEY_ERROR";
 
-    protected Boolean isRunning = false;
+    public Boolean isRunning = false;
     protected Boolean send = false;
 
     private USSDInterface ussdInterface;
