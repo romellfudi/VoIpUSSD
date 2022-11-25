@@ -366,6 +366,6 @@ public class USSDController implements USSDInterface, USSDApi {
 
     @Override
     public boolean isCurrentlyWorking() {
-        return isRunning
+        return isRunning;
     }
 }
