@@ -363,4 +363,9 @@ public class USSDController implements USSDInterface, USSDApi {
     public interface CallbackMessage {
         void responseMessage(String message);
     }
+
+    @Override
+    public boolean isCurrentlyWorking() {
+        return isRunning;
+    }
 }
