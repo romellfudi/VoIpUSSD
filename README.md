@@ -67,228 +67,226 @@ Add the following dependency in your app's `build.gradle` configuration file:
     .../>
 ```
 
-### Application
+### Application Permissions
 
-Puts dependencies on manifest, into manifest put CALL_PHONE, READ_PHONE_STATE and SYSTEM_ALERT_WINDOW:
-
-```xml
-    <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-```
-
-Add service:
+To use the application, add the following permissions to your AndroidManifest.xml:
 
 ```xml
-java
-    <service
-        android:name="com.romellfudi.ussdlibrary.USSDService"
-        android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
-        <intent-filter>
-            <action android:name="android.accessibilityservice.AccessibilityService" />
-        </intent-filter>
-        <meta-data
-            android:name="android.accessibilityservice"
-            android:resource="@xml/ussd_service" />
-    </service>
+<uses-permission android:name="android.permission.CALL_PHONE" />
+<uses-permission android:name="android.permission.READ_PHONE_STATE" />
+<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 ```
+
+### Service Configuration
+
+Include the service in your AndroidManifest.xml for Java:
 
 ```xml
-kotlin
-    <service
-        android:name="com.romellfudi.ussdlibrary.USSDServiceKT"
-        android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
-        <intent-filter>
-            <action android:name="android.accessibilityservice.AccessibilityService" />
-        </intent-filter>
-        <meta-data
-            android:name="android.accessibilityservice"
-            android:resource="@xml/ussd_service" />
-    </service>
+<service
+    android:name="com.romellfudi.ussdlibrary.USSDService"
+    android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+    <intent-filter>
+        <action android:name="android.accessibilityservice.AccessibilityService" />
+    </intent-filter>
+    <meta-data
+        android:name="android.accessibilityservice"
+        android:resource="@xml/ussd_service" />
+</service>
 ```
 
-# How use:
+Or for Kotlin:
 
-First you need an hashMap from detect witch USSD' response contains the login and error messages
+```xml
+<service
+    android:name="com.romellfudi.ussdlibrary.USSDServiceKT"
+    android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+    <intent-filter>
+        <action android:name="android.accessibilityservice.AccessibilityService" />
+    </intent-filter>
+    <meta-data
+        android:name="android.accessibilityservice"
+        android:resource="@xml/ussd_service" />
+</service>
+```
+
+### Usage Instructions
+
+1. Create a HashMap to identify USSD response messages for login and error scenarios:
 
 | KEY MESSAGE | String Messages |
 | ------ | ------ |
-| KEY_LOGIN | "espere","waiting","loading","esperando",... |
-| KEY_ERROR | "problema","problem","error","null",... |
+| KEY_LOGIN | "espere", "waiting", "loading", "esperando", ... |
+| KEY_ERROR | "problema", "problem", "error", "null", ... |
+
+For Java:
 
 ```java
-map = new HashMap<>();
-map.put("KEY_LOGIN",new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
-map.put("KEY_ERROR",new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
+Map<String, HashSet<String>> map = new HashMap<>();
+map.put("KEY_LOGIN", new HashSet<>(Arrays.asList("espere", "waiting", "loading", "esperando")));
+map.put("KEY_ERROR", new HashSet<>(Arrays.asList("problema", "problem", "error", "null")));
 ```
+
+For Kotlin:
 
 ```kotlin
-map = HashMap()
-map["KEY_LOGIN"] = HashSet(Arrays.asList("espere", "waiting", "loading", "esperando"))
-map["KEY_ERROR"] = HashSet(Arrays.asList("problema", "problem", "error", "null"))
+val map = HashMap<String, HashSet<String>>()
+map["KEY_LOGIN"] = hashSetOf("espere", "waiting", "loading", "esperando")
+map["KEY_ERROR"] = hashSetOf("problema", "problem", "error", "null")
 ```
 
-Instance an object ussController with context
+2. Instantiate a USSDController object and invoke a USSD code:
+
+For Java:
 
 ```java
 USSDApi ussdApi = USSDController.getInstance(context);
 ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
     @Override
     public void responseInvoke(String message) {
-        // message has the response string data
-        String dataToSend = "data"// <- send "data" into USSD's input text
-        ussdApi.send(dataToSend,new USSDController.CallbackMessage(){
+        // Handle the USSD response
+        String dataToSend = "data"; // Data to send to USSD
+        ussdApi.send(dataToSend, new USSDController.CallbackMessage() {
             @Override
             public void responseMessage(String message) {
-                // message has the response string data from USSD
+                // Handle the message from USSD
             }
         });
     }
 
     @Override
     public void over(String message) {
-        // message has the response string data from USSD or error
-        // response no have input text, NOT SEND ANY DATA
+        // Handle the final message from USSD or error
     }
 });
 ```
 
+For Kotlin:
+
 ```kotlin
+val ussdApi = USSDController.getInstance(context)
 ussdApi.callUSSDOverlayInvoke(phoneNumber, map, object : USSDController.CallbackInvoke {
     override fun responseInvoke(message: String) {
-        // message has the response string data
-        var dataToSend = "data"// <- send "data" into USSD's input text
-        ussdApi.send("1") { // it: response String
-                // message has the response string data from USSD
+        // Handle the USSD response
+        val dataToSend = "data" // Data to send to USSD
+        ussdApi.send(dataToSend) { responseMessage ->
+            // Handle the message from USSD
         }
-     }
+    }
 
     override fun over(message: String) {
-        // message has the response string data from USSD or error
-        // response no have input text, NOT SEND ANY DATA
+        // Handle the final message from USSD or error
     }
 })
 ```
 
-if you need work with your custom messages, use this structure:
+3. For custom message handling, structure your code as follows:
+
+For Java:
 
 ```java
+// Example of selecting options from USSD menu
 ussdApi.callUSSDInvoke(phoneNumber, map, new USSDController.CallbackInvoke() {
-    @Override
-    public void responseInvoke(String message) {
-        // first option list - select option 1
-        ussdApi.send("1",new USSDController.CallbackMessage(){
-            @Override
-            public void responseMessage(String message) {
-                // second option list - select option 1
-                ussdApi.send("1",new USSDController.CallbackMessage(){
-                    @Override
-                    public void responseMessage(String message) {
-                        ...
-                    }
-                });
-            }
+    ...
+    // Select the first option
+    ussdApi.send("1", new USSDController.CallbackMessage() {
+        ...
+        // Select the next option
+        ussdApi.send("1", new USSDController.CallbackMessage() {
+            ...
         });
-    }
-
-    @Override
-    public void over(String message) {
-        // message has the response string data from USSD
-        // response no have input text, NOT SEND ANY DATA
-    }
+    });
     ...
 });
 ```
 
-```kotlin
-ussdApi.callUSSDOverlayInvoke(phoneNumber, map, object : USSDController.CallbackInvoke {
-    override fun responseInvoke(message: String) {
-        // first option list - select option 1
-        ussdApi.send("1") { // it: response response
-                // second option list - select option 1
-                ussdApi.send("1") { // it: response message
-                        ...
-                }
-        }
-    }
+For Kotlin:
 
-    override fun over(message: String) {
-        // message has the response string data from USSD
-        // response no have input text, NOT SEND ANY DATA
+```kotlin
+// Example of selecting options from USSD menu
+ussdApi.callUSSDOverlayInvoke(phoneNumber, map, object : USSDController.CallbackInvoke {
+    ...
+    // Select the first option
+    ussdApi.send("1") {
+        ...
+        // Select the next option
+        ussdApi.send("1") {
+            ...
+        }
     }
     ...
 })
 ```
 
-for dual sim support
+4. For dual SIM support, specify the SIM slot:
+
+For Java:
 
 ```java
 ussdApi.callUSSDInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInvoke() {
     ...
-}
+});
 ```
+
+For Kotlin:
 
 ```kotlin
 ussdApi.callUSSDOverlayInvoke(phoneNumber, simSlot, map, object : USSDController.CallbackInvoke {
     ...
-}
+});
 ```
 
-## Static Methods
-In case use at android >= M, you could check previusly permissions, `callInvoke` and `callUSSDOverlayInvoke` methods check eneble too:
+### Static Methods
+
+For Android M and above, check permissions before invoking USSD:
 
 ```java
- # check if accessibility permissions is enabled or not
-    ussdApi.verifyAccesibilityAccess(Activity)
- # check if overlay permissions is enabled or not
-    ussdApi.verifyOverLay(Activity)
+// Check if accessibility permissions are enabled
+ussdApi.verifyAccessibilityAccess(Activity);
+// Check if overlay permissions are enabled
+ussdApi.verifyOverlay(Activity);
 ```
 
-## Overlay Service Widget (not required)
+### Overlay Service Widget (Optional)
 
-A huge problem working with ussd is you can not invisible, disenable, resize or put on back in progressDialog
-But now on Android O, Google allow build a nw kind permission from overlay widget, my solution was a widget call OverlayShowingService:
-For use need add permissions at AndroidManifest:
+For Android O and above, use the OverlayShowingService to handle overlay permissions. Add the following permission to your AndroidManifest.xml:
 
 ```xml
 <uses-permission android:name="android.permission.ACTION_MANAGE_OVERLAY_PERMISSION" />
 ```
 
-Using the library you could use two ways:
+#### SplashLoadingService
 
-### SplashLoadingService
-
-Add Broadcast Service:
+Add the service to your AndroidManifest.xml:
 
 ```xml
 <service android:name="com.romellfudi.ussdlibrary.SplashLoadingService"
          android:exported="false" />
 ```
 
-Invoke like a normal service:
+Start and stop the service around the USSD invocation:
+
+For Java:
 
 ```java
-svc = new Intent(activity, SplashLoadingService.class);
-// show layout
-getActivity().startService();
-ussdApi.callUSSDOverlayInvoke(phoneNumber, simSlot, map, new USSDController.CallbackInvoke() {
-        ...
-        // dismiss layout
-        getActivity().stopService(svc);
-        ...
-}
+Intent svc = new Intent(activity, SplashLoadingService.class);
+// Show the overlay
+activity.startService(svc);
+// Invoke USSD and handle responses
+...
+// Dismiss the overlay
+activity.stopService(svc);
 ```
 
+For Kotlin:
+
 ```kotlin
-svc = Intent(activity, OverlayShowingService::class.java)
-// show layout
+val svc = Intent(activity, SplashLoadingService::class.java)
+// Show the overlay
 activity.startService(svc)
-ussdApi.callUSSDOverlayInvoke(phoneNumber, map, object : USSDController.CallbackInvoke {
-        ...
-        // dismiss layout
-        activity.stopService(svc)
-        ...
-}
+// Invoke USSD and handle responses
+...
+// Dismiss the overlay
+activity.stopService(svc)
 ```
 
 <p align="center"> <img src="/snapshot/device_splash.gif" alt="Jitpack">  </p>
@@ -342,7 +340,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 ## License
 [![GNU GPLv3 Image](https://www.gnu.org/graphics/gplv3-127x51.png)](http://www.gnu.org/licenses/gpl-3.0.en.html)
 
-GameDealz is a Free Software: You can use, study share and improve it at your
+VoIpUSSD is a Free Library Software: You can use, study share and improve it at your
 will. Specifically you can redistribute and/or modify it under the terms of the
 [GNU General Public License](https://www.gnu.org/licenses/gpl.html) as
 published by the Free Software Foundation, either version 3 of the License, or
