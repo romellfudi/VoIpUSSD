@@ -109,6 +109,9 @@ Or for Kotlin:
 </service>
 ```
 
+ **NOTE:** You may want to override ``android:notificationTimeout="0"``to a corresponding value of 200 or avobe by copying the contents of ``@xml/ussd_service`` to the xml dir.
+ Otherwise it is possible that the library will miss accessibility events during operation, resulting is unintended behaivours (e.g not reading up to date prompts [#115](https://github.com/romellfudi/VoIpUSSD/issues/115) )
+
 ### Usage Instructions
 
 1. Create a HashMap to identify USSD response messages for login and error scenarios:
