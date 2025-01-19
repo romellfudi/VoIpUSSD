@@ -82,13 +82,21 @@ dependencies {
 
 // إعدادات النشر باستخدام maven-publish
 afterEvaluate {
+    apply plugin: 'maven-publish'
+
     publishing {
         publications {
             release(MavenPublication) {
+                // استخدام مكون Android release
                 from components.release
                 groupId = "com.github.tarek-sat"
                 artifactId = "ussd-library"
                 version = "1.12.a"
+            }
+        }
+        repositories {
+            maven {
+                url = uri("${buildDir}/repo")
             }
         }
     }
