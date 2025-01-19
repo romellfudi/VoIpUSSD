@@ -159,6 +159,7 @@ public class USSDService extends AccessibilityService {
                 || event.getClassName().equals("com.transsion.widgetslib.dialog.PromptDialog")
                 || event.getClassName().equals("miuix.appcompat.app.AlertDialog")
                 || event.getClassName().equals("com.mediatek.phone.UssdAlertActivity"));
+        
     }
 
     /**
