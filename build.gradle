@@ -1,19 +1,24 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
+plugins {
+    id 'maven-publish' // يجب أن تكون هذه الكتلة هنا بعد الكتل المسموحة فقط
+}
+
 buildscript {
     ext.kotlin_version = '1.4.30'
     ext.nav_version = "2.3.4"
     ext.lifecycle_version = "2.2.0"
     ext.dagger_version = "2.24"
     ext.koin = '2.0.0'
+
     repositories {
         google()
-        mavenCentral() // استبدل jcenter بمركز Maven الحديث
+        mavenCentral() // استبدال jcenter بمركز Maven
         maven { url 'https://jitpack.io' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.4' // تحديث إصدار Gradle
-        classpath 'com.google.gms:google-services:4.3.10' // تحديث Google Services
+        classpath 'com.android.tools.build:gradle:7.0.4'
+        classpath 'com.google.gms:google-services:4.3.10'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version"
     }
@@ -22,18 +27,13 @@ buildscript {
 allprojects {
     repositories {
         google()
-        mavenCentral() // استبدل jcenter بمركز Maven الحديث
+        mavenCentral() // استبدال jcenter بمركز Maven
         flatDir { dirs 'libs' }
         maven { url 'https://jitpack.io' }
     }
     tasks.withType(Javadoc).all {
         enabled = false
     }
-}
-
-// إضافة إعدادات النشر باستخدام مكون maven-publish
-plugins {
-    id 'maven-publish'
 }
 
 publishing {
