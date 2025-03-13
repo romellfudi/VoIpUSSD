@@ -23,24 +23,24 @@ jobs:
       - name: Testing ussd-library
         run: ./gradlew assembleDebug lint testDebugUnitTest -p ussd-library
       - name: Upload Testing ussd-library
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ussd-library-test
           path: ussd-library/build/reports/tests/testDebugUnitTest
       - name: Upload ussd-library artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ussd-library-aar
           path: ussd-library/build/outputs/aar/ussd-library-debug.aar
       - name: Testing ussd-library-kotlin
         run: ./gradlew assembleDebug lint testDebugUnitTest -p ussd-library-kotlin
       - name: Upload Testing ussd-library-kotlin
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ussd-library-kotlin-test
           path: ussd-library-kotlin/build/reports/tests/testDebugUnitTest
       - name: Upload ussd-library-kotlin artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: ussd-library-kotlin-aar
           path: ussd-library-kotlin/build/outputs/aar/ussd-library-kotlin-debug.aar
