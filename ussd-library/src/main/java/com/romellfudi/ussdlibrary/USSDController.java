@@ -205,6 +205,10 @@ public class USSDController implements USSDInterface, USSDApi {
         USSDService.send(text);
     }
 
+    public void stopRunning() {
+        isRunning = false;
+    }
+
     /**
      * Send a string by using  the inputText from USSD Dialog
      *
