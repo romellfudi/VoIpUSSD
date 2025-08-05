@@ -1,6 +1,9 @@
 <h1 align="center">
   VOIP USSD ANDROID
-</h1>   
+</h1>
+
+![banner](https://github.com/user-attachments/assets/16f06be7-6e4b-497e-bc1e-ca1ee8cdc818)
+
 
 <p align="center"> 
     <a href="https://developer.android.com/index.html"><img src="https://img.shields.io/badge/platform-android-brightgreen.svg?&amp;logo=android" alt="Platform"></a>
