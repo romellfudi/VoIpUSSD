@@ -1,12 +1,6 @@
+<h1 align="center">VOIP USSD ANDROID</h1>
+
 ![Gemini_Generated_Image_utk8amutk8amutk8](https://github.com/user-attachments/assets/90263304-8cc7-4f1b-80d9-2ade2b7593c9)
-
-
-<h1 align="center">
-  VOIP USSD ANDROID
-</h1>
-
-![banner](https://github.com/user-attachments/assets/16f06be7-6e4b-497e-bc1e-ca1ee8cdc818)
-
 
 <p align="center"> 
     <a href="https://developer.android.com/index.html"><img src="https://img.shields.io/badge/platform-android-brightgreen.svg?&amp;logo=android" alt="Platform"></a>
@@ -41,6 +35,9 @@
 
 ### by Romell Dominguez
 [![](https://raw.githubusercontent.com/romellfudi/assets/master/favicon.ico)](https://www.romellfudi.com/)
+
+<h1 align="center">Architecture Overview</h1>
+<img width="2816" height="1536" alt="architecture_overview" src="https://github.com/user-attachments/assets/040f7a7e-ab97-4037-9745-fbf3f26d701e" />
 
 ## Target Development [High Quality](https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif):
 <p align="center"> <a href="https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif"><img src="https://raw.githubusercontent.com/romellfudi/VoIpUSSD/Rev04/snapshot/device_recored.gif" alt="Jitpack"></a> </p>
